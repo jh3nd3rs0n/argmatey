@@ -15,6 +15,7 @@ import argmatey.ArgParser;
 import argmatey.GnuLongOption;
 import argmatey.LongOption;
 import argmatey.OptionArgSpec;
+import argmatey.OptionOccurrence;
 import argmatey.Options;
 import argmatey.ParseResult;
 import argmatey.PosixOption;
@@ -121,10 +122,24 @@ public class Base64OptionsTest {
 		ArgParser argParser = new ArgParser(args, options, false);
 		
 		String[] expectedArgs = { 
-				"-d", "-i", "-w", "1", "-d", "-i", "-w", "21", "-w", "321", "-d", "-i", "-w", "4321", 
-				"-decode", "-ignore-garbage", "-wrap", "54321",
+				"OptionOccurrence [option=-d, optionArg=null]", 
+				"OptionOccurrence [option=-i, optionArg=null]", 
+				"OptionOccurrence [option=-w, optionArg=1]", 
+				"OptionOccurrence [option=-d, optionArg=null]", 
+				"OptionOccurrence [option=-i, optionArg=null]", 
+				"OptionOccurrence [option=-w, optionArg=21]", 
+				"OptionOccurrence [option=-w, optionArg=321]", 
+				"OptionOccurrence [option=-d, optionArg=null]", 
+				"OptionOccurrence [option=-i, optionArg=null]", 
+				"OptionOccurrence [option=-w, optionArg=4321]", 
+				"OptionOccurrence [option=-decode, optionArg=null]", 
+				"OptionOccurrence [option=-ignore-garbage, optionArg=null]", 
+				"OptionOccurrence [option=-wrap, optionArg=54321]",
 				"file1.txt", "file2.txt",
-				"--decode", "--ignore-garbage", "--wrap", "654321", "--wrap", "7654321",
+				"OptionOccurrence [option=--decode, optionArg=null]", 
+				"OptionOccurrence [option=--ignore-garbage, optionArg=null]", 
+				"OptionOccurrence [option=--wrap, optionArg=654321]", 
+				"OptionOccurrence [option=--wrap, optionArg=7654321]",
 				"--", "--help", "--version", "file3.txt"
 		};
 		
@@ -143,12 +158,13 @@ public class Base64OptionsTest {
 		while (argParser.hasNext()) {
 			ParseResult parseResult = argParser.parseNext();
 			actualArgsList.add(parseResult.asObjectValue().toString());
-			if (parseResult.hasOptionArg()) {
-				actualArgsList.add(parseResult.getOptionArg().toString());
+			if (!parseResult.isOptionOccurrence()) {
+				continue;
 			}
-			if (parseResult.isOptionOfAnyOf("-w", "-wrap", "--wrap")) {
+			OptionOccurrence optionOccurrence = parseResult.asOptionOccurrence();
+			if (optionOccurrence.hasOptionOfAnyOf("-w", "-wrap", "--wrap")) {
 				actualWrapOptionArgsList.add(
-						parseResult.getOptionArg().asTypeValue(Integer.class));
+						optionOccurrence.getOptionArg().asTypeValue(Integer.class));
 			}
 		}
 		

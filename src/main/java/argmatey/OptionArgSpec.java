@@ -221,7 +221,7 @@ public final class OptionArgSpec {
 				oArgs.add(oArg);
 			}
 		}
-		return new OptionArg(this, optionArg, objectValues, oArgs);
+		return new OptionArg(objectValues, oArgs, this, optionArg);
 	}
 
 	@Override

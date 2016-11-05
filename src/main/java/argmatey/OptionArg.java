@@ -12,10 +12,10 @@ public final class OptionArg {
 	private final String string;
 	
 	OptionArg(
-			final OptionArgSpec optArgSpec, 
-			final String optArg, 
 			final List<Object> objValues, 
-			final List<OptionArg> optArgs) {
+			final List<OptionArg> optArgs, 
+			final OptionArgSpec optArgSpec, 
+			final String optArg) {
 		this.objectValues = new ArrayList<Object>(objValues);
 		this.optionArgs = new ArrayList<OptionArg>(optArgs);
 		this.optionArgSpec = optArgSpec;
