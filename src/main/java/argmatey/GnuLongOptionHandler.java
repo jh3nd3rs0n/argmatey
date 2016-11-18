@@ -33,8 +33,14 @@ final class GnuLongOptionHandler extends OptionHandler {
 				optionArg = args[argIndex];
 			}
 		}
-		ArgHandlerContextProperties.setParseResult(context, new ParseResult(
-				new OptionOccurrence(opt, opt.newOptionArg(optionArg))));
+		OptionArg optArg = opt.newOptionArg(optionArg);
+		ParseResult parseResult = null;
+		if (optArg == null) {
+			parseResult = new ParseResult(opt);
+		} else {
+			parseResult = new ParseResult(opt, optArg);
+		}
+		ArgHandlerContextProperties.setParseResult(context, parseResult);
 	}
 
 	@Override

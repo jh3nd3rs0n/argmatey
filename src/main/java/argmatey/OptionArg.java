@@ -22,14 +22,6 @@ public final class OptionArg {
 		this.string = optArg;
 	}
 	
-	public Object asObjectValue() {
-		return this.objectValues.get(0);
-	}
-	
-	public List<Object> asObjectValues() {
-		return Collections.unmodifiableList(this.objectValues);
-	}
-	
 	public List<OptionArg> asOptionArgs() {
 		List<OptionArg> optArgs = new ArrayList<OptionArg>();
 		if (this.optionArgs.size() == 0) {
@@ -40,25 +32,33 @@ public final class OptionArg {
 		return Collections.unmodifiableList(optArgs);
 	}
 	
-	public <T> T asTypeValue(final Class<T> type) {
-		return type.cast(this.asObjectValue());
-	}
-	
-	public <T> List<T> asTypeValues(final Class<T> type) {
-		List<T> typeValues = new ArrayList<T>();
-		for (Object objectValue : this.asObjectValues()) {
-			typeValues.add(type.cast(objectValue));
-		}
-		return Collections.unmodifiableList(typeValues);
-	}
-	
 	public OptionArgSpec getOptionArgSpec() {
 		return this.optionArgSpec;
+	}
+	
+	public Object objectValue() {
+		return this.objectValues.get(0);
+	}
+	
+	public List<Object> objectValues() {
+		return Collections.unmodifiableList(this.objectValues);
 	}
 	
 	@Override
 	public String toString() {
 		return this.string;
+	}
+	
+	public <T> T typeValue(final Class<T> type) {
+		return type.cast(this.objectValue());
+	}
+	
+	public <T> List<T> typeValues(final Class<T> type) {
+		List<T> typeValues = new ArrayList<T>();
+		for (Object objectValue : this.objectValues()) {
+			typeValues.add(type.cast(objectValue));
+		}
+		return Collections.unmodifiableList(typeValues);
 	}
 	
 }
