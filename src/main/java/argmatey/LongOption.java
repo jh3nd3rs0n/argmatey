@@ -11,6 +11,18 @@ public final class LongOption extends Option {
 		}
 
 		@Override
+		public Builder afterHelpText(final String afterHelpTxt) {
+			super.afterHelpText(afterHelpTxt);
+			return this;
+		}
+		
+		@Override
+		public Builder beforeHelpText(final String beforeHelpTxt) {
+			super.beforeHelpText(beforeHelpTxt);
+			return this;
+		}
+		
+		@Override
 		public LongOption build() {
 			return new LongOption(this);
 		}
@@ -27,7 +39,7 @@ public final class LongOption extends Option {
 			super.builders(bldr1, bldr2);
 			return this;
 		}
-		
+
 		@Override
 		public Builder builders(final argmatey.Option.Builder bldr1,
 				final argmatey.Option.Builder bldr2,
@@ -41,7 +53,7 @@ public final class LongOption extends Option {
 			super.builders(bldrs);
 			return this;
 		}
-
+		
 		@Override
 		public Builder doc(final String d) {
 			super.doc(d);
@@ -71,18 +83,6 @@ public final class LongOption extends Option {
 		public Builder optionUsageProvider(
 				final OptionUsageProvider optUsageProvider) {
 			super.optionUsageProvider(optUsageProvider);
-			return this;
-		}
-		
-		@Override
-		public Builder postHelpText(final String postHelpTxt) {
-			super.postHelpText(postHelpTxt);
-			return this;
-		}
-		
-		@Override
-		public Builder preHelpText(final String preHelpTxt) {
-			super.preHelpText(preHelpTxt);
 			return this;
 		}
 		

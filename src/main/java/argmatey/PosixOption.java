@@ -18,6 +18,18 @@ public final class PosixOption extends Option {
 		}
 
 		@Override
+		public Builder afterHelpText(final String afterHelpTxt) {
+			super.afterHelpText(afterHelpTxt);
+			return this;
+		}
+		
+		@Override
+		public Builder beforeHelpText(final String beforeHelpTxt) {
+			super.beforeHelpText(beforeHelpTxt);
+			return this;
+		}
+		
+		@Override
 		public PosixOption build() {
 			return new PosixOption(this);
 		}
@@ -78,18 +90,6 @@ public final class PosixOption extends Option {
 		public Builder optionUsageProvider(
 				final OptionUsageProvider optUsageProvider) {
 			super.optionUsageProvider(optUsageProvider);
-			return this;
-		}
-		
-		@Override
-		public Builder postHelpText(final String postHelpTxt) {
-			super.postHelpText(postHelpTxt);
-			return this;
-		}
-		
-		@Override
-		public Builder preHelpText(final String preHelpTxt) {
-			super.preHelpText(preHelpTxt);
 			return this;
 		}
 		

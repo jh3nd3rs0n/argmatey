@@ -45,18 +45,18 @@ public final class IllegalOptionArgException extends IllegalArgumentException {
 	public IllegalOptionArgException(
 			final Option opt, 
 			final String optArg, 
-			final Throwable cause) {
-		this(opt, optArg, null, cause);
-	}
-	
-	public IllegalOptionArgException(
-			final Option opt, 
-			final String optArg, 
 			final String message, 
 			final Throwable cause) {
 		super(getMessage(opt, optArg, message, cause), cause);
 		this.option = opt;
 		this.optionArg = optArg;
+	}
+	
+	public IllegalOptionArgException(
+			final Option opt, 
+			final String optArg, 
+			final Throwable cause) {
+		this(opt, optArg, null, cause);
 	}
 
 	public Option getOption() {

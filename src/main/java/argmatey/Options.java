@@ -8,7 +8,7 @@ import java.util.Collections;
 import java.util.List;
 
 public final class Options {
-	
+
 	private final List<Option> options;
 	
 	public Options(final List<Option> opts) {
@@ -35,32 +35,32 @@ public final class Options {
 	public void printHelpText(final PrintStream s) {
 		this.printHelpText(new PrintWriter(s));
 	}
-	
+
 	public void printHelpText(final PrintWriter s) {
 		boolean earlierHelpTextNotNull = false;
 		String lineSeparator = System.getProperty("line.separator");
 		for (Option option : this.options) {
-			String preHelpText = option.getPreHelpText();
+			String beforeHelpText = option.getBeforeHelpText();
 			String helpText = option.getHelpText();
-			String postHelpText = option.getPostHelpText();
-			if (preHelpText != null || helpText != null || postHelpText != null) {
+			String afterHelpText = option.getAfterHelpText();
+			if (beforeHelpText != null || helpText != null || afterHelpText != null) {
 				if (earlierHelpTextNotNull) {
 					s.write(lineSeparator);
 				}
-				if (preHelpText != null) {
-					s.write(preHelpText);
+				if (beforeHelpText != null) {
+					s.write(beforeHelpText);
 				}
 				if (helpText != null) {
-					if (preHelpText != null) {
+					if (beforeHelpText != null) {
 						s.write(lineSeparator);
 					}
 					s.write(helpText);
 				}
-				if (postHelpText != null) {
-					if (preHelpText != null || helpText != null) {
+				if (afterHelpText != null) {
+					if (beforeHelpText != null || helpText != null) {
 						s.write(lineSeparator);
 					}
-					s.write(postHelpText);
+					s.write(afterHelpText);
 				}
 				s.flush();
 				if (!earlierHelpTextNotNull) {
@@ -69,7 +69,7 @@ public final class Options {
 			}
 		}
 	}
-
+	
 	public void printUsage() {
 		this.printUsage(System.out);
 	}

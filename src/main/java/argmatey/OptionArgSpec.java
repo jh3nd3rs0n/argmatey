@@ -217,7 +217,7 @@ public final class OptionArgSpec {
 		} else {
 			for (String optArg : optArgs) {
 				OptionArg oArg = this.newOptionArg(optArg);
-				objectValues.addAll(oArg.objectValues());
+				objectValues.addAll(oArg.getObjectValues());
 				oArgs.add(oArg);
 			}
 		}

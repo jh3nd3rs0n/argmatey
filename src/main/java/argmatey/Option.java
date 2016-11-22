@@ -11,6 +11,8 @@ public abstract class Option {
 
 	public static abstract class Builder {
 		
+		private String afterHelpText;
+		private String beforeHelpText;
 		private final List<Builder> builders;
 		private String doc;
 		private boolean hidden;
@@ -20,8 +22,6 @@ public abstract class Option {
 		private boolean optionArgSpecSet;
 		private OptionHelpTextProvider optionHelpTextProvider;
 		private OptionUsageProvider optionUsageProvider;
-		private String postHelpText;
-		private String preHelpText;
 		private boolean special;
 		private boolean specialSet;
 		private String string;
@@ -47,6 +47,16 @@ public abstract class Option {
 			this.special = false;
 			this.specialSet = false;
 			this.string = opt;
+		}
+		
+		public Builder afterHelpText(final String afterHelpTxt) {
+			this.afterHelpText = afterHelpTxt;
+			return this;
+		}
+		
+		public Builder beforeHelpText(final String beforeHelpTxt) {
+			this.beforeHelpText = beforeHelpTxt;
+			return this;
 		}
 		
 		public abstract Option build();
@@ -113,16 +123,6 @@ public abstract class Option {
 			return this;
 		}
 		
-		public Builder postHelpText(final String postHelpTxt) {
-			this.postHelpText = postHelpTxt;
-			return this;
-		}
-		
-		public Builder preHelpText(final String preHelpTxt) {
-			this.preHelpText = preHelpTxt;
-			return this;
-		}
-		
 		public Builder special(final boolean b) {
 			this.special = b;
 			this.specialSet = true;
@@ -160,6 +160,8 @@ public abstract class Option {
 		defaultOptionHelpTextProvider = optHelpTextProvider;
 	}
 	
+	private final String afterHelpText;
+	private final String beforeHelpText;	
 	private final String doc;
 	private final boolean hidden;
 	private final String name;
@@ -167,12 +169,12 @@ public abstract class Option {
 	private final OptionHelpTextProvider optionHelpTextProvider;
 	private final List<Option> options;
 	private final OptionUsageProvider optionUsageProvider;
-	private final String postHelpText;
-	private final String preHelpText;
 	private final boolean special;
 	private final String string;
 
 	Option(final Builder builder) {
+		String afterHelpTxt = builder.afterHelpText;
+		String beforeHelpTxt = builder.beforeHelpText;
 		List<Builder> bldrs = new ArrayList<Builder>(builder.builders);
 		String d = builder.doc;
 		boolean hide = builder.hidden;
@@ -181,8 +183,6 @@ public abstract class Option {
 		OptionHelpTextProvider optHelpTextProvider = 
 				builder.optionHelpTextProvider;
 		OptionUsageProvider optUsageProvider = builder.optionUsageProvider;
-		String postHelpTxt = builder.postHelpText;
-		String preHelpTxt = builder.preHelpText;
 		boolean spcl = builder.special;
 		String str = builder.string;
 		List<Option> opts = new ArrayList<Option>();
@@ -205,6 +205,8 @@ public abstract class Option {
 		if (optUsageProvider == null) {
 			optUsageProvider = getDefaultOptionUsageProviders().get(this.getClass());
 		}
+		this.afterHelpText = afterHelpTxt;
+		this.beforeHelpText = beforeHelpTxt;
 		this.doc = d;
 		this.hidden = hide;
 		this.name = n;
@@ -212,10 +214,12 @@ public abstract class Option {
 		this.optionHelpTextProvider = optHelpTextProvider;
 		this.options = opts;
 		this.optionUsageProvider = optUsageProvider;
-		this.postHelpText = postHelpTxt;
-		this.preHelpText = preHelpTxt;
 		this.special = spcl;
 		this.string = str;
+	}
+	
+	public final String getAfterHelpText() {
+		return this.afterHelpText;
 	}
 	
 	public final List<Option> getAllOptions() {
@@ -227,10 +231,14 @@ public abstract class Option {
 		return Collections.unmodifiableList(allOptions);
 	}
 	
+	public final String getBeforeHelpText() {
+		return this.beforeHelpText;
+	}
+	
 	public final String getDoc() {
 		return this.doc;
 	}
-	
+
 	public final String getHelpText() {
 		String helpText = null;
 		if (this.optionHelpTextProvider != null) {
@@ -240,11 +248,11 @@ public abstract class Option {
 		}
 		return helpText;
 	}
-	
+
 	public final String getName() {
 		return this.name;
 	}
-
+	
 	public final OptionArgSpec getOptionArgSpec() {
 		return this.optionArgSpec;
 	}
@@ -259,14 +267,6 @@ public abstract class Option {
 
 	public final OptionUsageProvider getOptionUsageProvider() {
 		return this.optionUsageProvider;
-	}
-	
-	public final String getPostHelpText() {
-		return this.postHelpText;
-	}
-
-	public final String getPreHelpText() {
-		return this.preHelpText;
 	}
 	
 	public final String getSelfProvidedHelpText() {

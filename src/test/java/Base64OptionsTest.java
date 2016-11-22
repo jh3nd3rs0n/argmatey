@@ -32,7 +32,7 @@ public class Base64OptionsTest {
 							new LongOption.Builder("decode"),
 							new GnuLongOption.Builder("decode"))
 					.doc("decode data")
-					.preHelpText("OPTIONS:")
+					.beforeHelpText("OPTIONS:")
 					.build(),
 				new PosixOption.Builder('i')
 					.builders(
@@ -58,7 +58,7 @@ public class Base64OptionsTest {
 					.build(),
 				new GnuLongOption.Builder("version")
 					.doc("display version information and exit")
-					.postHelpText(lineSeparator)
+					.afterHelpText(lineSeparator)
 					.special(true)
 					.build());
 		
@@ -143,12 +143,12 @@ public class Base64OptionsTest {
 		
 		while (argParser.hasNext()) {
 			ParseResult parseResult = argParser.parseNext();
-			for (Object objectValue : parseResult.objectValues()) {
+			for (Object objectValue : parseResult.getObjectValues()) {
 				actualArgsList.add(objectValue.toString());
 			}			
-			if (parseResult.isOptionOfAnyOf("-w", "-wrap", "--wrap")) {
+			if (parseResult.hasOptionOfAnyOf("-w", "-wrap", "--wrap")) {
 				actualWrapOptionArgsList.add(
-						parseResult.getOptionArg().typeValue(Integer.class));
+						parseResult.getOptionArg().getTypeValue(Integer.class));
 			}
 		}
 		
