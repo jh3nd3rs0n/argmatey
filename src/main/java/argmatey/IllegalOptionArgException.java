@@ -1,6 +1,6 @@
 package argmatey;
 
-public final class IllegalOptionArgException extends IllegalArgumentException {
+public final class IllegalOptionArgException extends RuntimeException {
 
 	/**
 	 * 

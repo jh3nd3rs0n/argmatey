@@ -1,10 +1,10 @@
 package argmatey;
 
-public final class UnparsedArg extends ParseResult {
+public final class NonparsedArg extends ParseResult {
 
 	private final String argument;
 	
-	UnparsedArg(final String arg) {
+	NonparsedArg(final String arg) {
 		this.argument = arg;
 	}
 	

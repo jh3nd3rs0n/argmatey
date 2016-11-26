@@ -1,7 +1,6 @@
 package argmatey;
 
-public final class UnknownOptionException extends
-		IllegalArgumentException {
+public final class UnknownOptionException extends RuntimeException {
 
 	/**
 	 * 
