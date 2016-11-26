@@ -14,8 +14,8 @@ final class EndOfOptionsDelimiterHandler extends AbstractArgHandler {
 			return;
 		}
 		ArgHandlerContextProperties.setOptionHandlingEnabled(context, false);
-		ArgHandlerContextProperties.setParseResult(context, new ParseResult(
-				EndOfOptionsDelimiter.INSTANCE));
+		ArgHandlerContextProperties.setParseResult(context, 
+				EndOfOptionsDelimiter.INSTANCE);
 	}
 
 }

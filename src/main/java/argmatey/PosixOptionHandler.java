@@ -48,14 +48,8 @@ final class PosixOptionHandler extends OptionHandler {
 				}
 			}
 		}
-		OptionArg optArg = opt.newOptionArg(optionArg);
-		ParseResult parseResult = null;
-		if (optArg == null) {
-			parseResult = new ParseResult(opt);
-		} else {
-			parseResult = new ParseResult(opt, optArg);
-		}
-		ArgHandlerContextProperties.setParseResult(context, parseResult);
+		ArgHandlerContextProperties.setParseResult(context, 
+				new OptionOccurrence(opt, opt.newOptionArg(optionArg)));
 	}
 
 	@Override
