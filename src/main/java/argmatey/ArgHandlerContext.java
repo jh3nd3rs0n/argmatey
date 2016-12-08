@@ -12,6 +12,13 @@ final class ArgHandlerContext {
 	private final String[] args;
 	private final Map<String, Object> properties;
 	
+	public ArgHandlerContext(final ArgHandlerContext other) {
+		this.argCharIndex = other.argCharIndex;
+		this.argIndex = other.argIndex;
+		this.args = Arrays.copyOf(other.args, other.args.length);
+		this.properties = new HashMap<String, Object>(other.properties);
+	}
+	
 	public ArgHandlerContext(
 			final String[] arguments,
 			final int argumentIndex,
@@ -81,8 +88,8 @@ final class ArgHandlerContext {
 		return ++this.argIndex;
 	}
 	
-	public void putProperty(final String name, final Object value) {
-		this.properties.put(name, value);
+	public Object putProperty(final String name, final Object value) {
+		return this.properties.put(name, value);
 	}
 	
 	public int resetArgCharIndex() {

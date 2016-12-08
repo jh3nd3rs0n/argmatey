@@ -17,6 +17,16 @@ final class ArgHandlerContextProperties {
 		}
 		return Collections.unmodifiableMap(options);
 	}
+	
+	public static ParseResult getParseResult(final ArgHandlerContext context) {
+		ParseResult parseResult = null;
+		Object value = context.getProperty(
+				ArgHandlerContextPropertyNames.PARSE_RESULT);
+		if (value != null) {
+			parseResult = (ParseResult) value;
+		}
+		return parseResult;
+	}
 
 	public static boolean isOptionHandlingEnabled(
 			final ArgHandlerContext context) {

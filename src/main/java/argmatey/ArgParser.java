@@ -86,12 +86,11 @@ public final class ArgParser {
 	
 	public String next() {
 		String next = null;
-		int recentArgIndex = this.getArgIndex();
-		int recentArgCharIndex = this.getArgCharIndex();
-		Map<String, Object> recentProperties = this.argHandlerContext.getProperties();
-		int argIndex = recentArgIndex;
-		int argCharIndex = recentArgCharIndex;
+		int argIndex = this.getArgIndex();
+		int argCharIndex = this.getArgCharIndex();
 		String[] args = this.getArgs();
+		ArgHandlerContext recentArgHandlerContext = 
+				new ArgHandlerContext(this.argHandlerContext);
 		if (argIndex > -1 && argCharIndex > -1) {
 			/* 
 			 * The argument character index was incremented by this method or 
@@ -126,11 +125,7 @@ public final class ArgParser {
 				/* 
 				 * failure atomicity (return back to most recent working state) 
 				 */
-				this.argHandlerContext = new ArgHandlerContext(
-						args,
-						recentArgIndex,
-						recentArgCharIndex,
-						recentProperties);
+				this.argHandlerContext = recentArgHandlerContext;
 				throw new NoSuchElementException();
 			}
 		}
@@ -138,23 +133,17 @@ public final class ArgParser {
 	}
 	
 	public ParseResult parseNext() {
-		String[] args = this.getArgs();		
-		int recentArgIndex = this.getArgIndex();
-		int recentArgCharIndex = this.getArgCharIndex();
-		Map<String, Object> recentProperties = this.argHandlerContext.getProperties();
+		ArgHandlerContext recentArgHandlerContext = 
+				new ArgHandlerContext(this.argHandlerContext);
 		this.next();
 		try {
 			this.argHandler.handle(
-					args[this.getArgIndex()], this.argHandlerContext);
+					this.getArgs()[this.getArgIndex()], this.argHandlerContext);
 		} catch (Throwable t) {
 			/* 
 			 * failure atomicity (return back to most recent working state) 
 			 */
-			this.argHandlerContext = new ArgHandlerContext(
-					args, 
-					recentArgIndex, 
-					recentArgCharIndex, 
-					recentProperties);
+			this.argHandlerContext = recentArgHandlerContext;
 			if (t instanceof Error) {
 				Error e = (Error) t;
 				throw e;
@@ -164,16 +153,10 @@ public final class ArgParser {
 				throw rte;
 			}
 		}
-		Map<String, Object> properties = new HashMap<String, Object>(
-				this.argHandlerContext.getProperties());
-		ParseResult parseResult = (ParseResult) properties.get(
-				ArgHandlerContextPropertyNames.PARSE_RESULT);
-		properties.remove(ArgHandlerContextPropertyNames.PARSE_RESULT);
-		this.argHandlerContext = new ArgHandlerContext(
-				args,
-				this.getArgIndex(),
-				this.getArgCharIndex(),
-				properties);
+		ParseResult parseResult = ArgHandlerContextProperties.getParseResult(
+				this.argHandlerContext);
+		ArgHandlerContextProperties.setParseResult(
+				this.argHandlerContext, null);
 		return parseResult;
 	}
 
