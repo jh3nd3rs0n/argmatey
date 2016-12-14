@@ -1,6 +1,6 @@
 package argmatey;
 
-public final class EndOfOptionsDelimiter extends ParseResult {
+public final class EndOfOptionsDelimiter implements ParseResult {
 
 	public static final EndOfOptionsDelimiter INSTANCE = new EndOfOptionsDelimiter();
 	

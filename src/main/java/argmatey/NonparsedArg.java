@@ -1,6 +1,6 @@
 package argmatey;
 
-public final class NonparsedArg extends ParseResult {
+public final class NonparsedArg implements ParseResult {
 
 	private final String argument;
 	

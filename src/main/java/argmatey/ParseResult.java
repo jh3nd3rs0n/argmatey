@@ -1,4 +1,4 @@
 package argmatey;
 
-public abstract class ParseResult {
+public interface ParseResult {
 }
