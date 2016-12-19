@@ -12,7 +12,8 @@ final class DefaultArgHandler implements ArgHandler {
 	
 	@Override
 	public void handle(final String arg, final ArgHandlerContext context) {
-		ArgHandlerContextProperties.setParseResult(context, new NonparsedArg(arg));
+		ArgHandlerContextProperties.setParseResult(
+				context, ParseResult.newInstance(arg));
 	}
 	
 }

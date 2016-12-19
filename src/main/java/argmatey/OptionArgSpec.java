@@ -178,7 +178,7 @@ public final class OptionArgSpec {
 		}
 		List<String> optArgs = Arrays.asList(optionArg.split(this.separator));
 		List<Object> objectValues = new ArrayList<Object>();
-		List<OptionArg> oArgs = new ArrayList<OptionArg>();
+		List<OptionArg> opArgs = new ArrayList<OptionArg>();
 		if (optArgs.size() == 1) {
 			Object objectValue = null;
 			if (this.type.equals(String.class)) {
@@ -216,12 +216,12 @@ public final class OptionArgSpec {
 			objectValues.add(objectValue);
 		} else {
 			for (String optArg : optArgs) {
-				OptionArg oArg = this.newOptionArg(optArg);
-				objectValues.addAll(oArg.getObjectValues());
-				oArgs.add(oArg);
+				OptionArg opArg = this.newOptionArg(optArg);
+				objectValues.addAll(opArg.getObjectValues());
+				opArgs.add(opArg);
 			}
 		}
-		return new OptionArg(objectValues, oArgs, this, optionArg);
+		return new OptionArg(objectValues, opArgs, this, optionArg);
 	}
 
 	@Override

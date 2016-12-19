@@ -49,7 +49,7 @@ final class PosixOptionHandler extends OptionHandler {
 			}
 		}
 		ArgHandlerContextProperties.setParseResult(context, 
-				new OptionOccurrence(opt, opt.newOptionArg(optionArg)));
+				ParseResult.newInstance(opt, opt.newOptionArg(optionArg)));
 	}
 
 	@Override

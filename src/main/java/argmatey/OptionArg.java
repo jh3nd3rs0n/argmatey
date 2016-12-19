@@ -10,7 +10,7 @@ public final class OptionArg {
 	private final List<OptionArg> optionArgs;
 	private final OptionArgSpec optionArgSpec;
 	private final String string;
-	
+		
 	OptionArg(
 			final List<Object> objValues, 
 			final List<OptionArg> optArgs, 
