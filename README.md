@@ -44,7 +44,7 @@ ArgMatey is a simple yet comprehensive Java command line argument parser framewo
         			.builders(
         				new LongOption.Builder("lang"),
         				new GnuLongOption.Builder("language"))
-        			.doc("Language for the greeting")
+        			.doc("Language for the greeting. (EN is the default)")
         			.optionArgSpec(
         				new OptionArgSpec.Builder()
         					.name("LANGUAGE")
@@ -58,7 +58,7 @@ ArgMatey is a simple yet comprehensive Java command line argument parser framewo
         		List<String> names = new ArrayList<String>();
         		while (argParser.hasNext()) {
         			ParseResult parseResult = argParser.parseNext();
-        			if (parseResult.isOptionOfAnyOf("-h", "--help")) {
+        			if (parseResult.hasOptionOfAnyOf("-h", "--help")) {
         				System.out.print("Usage: Greeting ");
         				argParser.getOptions().printUsage();
         				System.out.println(" NAME(S)");
@@ -69,10 +69,10 @@ ArgMatey is a simple yet comprehensive Java command line argument parser framewo
         				System.out.println();
         				return;
         			}
-        			if (parseResult.isOptionOfAnyOf("-l", "-lang", "--language")) {
+        			if (parseResult.hasOptionOfAnyOf("-l", "-lang", "--language")) {
         				language = parseResult.getOptionArg().getTypeValue(Language.class);
         			}
-        			if (parseResult.isNonparsedArg()) {
+        			if (parseResult.hasNonparsedArg()) {
         				names.add(parseResult.getNonparsedArg());
         			}
         		}
