@@ -30,9 +30,11 @@ ArgMatey is a simple yet comprehensive Java command line argument parser framewo
         import argmatey.PosixOption;
         
         import java.util.ArrayList;
+        import java.util.EnumSet;
         import java.util.List;
+        import java.util.Set;
         
-        public class Greeting {
+        public class Greet {
         	private static enum Language { EN, ES, FR }
         	public static void main(String[] args) {
         		Option helpOption = new PosixOption.Builder("h")
@@ -40,26 +42,27 @@ ArgMatey is a simple yet comprehensive Java command line argument parser framewo
         			.doc("Print this help and exit")
         			.special(true)
         			.build();
-        		Option languageOption = new PosixOption.Builder("l")
+        		Option languagesOption = new PosixOption.Builder("l")
         			.builders(
         				new LongOption.Builder("lang"),
-        				new GnuLongOption.Builder("language"))
-        			.doc("Language for the greeting. (EN is the default)")
+        				new GnuLongOption.Builder("languages"))
+        			.doc("Comma-separated language(s) for the greeting(s).")
         			.optionArgSpec(
         				new OptionArgSpec.Builder()
-        					.name("LANGUAGE")
+        					.name("LANGUAGE(S)")
+        					.separator(",")
         					.type(Language.class)
         					.build())
         			.build();       			
-        		Options options = new Options(helpOption, languageOption);
+        		Options options = new Options(helpOption, languagesOption);
         		ArgParser argParser = new ArgParser(
         			args, options, false);
-        		Language language = Language.EN;
+        		Set<Language> languages = EnumSet.of(Language.EN);
         		List<String> names = new ArrayList<String>();
         		while (argParser.hasNext()) {
         			ParseResult parseResult = argParser.parseNext();
-        			if (parseResult.hasOptionOfAnyOf("-h", "--help")) {
-        				System.out.print("Usage: Greeting ");
+        			if (parseResult.isOptionOfAnyOf("-h", "--help")) {
+        				System.out.print("Usage: Greet ");
         				argParser.getOptions().printUsage();
         				System.out.println(" NAME(S)");
         				System.out.println();
@@ -69,26 +72,29 @@ ArgMatey is a simple yet comprehensive Java command line argument parser framewo
         				System.out.println();
         				return;
         			}
-        			if (parseResult.hasOptionOfAnyOf("-l", "-lang", "--language")) {
-        				language = parseResult.getOptionArg().getTypeValue(Language.class);
+        			if (parseResult.isOptionOfAnyOf("-l", "-lang", "--languages")) {
+        				languages = EnumSet.copyOf(
+        					parseResult.getOptionArg().asTypeValues(Language.class));
         			}
-        			if (parseResult.hasNonparsedArg()) {
-        				names.add(parseResult.getNonparsedArg());
+        			if (parseResult.isNonparsedArg()) {
+        				names.add(parseResult.asNonparsedArg());
         			}
         		}
-        		for (String name : names) {
-        			switch (language) {
-        			case EN:
-        				System.out.printf("Hello %s%n", name);
-        				break;
-        			case ES:
-        				System.out.printf("Hola %s%n", name);
-        				break;
-        			case FR:
-        				System.out.printf("Salut %s%n", name);
-        				break;
-        			default:
-        				break;
+        		for (Language language : languages) {
+        			for (String name : names) {
+        				switch (language) {
+        				case EN:
+        					System.out.printf("Hello %s%n", name);
+        					break;
+        				case ES:
+        					System.out.printf("Hola %s%n", name);
+        					break;
+        				case FR:
+        					System.out.printf("Salut %s%n", name);
+        					break;
+        				default:
+        					break;
+        				}
         			}
         		}
         	}
@@ -106,7 +112,6 @@ ArgMatey is a simple yet comprehensive Java command line argument parser framewo
 
 To install, run the following commands:
 
-        ```
-        $ cd argmatey
-        $ mvn install
-        ```
+`$ cd argmatey`
+
+`$ mvn install`

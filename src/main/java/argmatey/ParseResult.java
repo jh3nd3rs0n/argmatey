@@ -34,49 +34,24 @@ public final class ParseResult {
 		this.objectValues = new ArrayList<Object>(objValues);
 	}
 	
-	public EndOfOptionsDelimiter getEndOfOptionsDelimiter() {
-		EndOfOptionsDelimiter endOfOptionsDelimiter = null;
-		if (this.objectValues.size() > 0) {
-			Object objectValue = this.objectValues.get(0);
-			if (objectValue instanceof EndOfOptionsDelimiter) {
-				endOfOptionsDelimiter = (EndOfOptionsDelimiter) objectValue;
-			}
-		}
-		return endOfOptionsDelimiter;
+	public EndOfOptionsDelimiter asEndOfOptionsDelimiter() {
+		return (EndOfOptionsDelimiter) this.objectValues.get(0);
 	}
 	
-	public String getNonparsedArg() {
-		String nonparsedArg = null;
-		if (this.objectValues.size() > 0) {
-			Object objectValue = this.objectValues.get(0);
-			if (objectValue instanceof String) {
-				nonparsedArg = (String) objectValue;
-			}
-		}
-		return nonparsedArg;
+	public String asNonparsedArg() {
+		return (String) this.objectValues.get(0);
 	}
 	
-	public Object getObjectValue() {
-		Object objectValue = null;
-		if (this.objectValues.size() > 0) {
-			objectValue = this.objectValues.get(0); 
-		}
-		return objectValue;
+	public Object asObjectValue() {
+		return this.objectValues.get(0);
 	}
 	
-	public List<Object> getObjectValues() {
+	public List<Object> asObjectValues() {
 		return Collections.unmodifiableList(this.objectValues);
 	}
 	
-	public Option getOption() {
-		Option option = null;
-		if (this.objectValues.size() > 0) {
-			Object objectValue = this.objectValues.get(0);
-			if (objectValue instanceof Option) {
-				option = (Option) objectValue;
-			}
-		}
-		return option;
+	public Option asOption() {
+		return (Option) this.objectValues.get(0);
 	}
 	
 	public OptionArg getOptionArg() {
@@ -90,63 +65,63 @@ public final class ParseResult {
 		return optionArg;
 	}
 	
-	public boolean hasEndOfOptionsDelimiter() {
-		return this.getEndOfOptionsDelimiter() != null;
-	}
-	
-	public boolean hasNonparsedArg() {
-		return this.getNonparsedArg() != null;
-	}
-	
-	public boolean hasOption() {
-		return this.getOption() != null;
-	}
-	
 	public boolean hasOptionArg() {
 		return this.getOptionArg() != null;
 	}
 	
-	public boolean hasOptionFrom(final Option opt) {
-		return this.hasOption() && this.getOption().getAllOptions().contains(opt);
+	public boolean isEndOfOptionsDelimiter() {
+		return this.objectValues.get(0) instanceof EndOfOptionsDelimiter;
 	}
 	
-	public boolean hasOptionOf(final String opt) {
-		return this.hasOption() && this.getOption().toString().equals(opt);
+	public boolean isNonparsedArg() {
+		return this.objectValues.get(0) instanceof String;
 	}
 	
-	public boolean hasOptionOfAnyOf(final List<String> opts) {
+	public boolean isOption() {
+		return this.objectValues.get(0) instanceof Option;
+	}
+	
+	public boolean isOptionFrom(final Option opt) {
+		return this.isOption() && this.asOption().getAllOptions().contains(opt);
+	}
+	
+	public boolean isOptionOf(final String opt) {
+		return this.isOption() && this.asOption().toString().equals(opt);
+	}
+	
+	public boolean isOptionOfAnyOf(final List<String> opts) {
 		for (String opt : opts) {
-			if (this.hasOptionOf(opt)) {
+			if (this.isOptionOf(opt)) {
 				return true;
 			}
 		}
 		return false;
 	}
 	
-	public boolean hasOptionOfAnyOf(final String opt1, final String opt2) {
+	public boolean isOptionOfAnyOf(final String opt1, final String opt2) {
 		List<String> opts = new ArrayList<String>();
 		opts.add(opt1);
 		opts.add(opt2);
-		return this.hasOptionOfAnyOf(opts);
+		return this.isOptionOfAnyOf(opts);
 	}
 	
-	public boolean hasOptionOfAnyOf(final String opt1, final String opt2,
+	public boolean isOptionOfAnyOf(final String opt1, final String opt2,
 			final String opt3) {
 		List<String> opts = new ArrayList<String>();
 		opts.add(opt1);
 		opts.add(opt2);
 		opts.add(opt3);
-		return this.hasOptionOfAnyOf(opts);
+		return this.isOptionOfAnyOf(opts);
 	}
 	
-	public boolean hasOptionOfAnyOf(final String opt1, final String opt2,
+	public boolean isOptionOfAnyOf(final String opt1, final String opt2,
 			final String opt3, final String... additionalOpts) {
 		List<String> opts = new ArrayList<String>();
 		opts.add(opt1);
 		opts.add(opt2);
 		opts.add(opt3);
 		opts.addAll(Arrays.asList(additionalOpts));
-		return this.hasOptionOfAnyOf(opts);
+		return this.isOptionOfAnyOf(opts);
 	}
 
 	@Override

@@ -22,15 +22,15 @@ public final class OptionArg {
 		this.string = optArg;
 	}
 	
-	public Object getObjectValue() {
+	public Object asObjectValue() {
 		return this.objectValues.get(0);
 	}
 	
-	public List<Object> getObjectValues() {
+	public List<Object> asObjectValues() {
 		return Collections.unmodifiableList(this.objectValues);
 	}
 	
-	public List<OptionArg> getOptionArgs() {
+	public List<OptionArg> asOptionArgs() {
 		List<OptionArg> optArgs = new ArrayList<OptionArg>();
 		if (this.optionArgs.size() == 0) {
 			optArgs.add(this);
@@ -40,20 +40,20 @@ public final class OptionArg {
 		return Collections.unmodifiableList(optArgs);
 	}
 	
-	public OptionArgSpec getOptionArgSpec() {
-		return this.optionArgSpec;
+	public <T> T asTypeValue(final Class<T> type) {
+		return type.cast(this.asObjectValue());
 	}
 	
-	public <T> T getTypeValue(final Class<T> type) {
-		return type.cast(this.getObjectValue());
-	}
-	
-	public <T> List<T> getTypeValues(final Class<T> type) {
+	public <T> List<T> asTypeValues(final Class<T> type) {
 		List<T> typeValues = new ArrayList<T>();
-		for (Object objectValue : this.getObjectValues()) {
+		for (Object objectValue : this.asObjectValues()) {
 			typeValues.add(type.cast(objectValue));
 		}
 		return Collections.unmodifiableList(typeValues);
+	}
+	
+	public OptionArgSpec getOptionArgSpec() {
+		return this.optionArgSpec;
 	}
 	
 	@Override
