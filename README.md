@@ -104,8 +104,8 @@ public class Greet {
 			.build();
 		Options options = new Options(helpOption, languagesOption);
 		ArgParser argParser = new ArgParser(args, options, false);
-		Set<Language> languages = EnumSet.of(Language.EN);
-		List<String> names = new ArrayList<String>();
+		Set&lt;Language&gt; languages = EnumSet.of(Language.EN);
+		List&lt;String&gt; names = new ArrayList&lt;String&gt;();
 		// Incremental parsing
 		while (argParser.hasNext()) {
 			ParseResult parseResult = argParser.parseNext();
