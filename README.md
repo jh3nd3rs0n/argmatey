@@ -18,7 +18,7 @@ ArgMatey is a simple yet comprehensive Java command line argument parser framewo
   
   - Multiple instances of options from the same group
   
-  - The ordering of the provided options and arguments 
+  - The order of the provided options and arguments 
  
 - Complete customization of usage and help text for the options. This is useful for retaining the format of the usage and help text generated from an earlier command line argument parsing library.
 
