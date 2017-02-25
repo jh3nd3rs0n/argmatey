@@ -24,6 +24,8 @@ ArgMatey is a simple yet comprehensive Java command line argument parser framewo
 
 ## Example
 
+The following is an example of using ArgMatey. 
+
 <pre>
 
 import argmatey.ArgParser;
@@ -54,19 +56,7 @@ public class Greet {
 		Option languagesOption = new PosixOption.Builder("l")
 			.builders(
 				new LongOption.Builder("lang"), // Long option
-				new GnuLongOption.Builder("languages")
-					// Customization of an option's usage
-					.optionUsageProvider(new OptionUsageProvider() {
-						@Override
-						public String getOptionUsage(Option option) {
-							String u = String.format(
-								"%1$s=%2$s1[%3$s%2$s2]...",
-								option,
-								option.getOptionArgSpec().getName(),
-								option.getOptionArgSpec().getSeparator());
-							return u;
-						} 
-					}))
+				new GnuLongOption.Builder("languages"))
 			.doc("Language(s) for the greeting(s).")
 			.optionArgSpec(
 				new OptionArgSpec.Builder()
@@ -92,7 +82,12 @@ public class Greet {
 							Print the usage of the last option of the group 
 							(--languages)
 							*/
-							sb.append(option.getUsage());
+							String usage = String.format(
+								"%1$s=%2$s1[%3$s%2$s2]...",
+								option,
+								option.getOptionArgSpec().getName(),
+								option.getOptionArgSpec().getSeparator());
+							sb.append(usage);
 						}
 					}
 					sb.append(System.getProperty("line.separator"));
@@ -101,6 +96,18 @@ public class Greet {
 					return sb.toString();
 				}
 			})
+			// Customization of an option's usage (-l)
+			.optionUsageProvider(new OptionUsageProvider() {
+				@Override
+				public String getOptionUsage(Option option) {
+					String usage = String.format(
+						"%1$s %2$s1[%3$s%2$s2]...",
+						option,
+						option.getOptionArgSpec().getName(),
+						option.getOptionArgSpec().getSeparator());
+					return usage;
+				}
+			}))
 			.build();
 		Options options = new Options(helpOption, languagesOption);
 		ArgParser argParser = new ArgParser(args, options, false);
