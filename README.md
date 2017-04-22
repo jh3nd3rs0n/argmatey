@@ -1,4 +1,4 @@
-#ArgMatey
+# ArgMatey
 
 ArgMatey is a simple yet comprehensive Java command line argument parser framework that has the following features:
 
@@ -103,8 +103,8 @@ public class Greet {
 				}).build();
 		Options options = new Options(helpOption, languagesOption);
 		ArgParser argParser = new ArgParser(args, options, false);
-		Set&gt;Language&lt; languages = EnumSet.of(Language.EN);
-		List&gt;String&lt; names = new ArrayList&gt;String&lt;();
+		Set&lt;Language&gt; languages = EnumSet.of(Language.EN);
+		List&lt;String&gt; names = new ArrayList&lt;String&gt;();
 		// Incremental parsing
 		while (argParser.hasNext()) {
 			ParseResult parseResult = argParser.parseNext();
