@@ -6,11 +6,11 @@ ArgMatey is a simple yet comprehensive Java command line argument parser framewo
  
 - Option types:
  
-  - POSIX options (examples: `-h -v -o file.txt`)
+  - POSIX options (examples: `-h` `-v` `-o file.txt`)
     
-  - Long options (examples: `-help -version -output-file file.txt`)
+  - Long options (examples: `-help` `-version` `-output-file file.txt`)
     
-  - GNU long options (examples: `--help --version --output-file=file.txt`)
+  - GNU long options (examples: `--help` `--version` `--output-file=file.txt`)
      
 - Incremental command line argument parsing (similar to getopt(), getopt_long(), and Argp). This is useful for interpreting the following:
 
@@ -46,73 +46,65 @@ import java.util.List;
 import java.util.Set;
 
 public class Greet {
-	private static enum Language { EN, ES, FR }
+	private static enum Language {
+		EN, ES, FR
+	}
+
 	public static void main(String[] args) {
-		Option helpOption = new PosixOption.Builder("h") // POSIX option
-			.builders(new GnuLongOption.Builder("help")) // GNU long option
-			.doc("Print this help and exit")
-			.special(true) // Does not appear in the usage of the options
-			.build();
-		Option languagesOption = new PosixOption.Builder("l")
-			.builders(
-				new LongOption.Builder("lang"), // Long option
-				new GnuLongOption.Builder("languages"))
-			.doc("Language(s) for the greeting(s).")
-			.optionArgSpec(
-				new OptionArgSpec.Builder()
-					.name("LANGUAGE")
-					.separator(",")
-					.type(Language.class)
-					.build())
-			// Customization of an option's help text
-			.optionHelpTextProvider(new OptionHelpTextProvider() {
-				@Override
-				public String getOptionHelpText(Option option) {
-					StringBuilder sb = new StringBuilder();
-					sb.append("  ");
-					Iterator&lt;Option&gt; it = option.getAllOptions().iterator();
-					while (it.hasNext()) {
-						Option opt = it.next();
-						if (it.hasNext()) {
-							// Print just the option itself 
-							sb.append(option.toString());
-							sb.append(", ");
-						} else {
-							/* 
-							Print the usage of the last option of the group 
-							(--languages)
-							*/
-							String usage = String.format(
-								"%1$s=%2$s1[%3$s%2$s2]...",
-								option,
-								option.getOptionArgSpec().getName(),
-								option.getOptionArgSpec().getSeparator());
-							sb.append(usage);
+		Option helpOption = new PosixOption.Builder('h') // POSIX option
+				.builders(new GnuLongOption.Builder("help")) // GNU long option
+				.doc("Print this help and exit").special(true) // Does not
+																// appear in the
+																// usage of the
+																// options
+				.build();
+		Option languagesOption = new PosixOption.Builder('l')
+				.builders(new LongOption.Builder("lang"), // Long option
+						new GnuLongOption.Builder("languages"))
+				.doc("Language(s) for the greeting(s).")
+				.optionArgSpec(new OptionArgSpec.Builder().name("LANGUAGE").separator(",").type(Language.class).build())
+				// Customization of an option's help text
+				.optionHelpTextProvider(new OptionHelpTextProvider() {
+					@Override
+					public String getOptionHelpText(Option option) {
+						StringBuilder sb = new StringBuilder();
+						sb.append("  ");
+						Iterator&lt;Option&gt; it = option.getAllOptions().iterator();
+						while (it.hasNext()) {
+							Option opt = it.next();
+							if (it.hasNext()) {
+								// Print just the option itself
+								sb.append(option.toString());
+								sb.append(", ");
+							} else {
+								/*
+								 * Print the usage of the last option of the
+								 * group (--languages)
+								 */
+								String usage = String.format("%1$s=%2$s1[%3$s%2$s2]...", option,
+										option.getOptionArgSpec().getName(), option.getOptionArgSpec().getSeparator());
+								sb.append(usage);
+							}
 						}
+						sb.append(System.getProperty("line.separator"));
+						sb.append("      ");
+						sb.append(option.getDoc());
+						return sb.toString();
 					}
-					sb.append(System.getProperty("line.separator"));
-					sb.append("      ");
-					sb.append(option.getDoc());
-					return sb.toString();
-				}
-			})
-			// Customization of an option's usage (-l)
-			.optionUsageProvider(new OptionUsageProvider() {
-				@Override
-				public String getOptionUsage(Option option) {
-					String usage = String.format(
-						"%1$s %2$s1[%3$s%2$s2]...",
-						option,
-						option.getOptionArgSpec().getName(),
-						option.getOptionArgSpec().getSeparator());
-					return usage;
-				}
-			}))
-			.build();
+				})
+				// Customization of an option's usage (-l)
+				.optionUsageProvider(new OptionUsageProvider() {
+					@Override
+					public String getOptionUsage(Option option) {
+						String usage = String.format("%1$s %2$s1[%3$s%2$s2]...", option,
+								option.getOptionArgSpec().getName(), option.getOptionArgSpec().getSeparator());
+						return usage;
+					}
+				}).build();
 		Options options = new Options(helpOption, languagesOption);
 		ArgParser argParser = new ArgParser(args, options, false);
-		Set&lt;Language&gt; languages = EnumSet.of(Language.EN);
-		List&lt;String&gt; names = new ArrayList&lt;String&gt;();
+		Set&gt;Language&lt; languages = EnumSet.of(Language.EN);
+		List&gt;String&lt; names = new ArrayList&gt;String&lt;();
 		// Incremental parsing
 		while (argParser.hasNext()) {
 			ParseResult parseResult = argParser.parseNext();
@@ -128,8 +120,7 @@ public class Greet {
 				return;
 			}
 			if (parseResult.isOptionOfAnyOf("-l", "-lang", "--languages")) {
-				languages = EnumSet.copyOf(
-					parseResult.getOptionArg().asTypeValues(Language.class));
+				languages = EnumSet.copyOf(parseResult.getOptionArg().asTypeValues(Language.class));
 			}
 			if (parseResult.isNonparsedArg()) {
 				names.add(parseResult.asNonparsedArg());
