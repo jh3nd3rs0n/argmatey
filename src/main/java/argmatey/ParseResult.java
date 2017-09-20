@@ -86,7 +86,7 @@ public final class ParseResult {
 	}
 	
 	public boolean isOptionOf(final String opt) {
-		return this.isOption() && opt.toString().equals(this.asOption().toString());
+		return this.isOption() && opt.equals(this.asOption().toString());
 	}
 	
 	public boolean isOptionOfAnyOf(final List<String> opts) {
