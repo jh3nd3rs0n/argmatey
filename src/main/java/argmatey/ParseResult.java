@@ -82,11 +82,11 @@ public final class ParseResult {
 	}
 	
 	public boolean isOptionFrom(final Option opt) {
-		return this.isOption() && this.asOption().getAllOptions().contains(opt);
+		return this.isOption() && opt.getAllOptions().contains(this.asOption());
 	}
 	
 	public boolean isOptionOf(final String opt) {
-		return this.isOption() && this.asOption().toString().equals(opt);
+		return this.isOption() && opt.toString().equals(this.asOption().toString());
 	}
 	
 	public boolean isOptionOfAnyOf(final List<String> opts) {
