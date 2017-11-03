@@ -142,12 +142,12 @@ public class Base64OptionsTest {
 		
 		while (argParser.hasNext()) {
 			ParseResult parseResult = argParser.parseNext();
-			for (Object objectValue : parseResult.asObjectValues()) {
+			for (Object objectValue : parseResult.toObjectValues()) {
 				actualArgsList.add(objectValue.toString());
 			}			
 			if (parseResult.isOptionOfAnyOf("-w", "-wrap", "--wrap")) {
 				actualWrapOptionArgsList.add(
-						parseResult.getOptionArg().asTypeValue(Integer.class));
+						parseResult.getOptionArg().toTypeValue(Integer.class));
 			}
 		}
 		

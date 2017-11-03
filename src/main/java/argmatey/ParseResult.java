@@ -34,26 +34,6 @@ public final class ParseResult {
 		this.objectValues = new ArrayList<Object>(objValues);
 	}
 	
-	public EndOfOptionsDelimiter asEndOfOptionsDelimiter() {
-		return (EndOfOptionsDelimiter) this.objectValues.get(0);
-	}
-	
-	public String asNonparsedArg() {
-		return (String) this.objectValues.get(0);
-	}
-	
-	public Object asObjectValue() {
-		return this.objectValues.get(0);
-	}
-	
-	public List<Object> asObjectValues() {
-		return Collections.unmodifiableList(this.objectValues);
-	}
-	
-	public Option asOption() {
-		return (Option) this.objectValues.get(0);
-	}
-	
 	public OptionArg getOptionArg() {
 		OptionArg optionArg = null;
 		if (this.objectValues.size() > 1) {
@@ -82,11 +62,11 @@ public final class ParseResult {
 	}
 	
 	public boolean isOptionFrom(final Option opt) {
-		return this.isOption() && opt.getAllOptions().contains(this.asOption());
+		return this.isOption() && opt.getAllOptions().contains(this.toOption());
 	}
 	
 	public boolean isOptionOf(final String opt) {
-		return this.isOption() && opt.equals(this.asOption().toString());
+		return this.isOption() && opt.equals(this.toOption().toString());
 	}
 	
 	public boolean isOptionOfAnyOf(final List<String> opts) {
@@ -122,6 +102,26 @@ public final class ParseResult {
 		opts.add(opt3);
 		opts.addAll(Arrays.asList(additionalOpts));
 		return this.isOptionOfAnyOf(opts);
+	}
+	
+	public EndOfOptionsDelimiter toEndOfOptionsDelimiter() {
+		return (EndOfOptionsDelimiter) this.objectValues.get(0);
+	}
+	
+	public String toNonparsedArg() {
+		return (String) this.objectValues.get(0);
+	}
+	
+	public Object toObjectValue() {
+		return this.objectValues.get(0);
+	}
+	
+	public List<Object> toObjectValues() {
+		return Collections.unmodifiableList(this.objectValues);
+	}
+	
+	public Option toOption() {
+		return (Option) this.objectValues.get(0);
 	}
 
 	@Override
