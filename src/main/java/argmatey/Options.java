@@ -24,10 +24,6 @@ public final class Options {
 		this(Arrays.asList(opts));
 	}
 	
-	public List<Option> asList() {
-		return Collections.unmodifiableList(this.options);
-	}
-	
 	public void printHelpText() {
 		this.printHelpText(System.out);
 	}
@@ -35,7 +31,7 @@ public final class Options {
 	public void printHelpText(final PrintStream s) {
 		this.printHelpText(new PrintWriter(s));
 	}
-
+	
 	public void printHelpText(final PrintWriter s) {
 		boolean earlierHelpTextNotNull = false;
 		String lineSeparator = System.getProperty("line.separator");
@@ -69,7 +65,7 @@ public final class Options {
 			}
 		}
 	}
-	
+
 	public void printUsage() {
 		this.printUsage(System.out);
 	}
@@ -103,6 +99,10 @@ public final class Options {
 				}
 			}
 		}
+	}
+	
+	public List<Option> toList() {
+		return Collections.unmodifiableList(this.options);
 	}
 
 	@Override

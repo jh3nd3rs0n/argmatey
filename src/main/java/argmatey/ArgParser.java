@@ -32,7 +32,7 @@ public final class ArgParser {
 		ArgHandler handler = new GnuLongOptionHandler(new LongOptionHandler(
 				new EndOfOptionsDelimiterHandler(posixlyCorrectArgHandler)));
 		Map<String, Object> properties = new HashMap<String, Object>();
-		List<Option> optsList = opts.asList();
+		List<Option> optsList = opts.toList();
 		if (optsList.size() > 0) {
 			Map<String, Option> optsMap = new HashMap<String, Option>();
 			for (Option opt : optsList) {
