@@ -9,7 +9,7 @@ final class EndOfOptionsDelimiterHandler extends AbstractArgHandler {
 	@Override
 	public void handle(final String arg, final ArgHandlerContext context) {
 		if (!(ArgHandlerContextProperties.isOptionHandlingEnabled(context)
-				&& arg.equals(EndOfOptionsDelimiter.STRING_VALUE))) {
+				&& arg.equals(EndOfOptionsDelimiter.STRING))) {
 			this.getArgHandler().handle(arg, context);
 			return;
 		}

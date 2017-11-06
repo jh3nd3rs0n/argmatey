@@ -4,7 +4,7 @@ public final class EndOfOptionsDelimiter {
 
 	public static final EndOfOptionsDelimiter INSTANCE = new EndOfOptionsDelimiter();
 	
-	public static final String STRING_VALUE = "--";
+	public static final String STRING = "--";
 	
 	private EndOfOptionsDelimiter() { 
 		if (INSTANCE != null) { 
@@ -14,7 +14,7 @@ public final class EndOfOptionsDelimiter {
 	
 	@Override
 	public String toString() {
-		return STRING_VALUE;
+		return STRING;
 	}
 
 }
