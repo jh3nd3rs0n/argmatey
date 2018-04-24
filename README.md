@@ -63,7 +63,7 @@ To add a dependency on ArgMatey using Maven, use the following:
 
 </pre>
 
-If you wish to have it packaged as a jar file, then run the following command:
+To have it packaged as a jar file, run the following command:
 
 <pre>
 
