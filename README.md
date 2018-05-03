@@ -26,9 +26,9 @@ ArgMatey is a simple yet comprehensive Java command line argument parsing librar
 
 - <a href="#requirements">Requirements</a>
 
-- <a href="#installation">Installation</a>
+- <a href="#installing">Installing</a>
 
-- <a href="#examples">Examples</a>
+- <a href="#building">Building</a>
 
 <a name="requirements"></a>
 
@@ -38,9 +38,9 @@ ArgMatey is a simple yet comprehensive Java command line argument parsing librar
 
 - Java&#8482; SDK 1.6 or higher
 
-<a name="installation"></a>
+<a name="installing"></a>
 
-## Installation
+## Installing
 
 To install, run the following commands:
 
@@ -63,16 +63,14 @@ To add a dependency on ArgMatey using Maven, use the following:
 
 </pre>
 
-To have it packaged as a jar file, run the following command:
+<a name="building"></a>
+
+## Building
+
+To build and package ArgMatey as a jar file, run the following command:
 
 <pre>
 
 $ mvn package
 
 </pre>
-
-<a name="examples"></a>
-
-## Examples
-
-See [ArgMatey Examples](https://github.com/jh3nd3rs0n/argmatey.examples) for examples of using ArgMatey
