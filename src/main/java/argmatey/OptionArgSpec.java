@@ -7,6 +7,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.WeakHashMap;
@@ -197,7 +198,25 @@ public final class OptionArgSpec {
 					} catch (IllegalArgumentException e) {
 						throw new AssertionError(e);
 					} catch (InvocationTargetException e) {
-						throw new IllegalArgumentException(e.getCause());
+						Throwable cause = e.getCause();
+						if (this.type.isEnum()) {
+							StringBuilder sb = new StringBuilder();
+							sb.append(String.format(
+									"%s must be one of the following: ", 
+									this.getName()));
+							List<?> list = Arrays.asList(
+									this.type.getEnumConstants());
+							for (Iterator<?> iterator = list.iterator(); 
+									iterator.hasNext();) {
+								sb.append(iterator.next().toString());
+								if (iterator.hasNext()) {
+									sb.append(", ");
+								}
+							}
+							cause = new IllegalArgumentException(
+									sb.toString(), cause);
+						}
+						throw new IllegalArgumentException(cause);
 					}
 				} else if (constructor != null) {
 					try {
