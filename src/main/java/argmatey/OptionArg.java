@@ -22,8 +22,62 @@ public final class OptionArg {
 		this.string = optArg;
 	}
 	
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (!(obj instanceof OptionArg)) {
+			return false;
+		}
+		OptionArg other = (OptionArg) obj;
+		if (this.objectValues == null) {
+			if (other.objectValues != null) {
+				return false;
+			}
+		} else if (!this.objectValues.equals(other.objectValues)) {
+			return false;
+		}
+		if (this.optionArgSpec == null) {
+			if (other.optionArgSpec != null) {
+				return false;
+			}
+		} else if (!this.optionArgSpec.equals(other.optionArgSpec)) {
+			return false;
+		}
+		if (this.optionArgs == null) {
+			if (other.optionArgs != null) {
+				return false;
+			}
+		} else if (!this.optionArgs.equals(other.optionArgs)) {
+			return false;
+		}
+		if (this.string == null) {
+			if (other.string != null) {
+				return false;
+			}
+		} else if (!this.string.equals(other.string)) {
+			return false;
+		}
+		return true;
+	}
+
 	public OptionArgSpec getOptionArgSpec() {
 		return this.optionArgSpec;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((this.objectValues == null) ? 0 : this.objectValues.hashCode());
+		result = prime * result + ((this.optionArgSpec == null) ? 0 : this.optionArgSpec.hashCode());
+		result = prime * result + ((this.optionArgs == null) ? 0 : this.optionArgs.hashCode());
+		result = prime * result + ((this.string == null) ? 0 : this.string.hashCode());
+		return result;
 	}
 	
 	public Object toObjectValue() {
