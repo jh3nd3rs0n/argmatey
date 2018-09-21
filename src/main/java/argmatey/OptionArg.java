@@ -8,17 +8,14 @@ public final class OptionArg {
 	
 	private final List<Object> objectValues;
 	private final List<OptionArg> optionArgs;
-	private final OptionArgSpec optionArgSpec;
 	private final String string;
 		
 	OptionArg(
 			final List<Object> objValues, 
 			final List<OptionArg> optArgs, 
-			final OptionArgSpec optArgSpec, 
 			final String optArg) {
 		this.objectValues = new ArrayList<Object>(objValues);
 		this.optionArgs = new ArrayList<OptionArg>(optArgs);
-		this.optionArgSpec = optArgSpec;
 		this.string = optArg;
 	}
 	
@@ -41,13 +38,6 @@ public final class OptionArg {
 		} else if (!this.objectValues.equals(other.objectValues)) {
 			return false;
 		}
-		if (this.optionArgSpec == null) {
-			if (other.optionArgSpec != null) {
-				return false;
-			}
-		} else if (!this.optionArgSpec.equals(other.optionArgSpec)) {
-			return false;
-		}
 		if (this.optionArgs == null) {
 			if (other.optionArgs != null) {
 				return false;
@@ -65,16 +55,11 @@ public final class OptionArg {
 		return true;
 	}
 
-	public OptionArgSpec getOptionArgSpec() {
-		return this.optionArgSpec;
-	}
-
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((this.objectValues == null) ? 0 : this.objectValues.hashCode());
-		result = prime * result + ((this.optionArgSpec == null) ? 0 : this.optionArgSpec.hashCode());
 		result = prime * result + ((this.optionArgs == null) ? 0 : this.optionArgs.hashCode());
 		result = prime * result + ((this.string == null) ? 0 : this.string.hashCode());
 		return result;

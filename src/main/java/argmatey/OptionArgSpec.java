@@ -240,7 +240,7 @@ public final class OptionArgSpec {
 				opArgs.add(opArg);
 			}
 		}
-		return new OptionArg(objectValues, opArgs, this, optionArg);
+		return new OptionArg(objectValues, opArgs, optionArg);
 	}
 
 	@Override
