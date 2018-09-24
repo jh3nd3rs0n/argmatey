@@ -56,7 +56,7 @@ public class Base64OptionsTest {
 					new LongOption.Builder("wrap"),
 					new GnuLongOption.Builder("wrap"))
 			.doc("wrap encoded lines after COLS character (default 76)."
-					+ this.lineSeparator + "Use 0 to disable line wrapping")
+					+ this.lineSeparator + "      Use 0 to disable line wrapping")
 			.optionArgSpec(this.colsOptionArgSpec)
 			.build(); 
 	

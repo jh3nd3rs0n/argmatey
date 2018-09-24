@@ -294,11 +294,9 @@ public abstract class Option {
 				}
 			}
 			if (this.doc != null && !this.doc.isEmpty()) {
-				String lineSeparator = System.getProperty("line.separator");
-				String sixSpaces = "      "; 
-				sb.append(lineSeparator);
-				sb.append(sixSpaces);
-				sb.append(this.doc.replace(lineSeparator, lineSeparator.concat(sixSpaces)));
+				sb.append(System.getProperty("line.separator"));
+				sb.append("      ");
+				sb.append(this.doc);
 			}
 			helpText = sb.toString();
 		}
