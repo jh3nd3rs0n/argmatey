@@ -36,32 +36,14 @@ public final class Options {
 		boolean earlierHelpTextNotNull = false;
 		String lineSeparator = System.getProperty("line.separator");
 		for (Option option : this.options) {
-			String beforeHelpText = option.getBeforeHelpText();
 			String helpText = option.getHelpText();
-			String afterHelpText = option.getAfterHelpText();
-			if (beforeHelpText != null || helpText != null || afterHelpText != null) {
+			if (helpText != null) {
 				if (earlierHelpTextNotNull) {
 					s.write(lineSeparator);
 				}
-				if (beforeHelpText != null) {
-					s.write(beforeHelpText);
-				}
-				if (helpText != null) {
-					if (beforeHelpText != null) {
-						s.write(lineSeparator);
-					}
-					s.write(helpText);
-				}
-				if (afterHelpText != null) {
-					if (beforeHelpText != null || helpText != null) {
-						s.write(lineSeparator);
-					}
-					s.write(afterHelpText);
-				}
+				s.write(helpText);
 				s.flush();
-				if (!earlierHelpTextNotNull) {
-					earlierHelpTextNotNull = true;
-				}
+				earlierHelpTextNotNull = true;
 			}
 		}
 	}
@@ -77,26 +59,24 @@ public final class Options {
 	public void printUsage(final PrintWriter s) {
 		boolean earlierUsageNotNull = false;
 		for (Option option : this.options) {
-			Option o = null;
+			Option firstDisplayableOption = null;
 			for (Option opt : option.getAllOptions()) {
 				if (!opt.isHidden() && !opt.isSpecial()) {
-					o = opt;
+					firstDisplayableOption = opt;
 					break;
 				}
 			}
-			if (o == null) { 
+			if (firstDisplayableOption == null) { 
 				continue; 
 			} 
-			String usage = o.getUsage();
+			String usage = firstDisplayableOption.getUsage();
 			if (usage != null) {
 				if (earlierUsageNotNull) {
 					s.write(" ");
 				}
 				s.write(String.format("[%s]", usage));
 				s.flush();
-				if (!earlierUsageNotNull) {
-					earlierUsageNotNull = true;
-				}
+				earlierUsageNotNull = true;
 			}
 		}
 	}

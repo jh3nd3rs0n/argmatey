@@ -11,8 +11,6 @@ public abstract class Option {
 
 	public static abstract class Builder {
 		
-		private String afterHelpText;
-		private String beforeHelpText;
 		private final List<Builder> builders;
 		private String doc;
 		private boolean hidden;
@@ -47,16 +45,6 @@ public abstract class Option {
 			this.special = false;
 			this.specialSet = false;
 			this.string = opt;
-		}
-		
-		public Builder afterHelpText(final String afterHelpTxt) {
-			this.afterHelpText = afterHelpTxt;
-			return this;
-		}
-		
-		public Builder beforeHelpText(final String beforeHelpTxt) {
-			this.beforeHelpText = beforeHelpTxt;
-			return this;
 		}
 		
 		public abstract Option build();
@@ -160,8 +148,6 @@ public abstract class Option {
 		defaultOptionHelpTextProvider = optHelpTextProvider;
 	}
 	
-	private final String afterHelpText;
-	private final String beforeHelpText;	
 	private final String doc;
 	private final boolean hidden;
 	private final String name;
@@ -173,8 +159,6 @@ public abstract class Option {
 	private final String string;
 
 	Option(final Builder builder) {
-		String afterHelpTxt = builder.afterHelpText;
-		String beforeHelpTxt = builder.beforeHelpText;
 		List<Builder> bldrs = new ArrayList<Builder>(builder.builders);
 		String d = builder.doc;
 		boolean hide = builder.hidden;
@@ -205,8 +189,6 @@ public abstract class Option {
 		if (optUsageProvider == null) {
 			optUsageProvider = getDefaultOptionUsageProviders().get(this.getClass());
 		}
-		this.afterHelpText = afterHelpTxt;
-		this.beforeHelpText = beforeHelpTxt;
 		this.doc = d;
 		this.hidden = hide;
 		this.name = n;
@@ -218,10 +200,6 @@ public abstract class Option {
 		this.string = str;
 	}
 	
-	public final String getAfterHelpText() {
-		return this.afterHelpText;
-	}
-	
 	public final List<Option> getAllOptions() {
 		List<Option> allOptions = new ArrayList<Option>();
 		allOptions.add(this);
@@ -229,10 +207,6 @@ public abstract class Option {
 			allOptions.addAll(option.getAllOptions());
 		}
 		return Collections.unmodifiableList(allOptions);
-	}
-	
-	public final String getBeforeHelpText() {
-		return this.beforeHelpText;
 	}
 	
 	public final String getDoc() {
@@ -278,27 +252,30 @@ public abstract class Option {
 			}
 		}
 		if (allDisplayableOptions.size() > 0) {
-			StringBuilder sb = new StringBuilder();
-			sb.append("  ");
+			StringBuilder sb = null;
 			boolean earlierUsageNotNull = false;
 			for (Option option : allDisplayableOptions) {
 				String usage = option.getUsage();
 				if (usage != null) {
+					if (sb == null) {
+						sb = new StringBuilder();
+						sb.append("  ");
+					}
 					if (earlierUsageNotNull) {
 						sb.append(", ");
 					}
 					sb.append(usage);
-					if (!earlierUsageNotNull) {
-						earlierUsageNotNull = true;
-					}
+					earlierUsageNotNull = true;
 				}
 			}
-			if (this.doc != null && !this.doc.isEmpty()) {
-				sb.append(System.getProperty("line.separator"));
-				sb.append("      ");
-				sb.append(this.doc);
+			if (sb != null) {
+				if (this.doc != null) {
+					sb.append(System.getProperty("line.separator"));
+					sb.append("      ");
+					sb.append(this.doc);
+				}
+				helpText = sb.toString();
 			}
-			helpText = sb.toString();
 		}
 		return helpText;		
 	}

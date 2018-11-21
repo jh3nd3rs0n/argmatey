@@ -24,11 +24,22 @@ public class Base64OptionsTest {
 	private final String lineSeparator = System.getProperty("line.separator");
 	
 	private final Option dPosixOption = new PosixOption.Builder('d')
-			.beforeHelpText("OPTIONS:")
 			.builders(
 					new LongOption.Builder("decode"),
 					new GnuLongOption.Builder("decode"))
 			.doc("decode data")
+			.optionHelpTextProvider(new OptionHelpTextProvider() {
+
+				@Override
+				public String getOptionHelpText(final Option option) {
+					StringBuilder sb = new StringBuilder();
+					sb.append("OPTIONS:");
+					sb.append(System.getProperty("line.separator"));
+					sb.append(option.getSelfProvidedHelpText());
+					return sb.toString();
+				}
+				
+			})
 			.build();
 	
 	private final Option decodeLongOption = this.dPosixOption.getOptions().get(0);
@@ -70,8 +81,18 @@ public class Base64OptionsTest {
 			.build(); 
 	
 	private final Option versionGnuLongOption = new GnuLongOption.Builder("version")
-			.afterHelpText(this.lineSeparator)
 			.doc("display version information and exit")
+			.optionHelpTextProvider(new OptionHelpTextProvider() {
+
+				@Override
+				public String getOptionHelpText(final Option option) {
+					StringBuilder sb = new StringBuilder();
+					sb.append(option.getSelfProvidedHelpText());
+					sb.append(System.getProperty("line.separator"));
+					return sb.toString();
+				}
+				
+			})
 			.special(true)
 			.build(); 
 	
@@ -182,7 +203,6 @@ public class Base64OptionsTest {
 		sw1.write("  --version");
 		sw1.write(this.lineSeparator);
 		sw1.write("      display version information and exit");
-		sw1.write(this.lineSeparator);
 		sw1.write(this.lineSeparator);
 		sw1.flush();
 		

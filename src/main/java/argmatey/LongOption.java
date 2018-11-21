@@ -11,18 +11,6 @@ public final class LongOption extends Option {
 		}
 
 		@Override
-		public Builder afterHelpText(final String afterHelpTxt) {
-			super.afterHelpText(afterHelpTxt);
-			return this;
-		}
-		
-		@Override
-		public Builder beforeHelpText(final String beforeHelpTxt) {
-			super.beforeHelpText(beforeHelpTxt);
-			return this;
-		}
-		
-		@Override
 		public LongOption build() {
 			return new LongOption(this);
 		}
