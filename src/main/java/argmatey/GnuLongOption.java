@@ -86,20 +86,4 @@ public final class GnuLongOption extends Option {
 		super(builder);
 	}
 
-	@Override
-	public String getSelfProvidedUsage() {
-		String usage = null;
-		OptionArgSpec optionArgSpec = this.getOptionArgSpec();
-		if (optionArgSpec == null) {
-			usage = this.toString();
-		} else {
-			if (optionArgSpec.isOptional()) {
-				usage = String.format("%s[=%s]", this, optionArgSpec.getName());
-			} else {
-				usage = String.format("%s=%s", this, optionArgSpec.getName());
-			}
-		}
-		return usage;
-	}
-
 }

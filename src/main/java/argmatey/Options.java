@@ -43,7 +43,9 @@ public final class Options {
 				}
 				s.write(helpText);
 				s.flush();
-				earlierHelpTextNotNull = true;
+				if (!earlierHelpTextNotNull) {
+					earlierHelpTextNotNull = true;
+				}
 			}
 		}
 	}
@@ -76,7 +78,9 @@ public final class Options {
 				}
 				s.write(String.format("[%s]", usage));
 				s.flush();
-				earlierUsageNotNull = true;
+				if (!earlierUsageNotNull) {
+					earlierUsageNotNull = true;
+				}
 			}
 		}
 	}

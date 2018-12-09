@@ -124,6 +124,16 @@ public abstract class Option {
 	
 	private static OptionHelpTextProvider defaultOptionHelpTextProvider;
 	
+	static {
+		DEFAULT_OPTION_USAGE_PROVIDERS.put(
+				GnuLongOption.class, DefaultGnuLongOptionUsageProvider.INSTANCE);
+		DEFAULT_OPTION_USAGE_PROVIDERS.put(
+				LongOption.class, DefaultLongOptionUsageProvider.INSTANCE);
+		DEFAULT_OPTION_USAGE_PROVIDERS.put(
+				PosixOption.class, DefaultPosixOptionUsageProvider.INSTANCE);
+		defaultOptionHelpTextProvider = DefaultOptionHelpTextProvider.INSTANCE;
+	}
+	
 	public static OptionHelpTextProvider getDefaultOptionHelpTextProvider() {
 		return defaultOptionHelpTextProvider;
 	}
@@ -217,8 +227,6 @@ public abstract class Option {
 		String helpText = null;
 		if (this.optionHelpTextProvider != null) {
 			helpText = this.optionHelpTextProvider.getOptionHelpText(this);
-		} else {
-			helpText = this.getSelfProvidedHelpText();
 		}
 		return helpText;
 	}
@@ -243,51 +251,10 @@ public abstract class Option {
 		return this.optionUsageProvider;
 	}
 	
-	public final String getSelfProvidedHelpText() {
-		String helpText = null;
-		List<Option> allDisplayableOptions = new ArrayList<Option>();
-		for (Option option : this.getAllOptions()) {
-			if (!option.isHidden()) {
-				allDisplayableOptions.add(option);
-			}
-		}
-		if (allDisplayableOptions.size() > 0) {
-			StringBuilder sb = null;
-			boolean earlierUsageNotNull = false;
-			for (Option option : allDisplayableOptions) {
-				String usage = option.getUsage();
-				if (usage != null) {
-					if (sb == null) {
-						sb = new StringBuilder();
-						sb.append("  ");
-					}
-					if (earlierUsageNotNull) {
-						sb.append(", ");
-					}
-					sb.append(usage);
-					earlierUsageNotNull = true;
-				}
-			}
-			if (sb != null) {
-				if (this.doc != null) {
-					sb.append(System.getProperty("line.separator"));
-					sb.append("      ");
-					sb.append(this.doc);
-				}
-				helpText = sb.toString();
-			}
-		}
-		return helpText;		
-	}
-	
-	public abstract String getSelfProvidedUsage();
-
 	public final String getUsage() {
 		String usage = null;
 		if (this.optionUsageProvider != null) {
 			usage = this.optionUsageProvider.getOptionUsage(this);
-		} else {
-			usage = this.getSelfProvidedUsage();
 		}
 		return usage;
 	}

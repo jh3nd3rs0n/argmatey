@@ -35,7 +35,7 @@ public class Base64OptionsTest {
 					StringBuilder sb = new StringBuilder();
 					sb.append("OPTIONS:");
 					sb.append(System.getProperty("line.separator"));
-					sb.append(option.getSelfProvidedHelpText());
+					sb.append(DefaultOptionHelpTextProvider.INSTANCE.getOptionHelpText(option));
 					return sb.toString();
 				}
 				
@@ -87,7 +87,7 @@ public class Base64OptionsTest {
 				@Override
 				public String getOptionHelpText(final Option option) {
 					StringBuilder sb = new StringBuilder();
-					sb.append(option.getSelfProvidedHelpText());
+					sb.append(DefaultOptionHelpTextProvider.INSTANCE.getOptionHelpText(option));
 					sb.append(System.getProperty("line.separator"));
 					return sb.toString();
 				}
