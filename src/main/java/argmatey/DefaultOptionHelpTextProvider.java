@@ -1,8 +1,5 @@
 package argmatey;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public final class DefaultOptionHelpTextProvider implements OptionHelpTextProvider {
 
 	public static final DefaultOptionHelpTextProvider INSTANCE = 
@@ -17,16 +14,10 @@ public final class DefaultOptionHelpTextProvider implements OptionHelpTextProvid
 	@Override
 	public String getOptionHelpText(final Option option) {
 		String helpText = null;
-		List<Option> allDisplayableOptions = new ArrayList<Option>();
+		StringBuilder sb = null;
+		boolean earlierUsageNotNull = false;
 		for (Option opt : option.getAllOptions()) {
 			if (!opt.isHidden()) {
-				allDisplayableOptions.add(opt);
-			}
-		}
-		if (allDisplayableOptions.size() > 0) {
-			StringBuilder sb = null;
-			boolean earlierUsageNotNull = false;
-			for (Option opt : allDisplayableOptions) {
 				String usage = opt.getUsage();
 				if (usage != null) {
 					if (sb == null) {
@@ -42,15 +33,15 @@ public final class DefaultOptionHelpTextProvider implements OptionHelpTextProvid
 					}
 				}
 			}
-			if (sb != null) {
-				String doc = option.getDoc();
-				if (doc != null) {
-					sb.append(System.getProperty("line.separator"));
-					sb.append("      ");
-					sb.append(doc);
-				}
-				helpText = sb.toString();
+		}
+		if (sb != null) {
+			String doc = option.getDoc();
+			if (doc != null) {
+				sb.append(System.getProperty("line.separator"));
+				sb.append("      ");
+				sb.append(doc);
 			}
+			helpText = sb.toString();
 		}
 		return helpText;
 	}
