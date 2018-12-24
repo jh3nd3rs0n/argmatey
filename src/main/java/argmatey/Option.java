@@ -19,7 +19,9 @@ public abstract class Option {
 		private OptionArgSpec optionArgSpec;
 		private boolean optionArgSpecSet;
 		private OptionHelpTextProvider optionHelpTextProvider;
+		private boolean optionHelpTextProviderSet;
 		private OptionUsageProvider optionUsageProvider;
+		private boolean optionUsageProviderSet;
 		private boolean special;
 		private boolean specialSet;
 		private String string;
@@ -42,6 +44,8 @@ public abstract class Option {
 			this.hiddenSet = false;
 			this.name = optName;
 			this.optionArgSpecSet = false;
+			this.optionHelpTextProviderSet = false;
+			this.optionUsageProviderSet = false;
 			this.special = false;
 			this.specialSet = false;
 			this.string = opt;
@@ -102,12 +106,14 @@ public abstract class Option {
 		public Builder optionHelpTextProvider(
 				final OptionHelpTextProvider optHelpTextProvider) {
 			this.optionHelpTextProvider = optHelpTextProvider;
+			this.optionHelpTextProviderSet = true;
 			return this;
 		}
 		
 		public Builder optionUsageProvider(
 				final OptionUsageProvider optUsageProvider) {
 			this.optionUsageProvider = optUsageProvider;
+			this.optionUsageProviderSet = true;
 			return this;
 		}
 		
@@ -193,10 +199,10 @@ public abstract class Option {
 			Option opt = bldr.build();
 			opts.add(opt);
 		}
-		if (optHelpTextProvider == null) {
+		if (!builder.optionHelpTextProviderSet) {
 			optHelpTextProvider = getDefaultOptionHelpTextProvider();
 		}
-		if (optUsageProvider == null) {
+		if (!builder.optionUsageProviderSet) {
 			optUsageProvider = getDefaultOptionUsageProviders().get(this.getClass());
 		}
 		this.doc = d;
