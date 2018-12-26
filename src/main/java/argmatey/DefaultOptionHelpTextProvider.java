@@ -1,15 +1,8 @@
 package argmatey;
 
-public final class DefaultOptionHelpTextProvider implements OptionHelpTextProvider {
+public enum DefaultOptionHelpTextProvider implements OptionHelpTextProvider {
 
-	public static final DefaultOptionHelpTextProvider INSTANCE = 
-			new DefaultOptionHelpTextProvider(); 
-	
-	private DefaultOptionHelpTextProvider() { 
-		if (INSTANCE != null) { 
-			throw new AssertionError("There can only be one"); 
-		}
-	}
+	INSTANCE; 
 	
 	@Override
 	public String getOptionHelpText(final Option option) {
@@ -46,4 +39,8 @@ public final class DefaultOptionHelpTextProvider implements OptionHelpTextProvid
 		return helpText;
 	}
 
+	@Override
+	public String toString() {
+		return DefaultOptionHelpTextProvider.class.getSimpleName();
+	}
 }

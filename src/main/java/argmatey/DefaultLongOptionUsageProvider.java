@@ -1,15 +1,8 @@
 package argmatey;
 
-public final class DefaultLongOptionUsageProvider implements OptionUsageProvider {
+public enum DefaultLongOptionUsageProvider implements OptionUsageProvider {
 
-	public static final DefaultLongOptionUsageProvider INSTANCE =
-			new DefaultLongOptionUsageProvider();
-	
-	private DefaultLongOptionUsageProvider() {
-		if (INSTANCE != null) { 
-			throw new AssertionError("There can only be one"); 
-		}
-	}
+	INSTANCE;
 	
 	@Override
 	public String getOptionUsage(final Option option) {
@@ -25,6 +18,11 @@ public final class DefaultLongOptionUsageProvider implements OptionUsageProvider
 			}
 		}		
 		return usage;
+	}
+	
+	@Override
+	public String toString() {
+		return DefaultLongOptionUsageProvider.class.getSimpleName();
 	}
 
 }

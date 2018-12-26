@@ -1,16 +1,10 @@
 package argmatey;
 
-public final class EndOfOptionsDelimiter {
+public enum EndOfOptionsDelimiter {
 
-	public static final EndOfOptionsDelimiter INSTANCE = new EndOfOptionsDelimiter();
+	INSTANCE;
 	
 	public static final String STRING = "--";
-	
-	private EndOfOptionsDelimiter() { 
-		if (INSTANCE != null) { 
-			throw new AssertionError("There can only be one"); 
-		} 
-	}
 	
 	@Override
 	public String toString() {

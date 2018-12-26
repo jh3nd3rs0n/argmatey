@@ -1,15 +1,8 @@
 package argmatey;
 
-public final class DefaultPosixOptionUsageProvider implements OptionUsageProvider {
+public enum DefaultPosixOptionUsageProvider implements OptionUsageProvider {
 
-	public static final DefaultPosixOptionUsageProvider INSTANCE =
-			new DefaultPosixOptionUsageProvider();
-	
-	private DefaultPosixOptionUsageProvider() {
-		if (INSTANCE != null) { 
-			throw new AssertionError("There can only be one"); 
-		}
-	}
+	INSTANCE;
 	
 	@Override
 	public String getOptionUsage(final Option option) {
@@ -27,4 +20,8 @@ public final class DefaultPosixOptionUsageProvider implements OptionUsageProvide
 		return usage;
 	}
 
+	@Override
+	public String toString() {
+		return DefaultPosixOptionUsageProvider.class.getSimpleName();
+	}
 }

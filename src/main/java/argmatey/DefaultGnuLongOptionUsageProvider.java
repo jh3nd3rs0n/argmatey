@@ -1,15 +1,8 @@
 package argmatey;
 
-public final class DefaultGnuLongOptionUsageProvider implements OptionUsageProvider {
+public enum DefaultGnuLongOptionUsageProvider implements OptionUsageProvider {
 
-	public static final DefaultGnuLongOptionUsageProvider INSTANCE = 
-			new DefaultGnuLongOptionUsageProvider();
-	
-	private DefaultGnuLongOptionUsageProvider() {
-		if (INSTANCE != null) { 
-			throw new AssertionError("There can only be one"); 
-		}
-	}
+	INSTANCE;
 	
 	@Override
 	public String getOptionUsage(final Option option) {
@@ -27,4 +20,9 @@ public final class DefaultGnuLongOptionUsageProvider implements OptionUsageProvi
 		return usage;
 	}
 
+	@Override
+	public String toString() {
+		return DefaultGnuLongOptionUsageProvider.class.getSimpleName();
+	}
+	
 }

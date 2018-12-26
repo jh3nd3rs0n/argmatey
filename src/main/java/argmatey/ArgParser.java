@@ -229,20 +229,19 @@ public final class ArgParser {
 		
 	}
 	
-	private static final class DefaultArgHandler implements ArgHandler {
+	private static enum DefaultArgHandler implements ArgHandler {
 
-		public static final DefaultArgHandler INSTANCE = new DefaultArgHandler();
-		
-		private DefaultArgHandler() { 
-			if (INSTANCE != null) {
-				throw new AssertionError("There can only be one");
-			}
-		}
+		INSTANCE;
 		
 		@Override
 		public void handle(final String arg, final ArgHandlerContext context) {
 			ArgHandlerContextProperties.setParseResult(
 					context, ParseResult.newInstance(arg));
+		}
+		
+		@Override
+		public String toString() {
+			return DefaultArgHandler.class.getSimpleName();
 		}
 		
 	}
