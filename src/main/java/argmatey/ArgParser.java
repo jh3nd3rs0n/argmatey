@@ -66,33 +66,14 @@ public final class ArgParser {
 		}
 		
 		public ArgHandlerContext(
-				final String[] arguments,
-				final int argumentIndex,
-				final int argumentCharIndex,
-				final Map<String, Option> opts) {
+				final String[] arguments, final Map<String, Option> opts) {
 			for (String argument : arguments) {
 				if (argument == null) {
 					throw new NullPointerException("argument(s) must not be null");
 				}
 			}
-			if (argumentIndex < -1) {
-				throw new ArrayIndexOutOfBoundsException();
-			}
-			if (argumentIndex > arguments.length - 1) {
-				throw new ArrayIndexOutOfBoundsException();
-			}
-			if (argumentIndex == -1 && argumentCharIndex > -1) {
-				throw new ArrayIndexOutOfBoundsException();
-			}
-			if (argumentCharIndex < -1) {
-				throw new StringIndexOutOfBoundsException();
-			}
-			if (argumentIndex > -1 
-					&& argumentCharIndex > arguments[argumentIndex].length() - 1) {
-				throw new StringIndexOutOfBoundsException();
-			}
-			this.argCharIndex = argumentCharIndex;
-			this.argIndex = argumentIndex;
+			this.argCharIndex = -1;
+			this.argIndex = -1;
 			this.args = Arrays.copyOf(arguments, arguments.length);
 			this.optionHandlingEnabled = false;
 			this.options = new HashMap<String, Option>(opts);
@@ -453,8 +434,7 @@ public final class ArgParser {
 			}
 			optionHandlingEnabled = true;
 		}
-		ArgHandlerContext handlerContext = new ArgHandlerContext(
-				args, -1, -1, optsMap);
+		ArgHandlerContext handlerContext = new ArgHandlerContext(args, optsMap);
 		handlerContext.setOptionHandlingEnabled(optionHandlingEnabled);
 		this.argHandler = handler;
 		this.argHandlerContext = handlerContext;
