@@ -3,7 +3,6 @@ package argmatey;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
@@ -26,14 +25,15 @@ public final class ArgParser {
 		}
 		
 		@Override
-		public abstract void handle(final String arg, final ArgHandlerContext context);
+		public abstract void handle(
+				final String arg, final ArgHandlerContext context);
 
 		@Override
 		public String toString() {
 			StringBuilder builder = new StringBuilder();
 			builder.append(this.getClass().getSimpleName())
-				.append(" [getArgHandler()=")
-				.append(this.getArgHandler())
+				.append(" [argHandler=")
+				.append(this.argHandler)
 				.append("]");
 			return builder.toString();
 		}	
@@ -69,13 +69,18 @@ public final class ArgParser {
 				final String[] arguments, final Map<String, Option> opts) {
 			for (String argument : arguments) {
 				if (argument == null) {
-					throw new NullPointerException("argument(s) must not be null");
+					throw new NullPointerException(
+							"argument(s) must not be null");
 				}
+			}
+			boolean optHandlingEnabled = false;
+			if (opts.size() > 0) {
+				optHandlingEnabled = true;
 			}
 			this.argCharIndex = -1;
 			this.argIndex = -1;
 			this.args = Arrays.copyOf(arguments, arguments.length);
-			this.optionHandlingEnabled = false;
+			this.optionHandlingEnabled = optHandlingEnabled;
 			this.options = new HashMap<String, Option>(opts);
 			this.parseResult = null;
 		}
@@ -199,7 +204,8 @@ public final class ArgParser {
 		}
 
 		@Override
-		protected void handleOption(final String arg, final ArgHandlerContext context) {
+		protected void handleOption(
+				final String arg, final ArgHandlerContext context) {
 			String option = arg;
 			String optionArg = null;
 			String[] argElements = arg.split("=", 2);
@@ -227,7 +233,8 @@ public final class ArgParser {
 		}
 
 		@Override
-		protected boolean isOption(final String arg, final ArgHandlerContext context) {
+		protected boolean isOption(
+				final String arg, final ArgHandlerContext context) {
 			return arg.startsWith("--") && arg.length() > 2;
 		}
 		
@@ -240,7 +247,8 @@ public final class ArgParser {
 		}
 
 		@Override
-		protected void handleOption(final String arg, final ArgHandlerContext context) {
+		protected void handleOption(
+				final String arg, final ArgHandlerContext context) {
 			String option = arg;
 			Map<String, Option> options = context.getOptions();
 			Option opt = options.get(option);
@@ -275,8 +283,11 @@ public final class ArgParser {
 		}
 
 		@Override
-		protected boolean isOption(final String arg, final ArgHandlerContext context) {
-			return arg.length() > 1 && arg.startsWith("-") && !arg.startsWith("--");
+		protected boolean isOption(
+				final String arg, final ArgHandlerContext context) {
+			return arg.length() > 1 
+					&& arg.startsWith("-") 
+					&& !arg.startsWith("--");
 		}
 		
 	}
@@ -299,7 +310,8 @@ public final class ArgParser {
 		}
 		
 		@Override
-		public final void handle(final String arg, final ArgHandlerContext context) {
+		public final void handle(
+				final String arg, final ArgHandlerContext context) {
 			if (!context.isOptionHandlingEnabled()) {
 				this.getArgHandler().handle(arg, context);
 				return;
@@ -323,9 +335,11 @@ public final class ArgParser {
 			this.handleOption(arg, context);
 		}
 		
-		protected abstract void handleOption(final String arg, final ArgHandlerContext context);
+		protected abstract void handleOption(
+				final String arg, final ArgHandlerContext context);
 
-		protected abstract boolean isOption(final String arg, final ArgHandlerContext context);
+		protected abstract boolean isOption(
+				final String arg, final ArgHandlerContext context);
 		
 	}
 	
@@ -352,7 +366,8 @@ public final class ArgParser {
 		}
 
 		@Override
-		protected void handleOption(final String arg, final ArgHandlerContext context) {
+		protected void handleOption(
+				final String arg, final ArgHandlerContext context) {
 			int argCharIndex = context.getArgCharIndex();
 			if (argCharIndex == -1) { /* not incremented yet */
 				/* initiate incrementing. ArgParser will do the incrementing  */
@@ -395,8 +410,11 @@ public final class ArgParser {
 		}
 
 		@Override
-		protected boolean isOption(final String arg, final ArgHandlerContext context) {
-			return arg.length() > 1 && arg.startsWith("-") && !arg.startsWith("--");
+		protected boolean isOption(
+				final String arg, final ArgHandlerContext context) {
+			return arg.length() > 1 
+					&& arg.startsWith("-") 
+					&& !arg.startsWith("--");
 		}		
 	}
 	
@@ -424,18 +442,12 @@ public final class ArgParser {
 		ArgHandler handler = new GnuLongOptionHandler(new LongOptionHandler(
 				new EndOfOptionsDelimiterHandler(posixlyCorrectArgHandler)));
 		Map<String, Option> optsMap = new HashMap<String, Option>();
-		boolean optionHandlingEnabled = false;
-		List<Option> optsList = opts.toList();
-		if (optsList.size() > 0) {
-			for (Option opt : optsList) {
-				for (Option o : opt.getAllOptions()) {
-					optsMap.put(o.toString(), o);
-				}
+		for (Option opt : opts.toList()) {
+			for (Option o : opt.getAllOptions()) {
+				optsMap.put(o.toString(), o);
 			}
-			optionHandlingEnabled = true;
 		}
 		ArgHandlerContext handlerContext = new ArgHandlerContext(args, optsMap);
-		handlerContext.setOptionHandlingEnabled(optionHandlingEnabled);
 		this.argHandler = handler;
 		this.argHandlerContext = handlerContext;
 		this.options = opts;
