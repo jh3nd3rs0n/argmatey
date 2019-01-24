@@ -26,7 +26,7 @@ public final class ArgsParser {
 		}
 		
 		@Override
-		public abstract Object parse(
+		public abstract ParseResult parse(
 				final String arg, final ArgParserContext context);
 
 		@Override
@@ -44,7 +44,7 @@ public final class ArgsParser {
 	
 	private static interface ArgParser {
 		
-		Object parse(String arg, ArgParserContext context);
+		ParseResult parse(String arg, ArgParserContext context);
 		
 	}
 	
@@ -113,8 +113,13 @@ public final class ArgsParser {
 			return ++this.argIndex;
 		}
 		
-		public void putProperty(final String name, final Object value) {
-			this.properties.put(name, value);
+		public Object putProperty(final String name, final Object value) {
+			return this.properties.put(name, value);
+		}
+		
+		@SuppressWarnings("unused")
+		public Object removeProperty(final String name) {
+			return this.properties.remove(name);
 		}
 		
 		public int resetArgCharIndex() {
@@ -199,8 +204,8 @@ public final class ArgsParser {
 		INSTANCE;
 		
 		@Override
-		public Object parse(final String arg, final ArgParserContext context) {
-			return arg;
+		public ParseResult parse(final String arg, final ArgParserContext context) {
+			return new NonparsedArg(arg);
 		}
 		
 		@Override
@@ -217,7 +222,7 @@ public final class ArgsParser {
 		}
 		
 		@Override
-		public Object parse(final String arg, final ArgParserContext context) {
+		public ParseResult parse(final String arg, final ArgParserContext context) {
 			ArgParserContextProperties properties = 
 					new ArgParserContextProperties(context); 
 			if (properties.isOptionParsingEnabled()) {
@@ -235,7 +240,7 @@ public final class ArgsParser {
 		}
 		
 		@Override
-		public Object parse(final String arg, final ArgParserContext context) {
+		public ParseResult parse(final String arg, final ArgParserContext context) {
 			ArgParserContextProperties properties = 
 					new ArgParserContextProperties(context);
 			if (!(properties.isOptionParsingEnabled()
@@ -365,7 +370,7 @@ public final class ArgsParser {
 				final String arg, final ArgParserContext context);
 		
 		@Override
-		public final Object parse(
+		public final ParseResult parse(
 				final String arg, final ArgParserContext context) {
 			ArgParserContextProperties properties = 
 					new ArgParserContextProperties(context);
@@ -575,13 +580,13 @@ public final class ArgsParser {
 		return next;
 	}
 	
-	public Object parseNext() {
+	public ParseResult parseNext() {
 		ArgParserContext recentArgParserContext = 
 				new ArgParserContext(this.argParserContext);
 		this.next();
-		Object obj = null;
+		ParseResult parseResult = null;
 		try {
-			obj = this.argParser.parse(
+			parseResult = this.argParser.parse(
 					this.getArgs()[this.getArgIndex()], this.argParserContext);
 		} catch (Throwable t) {
 			/* 
@@ -597,7 +602,7 @@ public final class ArgsParser {
 				throw rte;
 			}
 		}
-		return obj;
+		return parseResult;
 	}
 
 	@Override

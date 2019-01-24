@@ -107,7 +107,7 @@ public class Base64OptionsTest {
 		ArgsParser argsParser = ArgsParser.newInstance(
 				this.args, this.options, false);
 		
-		List<Object> expected = new ArrayList<Object>();
+		List<ParseResult> expected = new ArrayList<ParseResult>();
 		expected.add(new OptionOccurrence(
 				this.dPosixOption, this.dPosixOption.newOptionArg(null)));
 		expected.add(new OptionOccurrence(
@@ -137,8 +137,8 @@ public class Base64OptionsTest {
 		expected.add(new OptionOccurrence(
 				this.wrapLongOption, 
 				this.wrapLongOption.newOptionArg("54321")));
-		expected.add("file1.txt");
-		expected.add("file2.txt");
+		expected.add(new NonparsedArg("file1.txt"));
+		expected.add(new NonparsedArg("file2.txt"));
 		expected.add(new OptionOccurrence(
 				this.decodeGnuLongOption, 
 				this.decodeGnuLongOption.newOptionArg(null)));
@@ -152,15 +152,15 @@ public class Base64OptionsTest {
 				this.wrapGnuLongOption, 
 				this.wrapGnuLongOption.newOptionArg("7654321")));
 		expected.add(EndOfOptionsDelimiter.INSTANCE);
-		expected.add("--help");
-		expected.add("--version");
-		expected.add("file3.txt");
+		expected.add(new NonparsedArg("--help"));
+		expected.add(new NonparsedArg("--version"));
+		expected.add(new NonparsedArg("file3.txt"));
 		
-		List<Object> actual = new ArrayList<Object>();
+		List<ParseResult> actual = new ArrayList<ParseResult>();
 		
 		while (argsParser.hasNext()) {
-			Object obj = argsParser.parseNext();
-			actual.add(obj);
+			ParseResult parseResult = argsParser.parseNext();
+			actual.add(parseResult);
 		}
 		
 		assertEquals(expected, actual);

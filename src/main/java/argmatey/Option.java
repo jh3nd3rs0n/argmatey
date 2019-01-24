@@ -149,14 +149,14 @@ public abstract class Option {
 	}
 	
 	public static OptionUsageProvider putDefaultOptionUsageProvider(
-			final Class<? extends Option> opt,
+			final Class<? extends Option> optClass,
 			final OptionUsageProvider optUsageProvider) {
-		return DEFAULT_OPTION_USAGE_PROVIDERS.put(opt, optUsageProvider);
+		return DEFAULT_OPTION_USAGE_PROVIDERS.put(optClass, optUsageProvider);
 	}
 	
 	public static OptionUsageProvider removeDefaultOptionUsageProvider(
-			final Class<? extends Option> opt) {
-		return DEFAULT_OPTION_USAGE_PROVIDERS.remove(opt);
+			final Class<? extends Option> optClass) {
+		return DEFAULT_OPTION_USAGE_PROVIDERS.remove(optClass);
 	}
 	
 	public static void setDefaultOptionHelpTextProvider(

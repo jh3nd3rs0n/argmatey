@@ -1,6 +1,6 @@
 package argmatey;
 
-public enum EndOfOptionsDelimiter {
+public enum EndOfOptionsDelimiter implements ParseResult {
 
 	INSTANCE;
 	
