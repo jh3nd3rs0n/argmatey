@@ -108,43 +108,30 @@ public class Base64OptionsTest {
 				this.args, this.options, false);
 		
 		List<ParseResult> expected = new ArrayList<ParseResult>();
-		expected.add(new OptionOccurrence(
-				this.dPosixOption, this.dPosixOption.newOptionArg(null)));
-		expected.add(new OptionOccurrence(
-				this.iPosixOption, this.iPosixOption.newOptionArg(null)));
+		expected.add(new OptionOccurrence(this.dPosixOption, null));
+		expected.add(new OptionOccurrence(this.iPosixOption, null));
 		expected.add(new OptionOccurrence(
 				this.wPosixOption, this.wPosixOption.newOptionArg("1")));
-		expected.add(new OptionOccurrence(
-				this.dPosixOption, this.dPosixOption.newOptionArg(null)));
-		expected.add(new OptionOccurrence(
-				this.iPosixOption, this.iPosixOption.newOptionArg(null)));
+		expected.add(new OptionOccurrence(this.dPosixOption, null));
+		expected.add(new OptionOccurrence(this.iPosixOption, null));
 		expected.add(new OptionOccurrence(
 				this.wPosixOption, this.wPosixOption.newOptionArg("21")));
 		expected.add(new OptionOccurrence(
 				this.wPosixOption, this.wPosixOption.newOptionArg("321")));
-		expected.add(new OptionOccurrence(
-				this.dPosixOption, this.dPosixOption.newOptionArg(null)));
-		expected.add(new OptionOccurrence(
-				this.iPosixOption, this.iPosixOption.newOptionArg(null)));
+		expected.add(new OptionOccurrence(this.dPosixOption, null));
+		expected.add(new OptionOccurrence(this.iPosixOption, null));
 		expected.add(new OptionOccurrence(
 				this.wPosixOption, this.wPosixOption.newOptionArg("4321")));
-		expected.add(new OptionOccurrence(
-				this.decodeLongOption, 
-				this.decodeLongOption.newOptionArg(null)));
-		expected.add(new OptionOccurrence(
-				this.ignoreGarbageLongOption, 
-				this.ignoreGarbageLongOption.newOptionArg(null)));
+		expected.add(new OptionOccurrence(this.decodeLongOption, null));
+		expected.add(new OptionOccurrence(this.ignoreGarbageLongOption,	null));
 		expected.add(new OptionOccurrence(
 				this.wrapLongOption, 
 				this.wrapLongOption.newOptionArg("54321")));
 		expected.add(new NonparsedArg("file1.txt"));
 		expected.add(new NonparsedArg("file2.txt"));
+		expected.add(new OptionOccurrence(this.decodeGnuLongOption,	null));
 		expected.add(new OptionOccurrence(
-				this.decodeGnuLongOption, 
-				this.decodeGnuLongOption.newOptionArg(null)));
-		expected.add(new OptionOccurrence(
-				this.ignoreGarbageGnuLongOption, 
-				this.ignoreGarbageGnuLongOption.newOptionArg(null)));
+				this.ignoreGarbageGnuLongOption, null));
 		expected.add(new OptionOccurrence(
 				this.wrapGnuLongOption, 
 				this.wrapGnuLongOption.newOptionArg("654321")));
