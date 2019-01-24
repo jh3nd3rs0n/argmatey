@@ -57,18 +57,16 @@ public class Base64OptionsTest {
 	
 	private final Option ignoreGarbageGnuLongOption = this.iPosixOption.getOptions().get(1);
 	
-	private final OptionArgSpec colsOptionArgSpec = new OptionArgSpec.Builder()
-			.name("COLS")
-			.type(Integer.class)
-			.build(); 
-	
 	private final Option wPosixOption = new PosixOption.Builder('w')
 			.builders(
 					new LongOption.Builder("wrap"),
 					new GnuLongOption.Builder("wrap"))
 			.doc("wrap encoded lines after COLS character (default 76)."
 					+ this.lineSeparator + "      Use 0 to disable line wrapping")
-			.optionArgSpec(this.colsOptionArgSpec)
+			.optionArgSpec(new OptionArgSpec.Builder()
+					.name("COLS")
+					.type(Integer.class)
+					.build())
 			.build(); 
 	
 	private final Option wrapLongOption = this.wPosixOption.getOptions().get(0);
@@ -106,74 +104,92 @@ public class Base64OptionsTest {
 	@Test
 	public void testArgs() {
 		
-		ArgParser argParser = new ArgParser(this.args, this.options, false);
+		ArgsParser argsParser = ArgsParser.newInstance(
+				this.args, this.options, false);
 		
-		List<Object> expectedObjectValues = new ArrayList<Object>();
-		expectedObjectValues.add(this.dPosixOption);
-		expectedObjectValues.add(this.iPosixOption);
-		expectedObjectValues.add(this.wPosixOption);
-		expectedObjectValues.add(this.colsOptionArgSpec.newOptionArg("1"));
-		expectedObjectValues.add(this.dPosixOption);
-		expectedObjectValues.add(this.iPosixOption);
-		expectedObjectValues.add(this.wPosixOption);
-		expectedObjectValues.add(this.colsOptionArgSpec.newOptionArg("21"));
-		expectedObjectValues.add(this.wPosixOption);
-		expectedObjectValues.add(this.colsOptionArgSpec.newOptionArg("321"));
-		expectedObjectValues.add(this.dPosixOption);
-		expectedObjectValues.add(this.iPosixOption);
-		expectedObjectValues.add(this.wPosixOption);
-		expectedObjectValues.add(this.colsOptionArgSpec.newOptionArg("4321"));
-		expectedObjectValues.add(this.decodeLongOption);
-		expectedObjectValues.add(this.ignoreGarbageLongOption);
-		expectedObjectValues.add(this.wrapLongOption);
-		expectedObjectValues.add(this.colsOptionArgSpec.newOptionArg("54321"));
-		expectedObjectValues.add("file1.txt");
-		expectedObjectValues.add("file2.txt");
-		expectedObjectValues.add(this.decodeGnuLongOption);
-		expectedObjectValues.add(this.ignoreGarbageGnuLongOption);
-		expectedObjectValues.add(this.wrapGnuLongOption);
-		expectedObjectValues.add(this.colsOptionArgSpec.newOptionArg("654321"));
-		expectedObjectValues.add(this.wrapGnuLongOption);
-		expectedObjectValues.add(this.colsOptionArgSpec.newOptionArg("7654321"));
-		expectedObjectValues.add(EndOfOptionsDelimiter.INSTANCE);
-		expectedObjectValues.add("--help");
-		expectedObjectValues.add("--version");
-		expectedObjectValues.add("file3.txt");
+		List<Object> expected = new ArrayList<Object>();
+		expected.add(new OptionOccurrence(
+				this.dPosixOption, this.dPosixOption.newOptionArg(null)));
+		expected.add(new OptionOccurrence(
+				this.iPosixOption, this.iPosixOption.newOptionArg(null)));
+		expected.add(new OptionOccurrence(
+				this.wPosixOption, this.wPosixOption.newOptionArg("1")));
+		expected.add(new OptionOccurrence(
+				this.dPosixOption, this.dPosixOption.newOptionArg(null)));
+		expected.add(new OptionOccurrence(
+				this.iPosixOption, this.iPosixOption.newOptionArg(null)));
+		expected.add(new OptionOccurrence(
+				this.wPosixOption, this.wPosixOption.newOptionArg("21")));
+		expected.add(new OptionOccurrence(
+				this.wPosixOption, this.wPosixOption.newOptionArg("321")));
+		expected.add(new OptionOccurrence(
+				this.dPosixOption, this.dPosixOption.newOptionArg(null)));
+		expected.add(new OptionOccurrence(
+				this.iPosixOption, this.iPosixOption.newOptionArg(null)));
+		expected.add(new OptionOccurrence(
+				this.wPosixOption, this.wPosixOption.newOptionArg("4321")));
+		expected.add(new OptionOccurrence(
+				this.decodeLongOption, 
+				this.decodeLongOption.newOptionArg(null)));
+		expected.add(new OptionOccurrence(
+				this.ignoreGarbageLongOption, 
+				this.ignoreGarbageLongOption.newOptionArg(null)));
+		expected.add(new OptionOccurrence(
+				this.wrapLongOption, 
+				this.wrapLongOption.newOptionArg("54321")));
+		expected.add("file1.txt");
+		expected.add("file2.txt");
+		expected.add(new OptionOccurrence(
+				this.decodeGnuLongOption, 
+				this.decodeGnuLongOption.newOptionArg(null)));
+		expected.add(new OptionOccurrence(
+				this.ignoreGarbageGnuLongOption, 
+				this.ignoreGarbageGnuLongOption.newOptionArg(null)));
+		expected.add(new OptionOccurrence(
+				this.wrapGnuLongOption, 
+				this.wrapGnuLongOption.newOptionArg("654321")));
+		expected.add(new OptionOccurrence(
+				this.wrapGnuLongOption, 
+				this.wrapGnuLongOption.newOptionArg("7654321")));
+		expected.add(EndOfOptionsDelimiter.INSTANCE);
+		expected.add("--help");
+		expected.add("--version");
+		expected.add("file3.txt");
 		
-		List<Object> actualObjectValues = new ArrayList<Object>();
+		List<Object> actual = new ArrayList<Object>();
 		
-		while (argParser.hasNext()) {
-			ParseResult parseResult = argParser.parseNext();
-			for (Object objectValue : parseResult.toObjectValues()) {
-				actualObjectValues.add(objectValue);
-			}			
+		while (argsParser.hasNext()) {
+			Object obj = argsParser.parseNext();
+			actual.add(obj);
 		}
 		
-		assertEquals(expectedObjectValues, actualObjectValues);
+		assertEquals(expected, actual);
 	}
 	
 	@Test
 	public void testFinalArgCharIndex() {
 		
-		ArgParser argParser = new ArgParser(this.args, this.options, false);
+		ArgsParser argsParser = ArgsParser.newInstance(
+				this.args, this.options, false);
 		
-		while (argParser.hasNext()) {
-			argParser.parseNext();
+		while (argsParser.hasNext()) {
+			argsParser.parseNext();
 		}
 		
-		assertTrue(argParser.getArgCharIndex() == -1);
+		assertTrue(argsParser.getArgCharIndex() == -1);
 	}
 	
 	@Test
 	public void testFinalArgIndex() {
 		
-		ArgParser argParser = new ArgParser(this.args, this.options, false);
+		ArgsParser argsParser = ArgsParser.newInstance(
+				this.args, this.options, false);
 		
-		while (argParser.hasNext()) {
-			argParser.parseNext();
+		while (argsParser.hasNext()) {
+			argsParser.parseNext();
 		}
 		
-		assertTrue(argParser.getArgIndex() == this.args.length - 1);
+		assertTrue(argsParser.getArgIndex() == this.args.length - 1);
 	}
 	
 	@Test
