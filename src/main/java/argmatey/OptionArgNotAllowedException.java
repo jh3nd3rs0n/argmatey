@@ -1,6 +1,7 @@
 package argmatey;
 
 public final class OptionArgNotAllowedException extends RuntimeException {
+	
 	/**
 	 * 
 	 */

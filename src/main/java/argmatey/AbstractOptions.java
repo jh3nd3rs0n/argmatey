@@ -7,21 +7,22 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public final class Options {
+public final class AbstractOptions {
 
-	private final List<Option> options;
+	private final List<AbstractOption> abstractOptions;
 	
-	public Options(final List<Option> opts) {
-		for (Option opt : opts) {
-			if (opt == null) {
-				throw new NullPointerException("Option(s) must not be null");
-			}
-		}
-		this.options = new ArrayList<Option>(opts);
+	public AbstractOptions(final AbstractOption... abstractOpts) {
+		this(Arrays.asList(abstractOpts));
 	}
 	
-	public Options(final Option... opts) {
-		this(Arrays.asList(opts));
+	public AbstractOptions(final List<AbstractOption> abstractOpts) {
+		for (AbstractOption abstractOpt : abstractOpts) {
+			if (abstractOpt == null) {
+				throw new NullPointerException(
+						"AbstractOption(s) must not be null");
+			}
+		}
+		this.abstractOptions = new ArrayList<AbstractOption>(abstractOpts);
 	}
 	
 	public void printHelpText() {
@@ -35,8 +36,8 @@ public final class Options {
 	public void printHelpText(final PrintWriter s) {
 		boolean earlierHelpTextNotNull = false;
 		String lineSeparator = System.getProperty("line.separator");
-		for (Option option : this.options) {
-			String helpText = option.getHelpText();
+		for (AbstractOption abstractOption : this.abstractOptions) {
+			String helpText = abstractOption.getHelpText();
 			if (helpText != null) {
 				if (earlierHelpTextNotNull) {
 					s.write(lineSeparator);
@@ -60,18 +61,18 @@ public final class Options {
 	
 	public void printUsage(final PrintWriter s) {
 		boolean earlierUsageNotNull = false;
-		for (Option option : this.options) {
-			Option firstDisplayableOption = null;
-			for (Option opt : option.getAllOptions()) {
-				if (!opt.isHidden() && !opt.isSpecial()) {
-					firstDisplayableOption = opt;
+		for (AbstractOption abstractOption : this.abstractOptions) {
+			AbstractOption firstDisplayableAbstractOption = null;
+			for (AbstractOption abstractOpt : abstractOption.getAllAbstractOptions()) {
+				if (!abstractOpt.isHidden() && !abstractOpt.isSpecial()) {
+					firstDisplayableAbstractOption = abstractOpt;
 					break;
 				}
 			}
-			if (firstDisplayableOption == null) { 
+			if (firstDisplayableAbstractOption == null) { 
 				continue; 
 			} 
-			String usage = firstDisplayableOption.getUsage();
+			String usage = firstDisplayableAbstractOption.getUsage();
 			if (usage != null) {
 				if (earlierUsageNotNull) {
 					s.write(" ");
@@ -85,16 +86,16 @@ public final class Options {
 		}
 	}
 	
-	public List<Option> toList() {
-		return Collections.unmodifiableList(this.options);
+	public List<AbstractOption> toList() {
+		return Collections.unmodifiableList(this.abstractOptions);
 	}
 
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
 		builder.append(this.getClass().getSimpleName())
-			.append(" [options=")
-			.append(this.options)
+			.append(" [abstractOptions=")
+			.append(this.abstractOptions)
 			.append("]");
 		return builder.toString();
 	}

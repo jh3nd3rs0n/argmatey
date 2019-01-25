@@ -2,9 +2,9 @@ package argmatey;
 
 import java.util.List;
 
-public final class GnuLongOption extends Option {
+public final class GnuLongOption extends AbstractOption {
 
-	public static final class Builder extends Option.Builder {
+	public static final class Builder extends AbstractOption.Builder {
 
 		public Builder(final String optName) {
 			super(optName, "--".concat(optName));
@@ -16,28 +16,28 @@ public final class GnuLongOption extends Option {
 		}
 		
 		@Override
-		public Builder builders(final argmatey.Option.Builder bldr) {
+		public Builder builders(final argmatey.AbstractOption.Builder bldr) {
 			super.builders(bldr);
 			return this;
 		}
 		
 		@Override
-		public Builder builders(final argmatey.Option.Builder bldr1,
-				final argmatey.Option.Builder bldr2) {
+		public Builder builders(final argmatey.AbstractOption.Builder bldr1,
+				final argmatey.AbstractOption.Builder bldr2) {
 			super.builders(bldr1, bldr2);
 			return this;
 		}
 		
 		@Override
-		public Builder builders(final argmatey.Option.Builder bldr1,
-				final argmatey.Option.Builder bldr2,
-				final argmatey.Option.Builder... additionalBldrs) {
+		public Builder builders(final argmatey.AbstractOption.Builder bldr1,
+				final argmatey.AbstractOption.Builder bldr2,
+				final argmatey.AbstractOption.Builder... additionalBldrs) {
 			super.builders(bldr1, bldr2, additionalBldrs);
 			return this;
 		}
 		
 		@Override
-		public Builder builders(final List<argmatey.Option.Builder> bldrs) {
+		public Builder builders(final List<argmatey.AbstractOption.Builder> bldrs) {
 			super.builders(bldrs);
 			return this;
 		}

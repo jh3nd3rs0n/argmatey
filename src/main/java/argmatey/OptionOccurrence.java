@@ -64,8 +64,8 @@ public final class OptionOccurrence implements ParseResult {
 		return this.optionArg != null;
 	}
 	
-	public boolean hasOptionFrom(final Option opt) {
-		return opt.getAllOptions().contains(this.option);
+	public boolean hasOptionFrom(final AbstractOption abstractOpt) {
+		return abstractOpt.getAllAbstractOptions().contains(this.option);
 	}
 	
 	public boolean hasOptionOf(final String opt) {
