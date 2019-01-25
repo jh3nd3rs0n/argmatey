@@ -1,19 +1,17 @@
 package argmatey;
 
-import java.util.List;
-
 public enum DefaultOptionHelpTextProvider implements OptionHelpTextProvider {
 
 	INSTANCE; 
 	
 	@Override
 	public String getOptionHelpText(
-			final List<DocumentableOption> documentableOptions) {
+			final DocumentableOption documentableOption) {
 		String helpText = null;
 		StringBuilder sb = null;
 		boolean earlierUsageNotNull = false;
-		String doc = null;
-		for (DocumentableOption documentableOpt : documentableOptions) {
+		for (DocumentableOption documentableOpt : 
+			documentableOption.getAllDocumentableOptions()) {
 			if (!documentableOpt.isHidden()) {
 				String usage = documentableOpt.getUsage();
 				if (usage != null) {
@@ -30,11 +28,9 @@ public enum DefaultOptionHelpTextProvider implements OptionHelpTextProvider {
 					}
 				}
 			}
-			if (doc == null) {
-				doc = documentableOpt.getDoc();
-			}
 		}
 		if (sb != null) {
+			String doc = documentableOption.getDoc();
 			if (doc != null) {
 				sb.append(System.getProperty("line.separator"));
 				sb.append("      ");

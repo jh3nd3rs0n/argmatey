@@ -493,8 +493,8 @@ public final class ArgsParser {
 		if (abstractOptsList.size() > 0) {
 			Map<String, Option> optsMap = new HashMap<String, Option>();
 			for (AbstractOption abstractOpt : abstractOptsList) {
-				for (AbstractOption o : abstractOpt.getAllAbstractOptions()) {
-					optsMap.put(o.toString(), o);
+				for (Option opt : abstractOpt.getAllOptions()) {
+					optsMap.put(opt.toString(), opt);
 				}
 			}
 			ArgParserContextProperties properties = 

@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public abstract class AbstractOption implements Option, DocumentableOption {
+public abstract class AbstractOption implements DocumentableOption {
 
 	public static abstract class Builder {
 		
@@ -228,36 +228,62 @@ public abstract class AbstractOption implements Option, DocumentableOption {
 		}
 		return Collections.unmodifiableList(allAbstractOptions);
 	}
-
+	
+	@Override
+	public final List<DocumentableOption> getAllDocumentableOptions() {
+		List<DocumentableOption> allDocumentableOptions = 
+				new ArrayList<DocumentableOption>();
+		allDocumentableOptions.addAll(this.getAllAbstractOptions());
+		return Collections.unmodifiableList(allDocumentableOptions);
+	}
+	
+	@Override
+	public final List<Option> getAllOptions() {
+		List<Option> allOptions = new ArrayList<Option>();
+		allOptions.addAll(this.getAllAbstractOptions());
+		return Collections.unmodifiableList(allOptions);
+	}
+	
 	@Override
 	public final String getDoc() {
 		return this.doc;
 	}
 
+	@Override
+	public final List<DocumentableOption> getDocumentableOptions() {
+		List<DocumentableOption> documentableOptions = 
+				new ArrayList<DocumentableOption>();
+		documentableOptions.addAll(this.abstractOptions);
+		return Collections.unmodifiableList(documentableOptions);
+	}
+	
 	public final String getHelpText() {
 		String helpText = null;
 		if (this.optionHelpTextProvider != null) {
-			List<DocumentableOption> documentableOptions = 
-					new ArrayList<DocumentableOption>();
-			documentableOptions.addAll(this.getAllAbstractOptions());
-			helpText = this.optionHelpTextProvider.getOptionHelpText(
-					documentableOptions);
+			helpText = this.optionHelpTextProvider.getOptionHelpText(this);
 		}
 		return helpText;
 	}
-	
+
 	@Override
 	public final String getName() {
 		return this.name;
 	}
-
+	
 	@Override
 	public final OptionArgSpec getOptionArgSpec() {
 		return this.optionArgSpec;
 	}
-	
+
 	public final OptionHelpTextProvider getOptionHelpTextProvider() {
 		return this.optionHelpTextProvider;
+	}
+	
+	@Override
+	public final List<Option> getOptions() {
+		List<Option> options = new ArrayList<Option>();
+		options.addAll(this.abstractOptions);
+		return Collections.unmodifiableList(options);
 	}
 
 	public final OptionUsageProvider getOptionUsageProvider() {
