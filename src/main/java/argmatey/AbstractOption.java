@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public abstract class AbstractOption implements DocumentableOption {
+public abstract class AbstractOption implements DescribableOption {
 
 	public static abstract class Builder {
 		
@@ -230,11 +230,11 @@ public abstract class AbstractOption implements DocumentableOption {
 	}
 	
 	@Override
-	public final List<DocumentableOption> getAllDocumentableOptions() {
-		List<DocumentableOption> allDocumentableOptions = 
-				new ArrayList<DocumentableOption>();
-		allDocumentableOptions.addAll(this.getAllAbstractOptions());
-		return Collections.unmodifiableList(allDocumentableOptions);
+	public final List<DescribableOption> getAllDescribableOptions() {
+		List<DescribableOption> allDescribableOptions = 
+				new ArrayList<DescribableOption>();
+		allDescribableOptions.addAll(this.getAllAbstractOptions());
+		return Collections.unmodifiableList(allDescribableOptions);
 	}
 	
 	@Override
@@ -245,16 +245,16 @@ public abstract class AbstractOption implements DocumentableOption {
 	}
 	
 	@Override
-	public final String getDoc() {
-		return this.doc;
+	public final List<DescribableOption> getDescribableOptions() {
+		List<DescribableOption> describableOptions = 
+				new ArrayList<DescribableOption>();
+		describableOptions.addAll(this.abstractOptions);
+		return Collections.unmodifiableList(describableOptions);
 	}
 
 	@Override
-	public final List<DocumentableOption> getDocumentableOptions() {
-		List<DocumentableOption> documentableOptions = 
-				new ArrayList<DocumentableOption>();
-		documentableOptions.addAll(this.abstractOptions);
-		return Collections.unmodifiableList(documentableOptions);
+	public final String getDoc() {
+		return this.doc;
 	}
 	
 	public final String getHelpText() {

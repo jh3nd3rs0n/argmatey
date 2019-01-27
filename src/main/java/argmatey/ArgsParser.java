@@ -244,7 +244,7 @@ public final class ArgsParser {
 			ArgParserContextProperties properties = 
 					new ArgParserContextProperties(context);
 			if (!(properties.isOptionParsingEnabled()
-					&& arg.equals(EndOfOptionsDelimiter.STRING))) {
+					&& arg.equals(EndOfOptionsDelimiter.INSTANCE.toString()))) {
 				return this.getArgParser().parse(arg, context);
 			}
 			properties.setOptionParsingEnabled(false);

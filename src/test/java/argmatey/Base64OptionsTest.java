@@ -32,11 +32,11 @@ public class Base64OptionsTest {
 
 				@Override
 				public String getOptionHelpText(
-						final DocumentableOption documentableOption) {
+						final DescribableOption describableOption) {
 					StringBuilder sb = new StringBuilder();
 					sb.append("OPTIONS:");
 					sb.append(System.getProperty("line.separator"));
-					sb.append(DefaultOptionHelpTextProvider.INSTANCE.getOptionHelpText(documentableOption));
+					sb.append(DefaultOptionHelpTextProvider.INSTANCE.getOptionHelpText(describableOption));
 					return sb.toString();
 				}
 				
@@ -91,9 +91,9 @@ public class Base64OptionsTest {
 
 				@Override
 				public String getOptionHelpText(
-						final DocumentableOption documentableOption) {
+						final DescribableOption describableOption) {
 					StringBuilder sb = new StringBuilder();
-					sb.append(DefaultOptionHelpTextProvider.INSTANCE.getOptionHelpText(documentableOption));
+					sb.append(DefaultOptionHelpTextProvider.INSTANCE.getOptionHelpText(describableOption));
 					sb.append(System.getProperty("line.separator"));
 					return sb.toString();
 				}

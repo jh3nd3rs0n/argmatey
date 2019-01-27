@@ -5,15 +5,14 @@ public enum DefaultOptionHelpTextProvider implements OptionHelpTextProvider {
 	INSTANCE; 
 	
 	@Override
-	public String getOptionHelpText(
-			final DocumentableOption documentableOption) {
+	public String getOptionHelpText(final DescribableOption describableOption) {
 		String helpText = null;
 		StringBuilder sb = null;
 		boolean earlierUsageNotNull = false;
-		for (DocumentableOption documentableOpt : 
-			documentableOption.getAllDocumentableOptions()) {
-			if (!documentableOpt.isHidden()) {
-				String usage = documentableOpt.getUsage();
+		for (DescribableOption describableOpt : 
+			describableOption.getAllDescribableOptions()) {
+			if (!describableOpt.isHidden()) {
+				String usage = describableOpt.getUsage();
 				if (usage != null) {
 					if (sb == null) {
 						sb = new StringBuilder();
@@ -30,7 +29,7 @@ public enum DefaultOptionHelpTextProvider implements OptionHelpTextProvider {
 			}
 		}
 		if (sb != null) {
-			String doc = documentableOption.getDoc();
+			String doc = describableOption.getDoc();
 			if (doc != null) {
 				sb.append(System.getProperty("line.separator"));
 				sb.append("      ");
