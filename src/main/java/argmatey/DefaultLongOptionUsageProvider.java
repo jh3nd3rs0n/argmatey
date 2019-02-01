@@ -7,15 +7,15 @@ public enum DefaultLongOptionUsageProvider implements OptionUsageProvider {
 	@Override
 	public String getOptionUsage(final OptionUsageParams params) {
 		String usage = null;
+		String option = params.getOption();
 		OptionArgSpec optionArgSpec = params.getOptionArgSpec();
 		if (optionArgSpec == null) {
-			usage = params.getOption();
+			usage = option;
 		} else {
 			if (optionArgSpec.isOptional()) {
-				usage = params.toString();
+				usage = option;
 			} else {
-				usage = String.format(
-						"%s %s", params.getOption(), optionArgSpec.getName());
+				usage = String.format("%s %s", option, optionArgSpec.getName());
 			}
 		}		
 		return usage;

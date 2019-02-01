@@ -128,97 +128,6 @@ public abstract class Option {
 		
 	}
 	
-	private static final class OptionHelpTextParamsImpl 
-		implements OptionHelpTextParams {
-
-		private final Option option;
-		private final List<OptionHelpTextParams> otherOptionHelpTextParams;
-		
-		private OptionHelpTextParamsImpl(final Option opt) {
-			this.option = opt;
-			this.otherOptionHelpTextParams = 
-					new ArrayList<OptionHelpTextParams>();
-			for (Option o : opt.getOtherOptions()) {
-				this.otherOptionHelpTextParams.add(
-						new OptionHelpTextParamsImpl(o));
-			}
-		}
-		
-		@Override
-		public List<OptionHelpTextParams> getAllOptionHelpTextParams() {
-			List<OptionHelpTextParams> allOptionHelpTextParams = 
-					new ArrayList<OptionHelpTextParams>();
-			allOptionHelpTextParams.add(this);
-			allOptionHelpTextParams.addAll(
-					this.getAllOtherOptionHelpTextParams());
-			return Collections.unmodifiableList(allOptionHelpTextParams);
-		}
-		
-		@Override
-		public List<OptionHelpTextParams> getAllOtherOptionHelpTextParams() {
-			List<OptionHelpTextParams> allOtherOptionHelpTextParams =
-					new ArrayList<OptionHelpTextParams>();
-			for (OptionHelpTextParams otherParams : this.otherOptionHelpTextParams) {
-				allOtherOptionHelpTextParams.add(otherParams);
-				allOtherOptionHelpTextParams.addAll(
-						otherParams.getAllOtherOptionHelpTextParams());
-			}
-			return Collections.unmodifiableList(allOtherOptionHelpTextParams);
-		}
-
-		@Override
-		public String getDoc() {
-			return this.option.getDoc();
-		}
-
-		@Override
-		public String getOption() {
-			return this.option.toString();
-		}
-
-		@Override
-		public OptionArgSpec getOptionArgSpec() {
-			return this.option.getOptionArgSpec();
-		}
-
-		@Override
-		public List<OptionHelpTextParams> getOtherOptionHelpTextParams() {
-			return Collections.unmodifiableList(this.otherOptionHelpTextParams);
-		}
-
-		@Override
-		public String getUsage() {
-			return this.option.getUsage();
-		}
-
-		@Override
-		public boolean isHidden() {
-			return this.option.isHidden();
-		}
-		
-	}
-	
-	private static final class OptionUsageParamsImpl 
-		implements OptionUsageParams {
-
-		private final Option option;
-		
-		private OptionUsageParamsImpl(final Option opt) {
-			this.option = opt;
-		}
-		
-		@Override
-		public String getOption() {
-			return this.option.toString();
-		}
-
-		@Override
-		public OptionArgSpec getOptionArgSpec() {
-			return this.option.getOptionArgSpec();
-		}
-				
-	}
-	
 	private static final Map<Class<? extends Option>, OptionUsageProvider> DEFAULT_OPTION_USAGE_PROVIDERS =
 			new HashMap<Class<? extends Option>, OptionUsageProvider>();
 	
@@ -340,7 +249,7 @@ public abstract class Option {
 		String helpText = null;
 		if (this.optionHelpTextProvider != null) {
 			helpText = this.optionHelpTextProvider.getOptionHelpText(
-					new OptionHelpTextParamsImpl(this));
+					new OptionHelpTextParams(this));
 		}
 		return helpText;
 	}
@@ -369,7 +278,7 @@ public abstract class Option {
 		String usage = null;
 		if (this.optionUsageProvider != null) {
 			usage = this.optionUsageProvider.getOptionUsage(
-					new OptionUsageParamsImpl(this));
+					new OptionUsageParams(this));
 		}
 		return usage;
 	}
