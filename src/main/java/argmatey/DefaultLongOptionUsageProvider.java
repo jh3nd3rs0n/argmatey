@@ -12,10 +12,21 @@ public enum DefaultLongOptionUsageProvider implements OptionUsageProvider {
 		if (optionArgSpec == null) {
 			usage = option;
 		} else {
+			String optionArgSeparator = optionArgSpec.getSeparator();
+			String optionArgName = optionArgSpec.getName();
 			if (optionArgSpec.isOptional()) {
 				usage = option;
 			} else {
-				usage = String.format("%s %s", option, optionArgSpec.getName());
+				if (optionArgSeparator.equals(
+						OptionArgSpec.DEFAULT_SEPARATOR)) {
+					usage = String.format("%s %s", option, optionArgName);
+				} else {
+					usage = String.format(
+							"%1$s %2$s1[%3$s%2$s2]...", 
+							option,
+							optionArgName,
+							optionArgSeparator);
+				}
 			}
 		}		
 		return usage;
