@@ -24,8 +24,8 @@ public final class IllegalOptionArgException extends RuntimeException {
 	 * inappropriate command line option argument
 	 * @param optionArg the provided illegal or inappropriate command line 
 	 * option argument
-	 * @param message the specified detail message
-	 * @param cause the provided cause
+	 * @param message the specified detail message (can be {@code null})
+	 * @param cause the provided cause (can be {@code null})
 	 * @return the specified detail message or a created detail message appended 
 	 * with or without a {@code String} representation of the provided cause 
 	 */
@@ -84,7 +84,7 @@ public final class IllegalOptionArgException extends RuntimeException {
 	 * command line option argument
 	 * @param optArg the provided illegal or inappropriate command line option 
 	 * argument
-	 * @param message the specified detail message
+	 * @param message the specified detail message (can be {@code null})
 	 */
 	public IllegalOptionArgException(
 			final Option opt, 
@@ -103,8 +103,8 @@ public final class IllegalOptionArgException extends RuntimeException {
 	 * command line option argument
 	 * @param optArg the provided illegal or inappropriate command line option 
 	 * argument
-	 * @param message the specified detail message
-	 * @param cause the provided cause
+	 * @param message the specified detail message (can be {@code null})
+	 * @param cause the provided cause (can be {@code null})
 	 */
 	public IllegalOptionArgException(
 			final Option opt, 
@@ -126,7 +126,7 @@ public final class IllegalOptionArgException extends RuntimeException {
 	 * command line option argument
 	 * @param optArg the provided illegal or inappropriate command line option 
 	 * argument
-	 * @param cause the provided cause
+	 * @param cause the provided cause (can be {@code null})
 	 */
 	public IllegalOptionArgException(
 			final Option opt, 

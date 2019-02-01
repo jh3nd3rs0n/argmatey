@@ -23,77 +23,77 @@ public class Base64OptionsTest {
 	
 	private final String lineSeparator = System.getProperty("line.separator");
 	
-	private final AbstractOption dPosixOption = new PosixOption.Builder('d')
-			.builders(
-					new LongOption.Builder("decode"),
-					new GnuLongOption.Builder("decode"))
+	private final Option dPosixOption = new PosixOption.Builder('d')
 			.doc("decode data")
 			.optionHelpTextProvider(new OptionHelpTextProvider() {
 
 				@Override
 				public String getOptionHelpText(
-						final DescribableOption describableOption) {
+						final OptionHelpTextParams params) {
 					StringBuilder sb = new StringBuilder();
 					sb.append("OPTIONS:");
 					sb.append(System.getProperty("line.separator"));
-					sb.append(DefaultOptionHelpTextProvider.INSTANCE.getOptionHelpText(describableOption));
+					sb.append(DefaultOptionHelpTextProvider.INSTANCE.getOptionHelpText(params));
 					return sb.toString();
 				}
 				
 			})
+			.otherBuilders(
+					new LongOption.Builder("decode"),
+					new GnuLongOption.Builder("decode"))
 			.build();
 	
-	private final AbstractOption decodeLongOption = 
-			this.dPosixOption.getAbstractOptions().get(0);
+	private final Option decodeLongOption = 
+			this.dPosixOption.getOtherOptions().get(0);
 	
-	private final AbstractOption decodeGnuLongOption = 
-			this.dPosixOption.getAbstractOptions().get(1);
+	private final Option decodeGnuLongOption = 
+			this.dPosixOption.getOtherOptions().get(1);
 	
-	private final AbstractOption iPosixOption = new PosixOption.Builder('i')
-			.builders(
+	private final Option iPosixOption = new PosixOption.Builder('i')
+			.doc("when decoding, ignore non-alphabet characters")
+			.otherBuilders(
 					new LongOption.Builder("ignore-garbage"),
 					new GnuLongOption.Builder("ignore-garbage"))
-			.doc("when decoding, ignore non-alphabet characters")
 			.build(); 
 	
-	private final AbstractOption ignoreGarbageLongOption = 
-			this.iPosixOption.getAbstractOptions().get(0);
+	private final Option ignoreGarbageLongOption = 
+			this.iPosixOption.getOtherOptions().get(0);
 	
-	private final AbstractOption ignoreGarbageGnuLongOption = 
-			this.iPosixOption.getAbstractOptions().get(1);
+	private final Option ignoreGarbageGnuLongOption = 
+			this.iPosixOption.getOtherOptions().get(1);
 	
-	private final AbstractOption wPosixOption = new PosixOption.Builder('w')
-			.builders(
-					new LongOption.Builder("wrap"),
-					new GnuLongOption.Builder("wrap"))
+	private final Option wPosixOption = new PosixOption.Builder('w')
 			.doc("wrap encoded lines after COLS character (default 76)."
 					+ this.lineSeparator + "      Use 0 to disable line wrapping")
 			.optionArgSpec(new OptionArgSpec.Builder()
 					.name("COLS")
 					.type(Integer.class)
 					.build())
+			.otherBuilders(
+					new LongOption.Builder("wrap"),
+					new GnuLongOption.Builder("wrap"))
 			.build(); 
 	
-	private final AbstractOption wrapLongOption = 
-			this.wPosixOption.getAbstractOptions().get(0);
+	private final Option wrapLongOption = 
+			this.wPosixOption.getOtherOptions().get(0);
 	
-	private final AbstractOption wrapGnuLongOption = 
-			this.wPosixOption.getAbstractOptions().get(1);
+	private final Option wrapGnuLongOption = 
+			this.wPosixOption.getOtherOptions().get(1);
 	
-	private final AbstractOption helpGnuLongOption = new GnuLongOption.Builder("help")
+	private final Option helpGnuLongOption = new GnuLongOption.Builder("help")
 			.doc("display this help and exit")
 			.special(true)
 			.build(); 
 	
-	private final AbstractOption versionGnuLongOption = new GnuLongOption.Builder("version")
+	private final Option versionGnuLongOption = new GnuLongOption.Builder("version")
 			.doc("display version information and exit")
 			.optionHelpTextProvider(new OptionHelpTextProvider() {
 
 				@Override
 				public String getOptionHelpText(
-						final DescribableOption describableOption) {
+						final OptionHelpTextParams params) {
 					StringBuilder sb = new StringBuilder();
-					sb.append(DefaultOptionHelpTextProvider.INSTANCE.getOptionHelpText(describableOption));
+					sb.append(DefaultOptionHelpTextProvider.INSTANCE.getOptionHelpText(params));
 					sb.append(System.getProperty("line.separator"));
 					return sb.toString();
 				}
@@ -102,7 +102,7 @@ public class Base64OptionsTest {
 			.special(true)
 			.build(); 
 	
-	private final AbstractOptions abstractOptions = new AbstractOptions(
+	private final Options options = new Options(
 			this.dPosixOption,
 			this.iPosixOption,
 			this.wPosixOption,
@@ -113,7 +113,7 @@ public class Base64OptionsTest {
 	public void testArgs() {
 		
 		ArgsParser argsParser = ArgsParser.newInstance(
-				this.args, this.abstractOptions, false);
+				this.args, this.options, false);
 		
 		List<ParseResult> expected = new ArrayList<ParseResult>();
 		expected.add(new OptionOccurrence(this.dPosixOption, null));
@@ -165,7 +165,7 @@ public class Base64OptionsTest {
 	public void testFinalArgCharIndex() {
 		
 		ArgsParser argsParser = ArgsParser.newInstance(
-				this.args, this.abstractOptions, false);
+				this.args, this.options, false);
 		
 		while (argsParser.hasNext()) {
 			argsParser.parseNext();
@@ -178,7 +178,7 @@ public class Base64OptionsTest {
 	public void testFinalArgIndex() {
 		
 		ArgsParser argsParser = ArgsParser.newInstance(
-				this.args, this.abstractOptions, false);
+				this.args, this.options, false);
 		
 		while (argsParser.hasNext()) {
 			argsParser.parseNext();
@@ -219,7 +219,7 @@ public class Base64OptionsTest {
 		
 		StringWriter sw2 = new StringWriter();
 		PrintWriter pw = new PrintWriter(sw2);
-		this.abstractOptions.printHelpText(pw);
+		this.options.printHelpText(pw);
 		pw.flush();
 		sw2.flush();
 		
@@ -235,7 +235,7 @@ public class Base64OptionsTest {
 		
 		StringWriter sw2 = new StringWriter();
 		PrintWriter pw = new PrintWriter(sw2);
-		this.abstractOptions.printUsage(pw);
+		this.options.printUsage(pw);
 		pw.flush();
 		sw2.flush();
 		

@@ -5,16 +5,18 @@ public enum DefaultPosixOptionUsageProvider implements OptionUsageProvider {
 	INSTANCE;
 	
 	@Override
-	public String getOptionUsage(final Option option) {
+	public String getOptionUsage(final OptionUsageParams params) {
 		String usage = null;
-		OptionArgSpec optionArgSpec = option.getOptionArgSpec();
+		OptionArgSpec optionArgSpec = params.getOptionArgSpec();
 		if (optionArgSpec == null) {
-			usage = option.toString();
+			usage = params.getOption();
 		} else {
 			if (optionArgSpec.isOptional()) {
-				usage = String.format("%s[%s]", option, optionArgSpec.getName());
+				usage = String.format(
+						"%s[%s]", params.getOption(), optionArgSpec.getName());
 			} else {
-				usage = String.format("%s %s", option, optionArgSpec.getName());
+				usage = String.format(
+						"%s %s", params.getOption(), optionArgSpec.getName());
 			}
 		}
 		return usage;

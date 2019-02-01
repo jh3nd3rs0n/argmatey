@@ -461,7 +461,7 @@ public final class ArgsParser {
 	
 	public static ArgsParser newInstance(
 			final String[] args, 
-			final AbstractOptions abstractOptions, 
+			final Options options, 
 			final boolean posixlyCorrect) {
 		ArgParser endOfOptionsArgParser = null;
 		if (posixlyCorrect) {
@@ -469,32 +469,32 @@ public final class ArgsParser {
 		}
 		ArgParser argParser = new GnuLongOptionParser(new LongOptionParser(
 				new EndOfOptionsDelimiterParser(endOfOptionsArgParser)));
-		return new ArgsParser(args, abstractOptions, argParser);
+		return new ArgsParser(args, options, argParser);
 	}
 	
-	private final AbstractOptions abstractOptions;
 	private final ArgParser argParser;
 	private ArgParserContext argParserContext;
+	private final Options options;
 		
 	private ArgsParser(
 			final String[] args, 
-			final AbstractOptions abstractOpts, 
+			final Options opts, 
 			final ArgParser parser) {
 		for (String arg : args) {
 			if (arg == null) {
 				throw new NullPointerException("argument(s) must not be null");
 			}
 		}
-		if (abstractOpts == null) {
-			throw new NullPointerException("AbstractOptions must not be null");
+		if (opts == null) {
+			throw new NullPointerException("Options must not be null");
 		}
 		ArgParserContext parserContext = new ArgParserContext(args);
-		List<AbstractOption> abstractOptsList = abstractOpts.toList();
-		if (abstractOptsList.size() > 0) {
+		List<Option> optsList = opts.toList();
+		if (optsList.size() > 0) {
 			Map<String, Option> optsMap = new HashMap<String, Option>();
-			for (AbstractOption abstractOpt : abstractOptsList) {
-				for (Option opt : abstractOpt.getAllOptions()) {
-					optsMap.put(opt.toString(), opt);
+			for (Option opt : optsList) {
+				for (Option o : opt.getAllOptions()) {
+					optsMap.put(o.toString(), o);
 				}
 			}
 			ArgParserContextProperties properties = 
@@ -504,13 +504,9 @@ public final class ArgsParser {
 		}
 		this.argParser = parser;
 		this.argParserContext = parserContext;
-		this.abstractOptions = abstractOpts;
+		this.options = opts;
 	}
 
-	public AbstractOptions getAbstractOptions() {
-		return this.abstractOptions;
-	}
-	
 	public int getArgCharIndex() {
 		return this.argParserContext.getArgCharIndex();
 	}
@@ -521,6 +517,10 @@ public final class ArgsParser {
 	
 	public String[] getArgs() {
 		return this.argParserContext.getArgs();
+	}
+	
+	public Options getOptions() {
+		return this.options;
 	}
 	
 	public boolean hasNext() {
@@ -609,8 +609,8 @@ public final class ArgsParser {
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
 		builder.append(this.getClass().getSimpleName())
-			.append(" [abstractOptions=")
-			.append(this.abstractOptions)
+			.append(" [options=")
+			.append(this.options)
 			.append(", getArgCharIndex()=")
 			.append(this.getArgCharIndex())
 			.append(", getArgIndex()=")

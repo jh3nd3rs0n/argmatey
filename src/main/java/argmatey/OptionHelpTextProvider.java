@@ -2,6 +2,6 @@ package argmatey;
 
 public interface OptionHelpTextProvider {
 
-	String getOptionHelpText(DescribableOption describableOption);
+	String getOptionHelpText(OptionHelpTextParams params);
 	
 }
