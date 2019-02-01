@@ -2,13 +2,17 @@ package argmatey;
 
 import java.util.List;
 
-public interface OptionHelpTextParams extends OptionUsageParams {
-
+public interface OptionHelpTextParams {
+	
 	List<OptionHelpTextParams> getAllOptionHelpTextParams();
 	
 	List<OptionHelpTextParams> getAllOtherOptionHelpTextParams();
-	
+
 	String getDoc();
+	
+	String getOption();
+	
+	OptionArgSpec getOptionArgSpec();
 	
 	List<OptionHelpTextParams> getOtherOptionHelpTextParams();
 	

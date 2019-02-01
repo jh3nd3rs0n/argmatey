@@ -237,6 +237,11 @@ public abstract class Option {
 	public static OptionHelpTextProvider getDefaultOptionHelpTextProvider() {
 		return defaultOptionHelpTextProvider;
 	}
+
+	public static OptionUsageProvider getDefaultOptionUsageProvider(
+			final Class<? extends Option> optClass) {
+		return DEFAULT_OPTION_USAGE_PROVIDERS.get(optClass);
+	}
 	
 	public static Map<Class<? extends Option>, OptionUsageProvider> getDefaultOptionUsageProviders() {
 		return Collections.unmodifiableMap(DEFAULT_OPTION_USAGE_PROVIDERS);
@@ -284,7 +289,7 @@ public abstract class Option {
 			optHelpTextProvider = getDefaultOptionHelpTextProvider();
 		}
 		if (!builder.optionUsageProviderSet) {
-			optUsageProvider = getDefaultOptionUsageProviders().get(this.getClass());
+			optUsageProvider = getDefaultOptionUsageProvider(this.getClass());
 		}
 		List<Option> otherOpts = new ArrayList<Option>();
 		for (Builder otherBldr : otherBldrs) {
