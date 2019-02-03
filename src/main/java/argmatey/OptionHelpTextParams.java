@@ -10,11 +10,13 @@ public final class OptionHelpTextParams {
 	private final List<OptionHelpTextParams> otherOptionHelpTextParams;
 	
 	OptionHelpTextParams(final Option opt) {
-		this.option = opt;
-		this.otherOptionHelpTextParams = new ArrayList<OptionHelpTextParams>();
+		List<OptionHelpTextParams> otherParams = 
+				new ArrayList<OptionHelpTextParams>();
 		for (Option o : opt.getOtherOptions()) {
-			this.otherOptionHelpTextParams.add(new OptionHelpTextParams(o));
+			otherParams.add(new OptionHelpTextParams(o));
 		}
+		this.option = opt;
+		this.otherOptionHelpTextParams = otherParams;
 	}
 	
 	public List<OptionHelpTextParams> getAllOptionHelpTextParams() {

@@ -55,6 +55,36 @@ public final class OptionArg {
 		return true;
 	}
 
+	public Object getObjectValue() {
+		return this.objectValues.get(0);
+	}
+	
+	public List<Object> getObjectValues() {
+		return Collections.unmodifiableList(this.objectValues);
+	}
+	
+	public List<OptionArg> getOptionArgs() {
+		List<OptionArg> optArgs = new ArrayList<OptionArg>();
+		if (this.optionArgs.size() == 0) {
+			optArgs.add(this);
+		} else {
+			optArgs.addAll(this.optionArgs);
+		}
+		return Collections.unmodifiableList(optArgs);
+	}
+	
+	public <T> T getTypeValue(final Class<T> type) {
+		return type.cast(this.getObjectValue());
+	}
+	
+	public <T> List<T> getTypeValues(final Class<T> type) {
+		List<T> typeValues = new ArrayList<T>();
+		for (Object objectValue : this.getObjectValues()) {
+			typeValues.add(type.cast(objectValue));
+		}
+		return Collections.unmodifiableList(typeValues);
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -65,39 +95,9 @@ public final class OptionArg {
 		return result;
 	}
 	
-	public Object toObjectValue() {
-		return this.objectValues.get(0);
-	}
-	
-	public List<Object> toObjectValues() {
-		return Collections.unmodifiableList(this.objectValues);
-	}
-	
-	public List<OptionArg> toOptionArgs() {
-		List<OptionArg> optArgs = new ArrayList<OptionArg>();
-		if (this.optionArgs.size() == 0) {
-			optArgs.add(this);
-		} else {
-			optArgs.addAll(this.optionArgs);
-		}
-		return Collections.unmodifiableList(optArgs);
-	}
-	
 	@Override
 	public String toString() {
 		return this.string;
-	}
-	
-	public <T> T toTypeValue(final Class<T> type) {
-		return type.cast(this.toObjectValue());
-	}
-	
-	public <T> List<T> toTypeValues(final Class<T> type) {
-		List<T> typeValues = new ArrayList<T>();
-		for (Object objectValue : this.toObjectValues()) {
-			typeValues.add(type.cast(objectValue));
-		}
-		return Collections.unmodifiableList(typeValues);
 	}
 	
 }

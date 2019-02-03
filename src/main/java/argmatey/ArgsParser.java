@@ -205,7 +205,7 @@ public final class ArgsParser {
 		
 		@Override
 		public ParseResult parse(final String arg, final ArgParserContext context) {
-			return new NonparsedArg(arg);
+			return new ParseResult(arg);
 		}
 		
 		@Override
@@ -248,7 +248,7 @@ public final class ArgsParser {
 				return this.getArgParser().parse(arg, context);
 			}
 			properties.setOptionParsingEnabled(false);
-			return EndOfOptionsDelimiter.INSTANCE;
+			return new ParseResult(EndOfOptionsDelimiter.INSTANCE);
 		}
 
 	}
@@ -266,7 +266,7 @@ public final class ArgsParser {
 		}
 
 		@Override
-		protected OptionOccurrence parseOption(
+		protected ParseResult parseOption(
 				final String arg, final ArgParserContext context) {
 			String option = arg;
 			String optionArg = null;
@@ -292,7 +292,8 @@ public final class ArgsParser {
 					optionArg = args[argIndex];
 				}
 			}
-			return new OptionOccurrence(opt, opt.newOptionArg(optionArg));
+			return new ParseResult(
+					new OptionOccurrence(opt, opt.newOptionArg(optionArg)));
 		}
 		
 	}
@@ -312,7 +313,7 @@ public final class ArgsParser {
 		}
 
 		@Override
-		protected OptionOccurrence parseOption(
+		protected ParseResult parseOption(
 				final String arg, final ArgParserContext context) {
 			String option = arg;
 			ArgParserContextProperties properties = 
@@ -344,7 +345,8 @@ public final class ArgsParser {
 					optionArg = args[argIndex];
 				}
 			}
-			return new OptionOccurrence(opt, opt.newOptionArg(optionArg));
+			return new ParseResult(
+					new OptionOccurrence(opt, opt.newOptionArg(optionArg)));
 		}
 		
 	}
@@ -394,7 +396,7 @@ public final class ArgsParser {
 			return this.parseOption(arg, context);
 		}
 
-		protected abstract OptionOccurrence parseOption(
+		protected abstract ParseResult parseOption(
 				final String arg, final ArgParserContext context);
 		
 	}
@@ -414,7 +416,7 @@ public final class ArgsParser {
 		}
 
 		@Override
-		protected OptionOccurrence parseOption(
+		protected ParseResult parseOption(
 				final String arg, final ArgParserContext context) {
 			int argCharIndex = context.getArgCharIndex();
 			if (argCharIndex == -1) { /* not incremented yet */
@@ -455,7 +457,8 @@ public final class ArgsParser {
 					}
 				}
 			}
-			return new OptionOccurrence(opt, opt.newOptionArg(optionArg));
+			return new ParseResult(
+					new OptionOccurrence(opt, opt.newOptionArg(optionArg)));
 		}		
 	}
 	
