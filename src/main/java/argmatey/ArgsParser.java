@@ -205,7 +205,7 @@ public final class ArgsParser {
 		
 		@Override
 		public ParseResult parse(final String arg, final ArgParserContext context) {
-			return new ParseResult(arg);
+			return ParseResult.newInstance(arg);
 		}
 		
 		@Override
@@ -248,7 +248,7 @@ public final class ArgsParser {
 				return this.getArgParser().parse(arg, context);
 			}
 			properties.setOptionParsingEnabled(false);
-			return new ParseResult(EndOfOptionsDelimiter.INSTANCE);
+			return ParseResult.newInstance(EndOfOptionsDelimiter.INSTANCE);
 		}
 
 	}
@@ -292,8 +292,7 @@ public final class ArgsParser {
 					optionArg = args[argIndex];
 				}
 			}
-			return new ParseResult(
-					new OptionOccurrence(opt, opt.newOptionArg(optionArg)));
+			return ParseResult.newInstance(opt, opt.newOptionArg(optionArg));
 		}
 		
 	}
@@ -345,8 +344,7 @@ public final class ArgsParser {
 					optionArg = args[argIndex];
 				}
 			}
-			return new ParseResult(
-					new OptionOccurrence(opt, opt.newOptionArg(optionArg)));
+			return ParseResult.newInstance(opt, opt.newOptionArg(optionArg));
 		}
 		
 	}
@@ -457,8 +455,7 @@ public final class ArgsParser {
 					}
 				}
 			}
-			return new ParseResult(
-					new OptionOccurrence(opt, opt.newOptionArg(optionArg)));
+			return ParseResult.newInstance(opt, opt.newOptionArg(optionArg));
 		}		
 	}
 	

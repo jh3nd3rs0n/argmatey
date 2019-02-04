@@ -16,34 +16,6 @@ public final class LongOption extends Option {
 		}
 		
 		@Override
-		public Builder otherBuilders(final argmatey.Option.Builder otherBldr) {
-			super.otherBuilders(otherBldr);
-			return this;
-		}
-		
-		@Override
-		public Builder otherBuilders(final argmatey.Option.Builder otherBldr1,
-				final argmatey.Option.Builder otherBldr2) {
-			super.otherBuilders(otherBldr1, otherBldr2);
-			return this;
-		}
-
-		@Override
-		public Builder otherBuilders(final argmatey.Option.Builder otherBldr1,
-				final argmatey.Option.Builder otherBldr2,
-				final argmatey.Option.Builder... additionalOtherBldrs) {
-			super.otherBuilders(otherBldr1, otherBldr2, additionalOtherBldrs);
-			return this;
-		}
-		
-		@Override
-		public Builder otherBuilders(
-				final List<argmatey.Option.Builder> otherBldrs) {
-			super.otherBuilders(otherBldrs);
-			return this;
-		}
-		
-		@Override
 		public Builder doc(final String d) {
 			super.doc(d);
 			return this;
@@ -54,7 +26,7 @@ public final class LongOption extends Option {
 			super.hidden(b);
 			return this;
 		}
-		
+
 		@Override
 		public Builder optionArgSpec(final OptionArgSpec optArgSpec) {
 			super.optionArgSpec(optArgSpec);
@@ -72,6 +44,34 @@ public final class LongOption extends Option {
 		public Builder optionUsageProvider(
 				final OptionUsageProvider optUsageProvider) {
 			super.optionUsageProvider(optUsageProvider);
+			return this;
+		}
+		
+		@Override
+		public Builder otherBuilders(final argmatey.Option.Builder otherBldr) {
+			super.otherBuilders(otherBldr);
+			return this;
+		}
+		
+		@Override
+		public Builder otherBuilders(final argmatey.Option.Builder otherBldr1,
+				final argmatey.Option.Builder otherBldr2) {
+			super.otherBuilders(otherBldr1, otherBldr2);
+			return this;
+		}
+		
+		@Override
+		public Builder otherBuilders(final argmatey.Option.Builder otherBldr1,
+				final argmatey.Option.Builder otherBldr2,
+				final argmatey.Option.Builder... additionalOtherBldrs) {
+			super.otherBuilders(otherBldr1, otherBldr2, additionalOtherBldrs);
+			return this;
+		}
+		
+		@Override
+		public Builder otherBuilders(
+				final List<argmatey.Option.Builder> otherBldrs) {
+			super.otherBuilders(otherBldrs);
 			return this;
 		}
 		
