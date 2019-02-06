@@ -9,6 +9,7 @@ public enum DefaultOptionHelpTextProvider implements OptionHelpTextProvider {
 		String helpText = null;
 		StringBuilder sb = null;
 		boolean earlierUsageNotNull = false;
+		String doc = null;
 		for (OptionHelpTextParams p : params.getAllOptionHelpTextParams()) {
 			if (!p.isHidden()) {
 				String usage = p.getUsage();
@@ -25,10 +26,12 @@ public enum DefaultOptionHelpTextProvider implements OptionHelpTextProvider {
 						earlierUsageNotNull = true;
 					}
 				}
+				if (doc == null) {
+					doc = p.getDoc();
+				}
 			}
 		}
 		if (sb != null) {
-			String doc = params.getDoc();
 			if (doc != null) {
 				sb.append(System.getProperty("line.separator"));
 				sb.append("      ");

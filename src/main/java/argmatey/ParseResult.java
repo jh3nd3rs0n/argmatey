@@ -73,10 +73,6 @@ public final class ParseResult {
 		return null;
 	}
 	
-	public boolean hasEndOfOptionsDelimiter() {
-		return this.getEndOfOptionsDelimiter() != null;
-	}
-	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -85,28 +81,12 @@ public final class ParseResult {
 		return result;
 	}
 	
-	public boolean hasNonparsedArg() {
-		return this.getNonparsedArg() != null;
-	}
-	
-	public boolean hasOption() {
-		return this.getOption() != null;
-	}
-	
-	public boolean hasOptionArg() {
-		return this.getOptionArg() != null;
-	}
-	
 	public boolean hasOptionFrom(final Option opt) {
 		OptionOccurrence optionOccurrence = this.getOptionOccurrence();
 		if (optionOccurrence != null) {
 			return optionOccurrence.hasOptionFrom(opt);
 		}
 		return false;
-	}
-	
-	public boolean hasOptionOccurrence() {
-		return this.getOptionOccurrence() != null;
 	}
 	
 	public boolean hasOptionOf(final String opt) {

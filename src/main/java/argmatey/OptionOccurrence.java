@@ -60,10 +60,6 @@ public final class OptionOccurrence {
 		return result;
 	}
 	
-	public boolean hasOptionArg() {
-		return this.optionArg != null;
-	}
-	
 	public boolean hasOptionFrom(final Option opt) {
 		return opt.getAllOptions().contains(this.option);
 	}
