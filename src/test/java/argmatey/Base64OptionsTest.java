@@ -7,7 +7,6 @@ import static org.junit.Assert.assertTrue;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Test;
@@ -117,33 +116,33 @@ public class Base64OptionsTest {
 				this.args, this.options, false);
 		
 		List<Object> expected = new ArrayList<Object>();
-		expected.add(this.dPosixOption);
-		expected.add(this.iPosixOption);
-		expected.addAll(Arrays.asList(
+		expected.add(new OptionOccurrence(this.dPosixOption, null));
+		expected.add(new OptionOccurrence(this.iPosixOption, null));
+		expected.add(new OptionOccurrence(
 				this.wPosixOption, this.wPosixOption.newOptionArg("1")));
-		expected.add(this.dPosixOption);
-		expected.add(this.iPosixOption);
-		expected.addAll(Arrays.asList(
+		expected.add(new OptionOccurrence(this.dPosixOption, null));
+		expected.add(new OptionOccurrence(this.iPosixOption, null));
+		expected.add(new OptionOccurrence(
 				this.wPosixOption, this.wPosixOption.newOptionArg("21")));
-		expected.addAll(Arrays.asList(
+		expected.add(new OptionOccurrence(
 				this.wPosixOption, this.wPosixOption.newOptionArg("321")));
-		expected.add(this.dPosixOption);
-		expected.add(this.iPosixOption);
-		expected.addAll(Arrays.asList(
+		expected.add(new OptionOccurrence(this.dPosixOption, null));
+		expected.add(new OptionOccurrence(this.iPosixOption, null));
+		expected.add(new OptionOccurrence(
 				this.wPosixOption, this.wPosixOption.newOptionArg("4321")));
-		expected.add(this.decodeLongOption);
-		expected.add(this.ignoreGarbageLongOption);
-		expected.addAll(Arrays.asList(
+		expected.add(new OptionOccurrence(this.decodeLongOption, null));
+		expected.add(new OptionOccurrence(this.ignoreGarbageLongOption, null));
+		expected.add(new OptionOccurrence(
 				this.wrapLongOption, 
 				this.wrapLongOption.newOptionArg("54321")));
 		expected.add("file1.txt");
 		expected.add("file2.txt");
-		expected.add(this.decodeGnuLongOption);
-		expected.add(this.ignoreGarbageGnuLongOption);
-		expected.addAll(Arrays.asList(
+		expected.add(new OptionOccurrence(this.decodeGnuLongOption, null));
+		expected.add(new OptionOccurrence(this.ignoreGarbageGnuLongOption, null));
+		expected.add(new OptionOccurrence(
 				this.wrapGnuLongOption, 
 				this.wrapGnuLongOption.newOptionArg("654321")));
-		expected.addAll(Arrays.asList(
+		expected.add(new OptionOccurrence(
 				this.wrapGnuLongOption, 
 				this.wrapGnuLongOption.newOptionArg("7654321")));
 		expected.add(EndOfOptionsDelimiter.INSTANCE);
@@ -155,7 +154,7 @@ public class Base64OptionsTest {
 		
 		while (argsParser.hasNext()) {
 			ParseResult parseResult = argsParser.parseNext();
-			actual.addAll(parseResult.getObjectValues());
+			actual.add(parseResult.getObject());
 		}
 		
 		assertEquals(expected, actual);

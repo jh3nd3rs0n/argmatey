@@ -240,11 +240,11 @@ public abstract class Option {
 		}
 		return Collections.unmodifiableList(allOtherOptions);
 	}
-	
+
 	public final String getDoc() {
 		return this.doc;
 	}
-
+	
 	public final String getHelpText() {
 		String helpText = null;
 		if (this.optionHelpTextProvider != null) {
@@ -253,15 +253,15 @@ public abstract class Option {
 		}
 		return helpText;
 	}
-	
+
 	public final String getName() {
 		return this.name;
 	}
-
+	
 	public final OptionArgSpec getOptionArgSpec() {
 		return this.optionArgSpec;
 	}
-	
+
 	public final OptionHelpTextProvider getOptionHelpTextProvider() {
 		return this.optionHelpTextProvider;
 	}
@@ -269,11 +269,11 @@ public abstract class Option {
 	public final OptionUsageProvider getOptionUsageProvider() {
 		return this.optionUsageProvider;
 	}
-
+	
 	public final List<Option> getOtherOptions() {
 		return Collections.unmodifiableList(this.otherOptions);
 	}
-	
+
 	public final String getUsage() {
 		String usage = null;
 		if (this.optionUsageProvider != null) {
@@ -282,11 +282,11 @@ public abstract class Option {
 		}
 		return usage;
 	}
-
+	
 	public final boolean isHidden() {
 		return this.hidden;
 	}
-
+	
 	public final boolean isSpecial() {
 		return this.special;
 	}
