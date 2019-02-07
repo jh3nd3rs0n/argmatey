@@ -14,8 +14,7 @@ public final class Options {
 	public Options(final List<Option> opts) {
 		for (Option opt : opts) {
 			if (opt == null) {
-				throw new NullPointerException(
-						"Option(s) must not be null");
+				throw new NullPointerException("Option(s) must not be null");
 			}
 		}
 		this.options = new ArrayList<Option>(opts);
@@ -62,17 +61,13 @@ public final class Options {
 	public void printUsage(final PrintWriter s) {
 		boolean earlierUsageNotNull = false;
 		for (Option option : this.options) {
-			Option firstDisplayableOption = null;
+			String usage = null;
 			for (Option opt : option.getAllOptions()) {
-				if (!opt.isHidden() && !opt.isSpecial()) {
-					firstDisplayableOption = opt;
+				if (!opt.isHidden() && !opt.isSpecial() 
+						&& (usage = opt.getUsage()) != null) {
 					break;
 				}
 			}
-			if (firstDisplayableOption == null) { 
-				continue; 
-			} 
-			String usage = firstDisplayableOption.getUsage();
 			if (usage != null) {
 				if (earlierUsageNotNull) {
 					s.write(" ");

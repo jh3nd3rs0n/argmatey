@@ -25,9 +25,9 @@ public enum DefaultOptionHelpTextProvider implements OptionHelpTextProvider {
 					if (!earlierUsageNotNull) {
 						earlierUsageNotNull = true;
 					}
-				}
-				if (doc == null) {
-					doc = p.getDoc();
+					if (doc == null) {
+						doc = p.getDoc();
+					}
 				}
 			}
 		}

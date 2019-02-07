@@ -51,17 +51,15 @@ public final class ParseResult {
 	}
 	
 	public Option getOption() {
-		OptionOccurrence optionOccurrence = this.getOptionOccurrence();
-		if (optionOccurrence != null) {
-			return optionOccurrence.getOption();
+		if (this.hasOptionOccurrence()) {
+			return this.getOptionOccurrence().getOption();
 		}
 		return null;
 	}
 
 	public OptionArg getOptionArg() {
-		OptionOccurrence optionOccurrence = this.getOptionOccurrence();
-		if (optionOccurrence != null) {
-			return optionOccurrence.getOptionArg();
+		if (this.hasOptionOccurrence()) {
+			return this.getOptionOccurrence().getOptionArg();
 		}
 		return null;
 	}
@@ -73,6 +71,10 @@ public final class ParseResult {
 		return null;
 	}
 	
+	public boolean hasEndOfOptionsDelimiter() {
+		return this.getEndOfOptionsDelimiter() != null;
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -81,52 +83,63 @@ public final class ParseResult {
 		return result;
 	}
 	
+	public boolean hasNonparsedArg() {
+		return this.getNonparsedArg() != null;
+	}
+	
+	public boolean hasOption() {
+		return this.getOption() != null;
+	}
+	
+	public boolean hasOptionArg() {
+		return this.getOptionArg() != null;
+	}
+	
 	public boolean hasOptionFrom(final Option opt) {
-		OptionOccurrence optionOccurrence = this.getOptionOccurrence();
-		if (optionOccurrence != null) {
-			return optionOccurrence.hasOptionFrom(opt);
+		if (this.hasOptionOccurrence()) {
+			return this.getOptionOccurrence().hasOptionFrom(opt);
 		}
 		return false;
 	}
 	
+	public boolean hasOptionOccurrence() {
+		return this.getOptionOccurrence() != null;
+	}
+	
 	public boolean hasOptionOf(final String opt) {
-		OptionOccurrence optionOccurrence = this.getOptionOccurrence();
-		if (optionOccurrence != null) {
-			return optionOccurrence.hasOptionOf(opt);
+		if (this.hasOptionOccurrence()) {
+			return this.getOptionOccurrence().hasOptionOf(opt);
 		}
 		return false;
 	}
 
 	public boolean hasOptionOfAnyOf(final List<String> opts) {
-		OptionOccurrence optionOccurrence = this.getOptionOccurrence();
-		if (optionOccurrence != null) {
-			return optionOccurrence.hasOptionOfAnyOf(opts);
+		if (this.hasOptionOccurrence()) {
+			return this.getOptionOccurrence().hasOptionOfAnyOf(opts);
 		}
 		return false;
 	}
 	
 	public boolean hasOptionOfAnyOf(final String opt1, final String opt2) {
-		OptionOccurrence optionOccurrence = this.getOptionOccurrence();
-		if (optionOccurrence != null) {
-			return optionOccurrence.hasOptionOfAnyOf(opt1, opt2);
+		if (this.hasOptionOccurrence()) {
+			return this.getOptionOccurrence().hasOptionOfAnyOf(opt1, opt2);
 		}
 		return false;
 	}
 	
 	public boolean hasOptionOfAnyOf(final String opt1, final String opt2,
 			final String opt3) {
-		OptionOccurrence optionOccurrence = this.getOptionOccurrence();
-		if (optionOccurrence != null) {
-			return optionOccurrence.hasOptionOfAnyOf(opt1, opt2, opt3);
+		if (this.hasOptionOccurrence()) {
+			return this.getOptionOccurrence().hasOptionOfAnyOf(
+					opt1, opt2, opt3);
 		}
 		return false;
 	}
 	
 	public boolean hasOptionOfAnyOf(final String opt1, final String opt2,
 			final String opt3, final String... additionalOpts) {
-		OptionOccurrence optionOccurrence = this.getOptionOccurrence();
-		if (optionOccurrence != null) {
-			return optionOccurrence.hasOptionOfAnyOf(
+		if (this.hasOptionOccurrence()) {
+			return this.getOptionOccurrence().hasOptionOfAnyOf(
 					opt1, opt2, opt3, additionalOpts);
 		}
 		return false;
