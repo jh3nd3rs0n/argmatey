@@ -9,60 +9,59 @@ import java.util.NoSuchElementException;
 
 public final class ArgsParser {
 
-	private static abstract class AbstractArgParser implements ArgParser {
+	private static abstract class AbstractArgHandler implements ArgHandler {
 
-		private final ArgParser argParser;
+		private final ArgHandler argHandler;
 		
-		protected AbstractArgParser(final ArgParser parser) {
-			ArgParser p = parser;
-			if (p == null) {
-				p = DefaultArgParser.INSTANCE;
+		protected AbstractArgHandler(final ArgHandler handler) {
+			ArgHandler h = handler;
+			if (h == null) {
+				h = DefaultArgHandler.INSTANCE;
 			}
-			this.argParser = p;
+			this.argHandler = h;
 		}
 		
-		public final ArgParser getArgParser() {
-			return this.argParser;
+		public final ArgHandler getArgHandler() {
+			return this.argHandler;
 		}
 		
 		@Override
-		public abstract ParseResult parse(
-				final String arg, final ArgParserContext context);
+		public abstract void handle(
+				final String arg, final ArgHandlerContext context);
 
 		@Override
 		public String toString() {
 			StringBuilder builder = new StringBuilder();
 			builder.append(this.getClass().getSimpleName())
-				.append(" [argParser=")
-				.append(this.argParser)
+				.append(" [argHandler=")
+				.append(this.argHandler)
 				.append("]");
 			return builder.toString();
 		}	
 		
 	}
-	
-	
-	private static interface ArgParser {
 		
-		ParseResult parse(String arg, ArgParserContext context);
+	private static interface ArgHandler {
+		
+		void handle(String arg, ArgHandlerContext context);
 		
 	}
 	
-	private static final class ArgParserContext {
+	private static final class ArgHandlerContext {
 		
 		private int argCharIndex;
 		private int argIndex;
 		private final String[] args;
 		private final Map<String, Object> properties;
 		
-		public ArgParserContext(final ArgParserContext other) {
+		public ArgHandlerContext(final ArgHandlerContext other) {
 			this.argCharIndex = other.argCharIndex;
 			this.argIndex = other.argIndex;
 			this.args = Arrays.copyOf(other.args, other.args.length);
 			this.properties = new HashMap<String, Object>(other.properties);
 		}
 		
-		public ArgParserContext(final String[] arguments) {
+		public ArgHandlerContext(final String[] arguments) {
 			for (String argument : arguments) {
 				if (argument == null) {
 					throw new NullPointerException(
@@ -145,31 +144,33 @@ public final class ArgsParser {
 		
 	}
 	
-	private static final class ArgParserContextProperties {
+	private static final class ArgHandlerContextProperties {
 		
 		private static final class PropertyNames {
 			
-			public static final String OPTION_PARSING_ENABLED = 
-					"OPTION_PARSING_ENABLED";
+			public static final String OPTION_HANDLING_ENABLED = 
+					"OPTION_HANDLING_ENABLED";
 			
 			public static final String OPTIONS = "OPTIONS";
+			
+			public static final String PARSE_RESULT = "PARSE_RESULT";
 			
 			private PropertyNames() { }
 
 		}
 		
-		private final ArgParserContext argParserContext;
+		private final ArgHandlerContext argHandlerContext;
 		
-		public ArgParserContextProperties(
-				final ArgParserContext parserContext) {
-			this.argParserContext = parserContext;
+		public ArgHandlerContextProperties(
+				final ArgHandlerContext handlerContext) {
+			this.argHandlerContext = handlerContext;
 		}
 		
 		public Map<String, Option> getOptions() {
 			Map<String, Option> options = null;
 			@SuppressWarnings("unchecked")
 			Map<String, Option> value = 
-					(Map<String, Option>) this.argParserContext.getProperty(
+					(Map<String, Option>) this.argHandlerContext.getProperty(
 							PropertyNames.OPTIONS);
 			if (value != null) {
 				options = Collections.unmodifiableMap(
@@ -178,96 +179,112 @@ public final class ArgsParser {
 			return options;
 		}
 		
-		public boolean isOptionParsingEnabled() {
-			boolean optionParsingEnabled = false;
-			Boolean value = (Boolean) this.argParserContext.getProperty(
-					PropertyNames.OPTION_PARSING_ENABLED);
+		public ParseResult getParseResult() {
+			ParseResult parseResult = null;
+			ParseResult value = 
+					(ParseResult) this.argHandlerContext.getProperty(
+							PropertyNames.PARSE_RESULT);
 			if (value != null) {
-				optionParsingEnabled = value.booleanValue();
+				parseResult = value;
 			}
-			return optionParsingEnabled;
+			return parseResult;
 		}
 		
-		public void setOptionParsingEnabled(final boolean optParsingEnabled) {
-			this.argParserContext.putProperty(
-					PropertyNames.OPTION_PARSING_ENABLED, 
-					Boolean.valueOf(optParsingEnabled));
+		public boolean isOptionHandlingEnabled() {
+			boolean optionHandlingEnabled = false;
+			Boolean value = (Boolean) this.argHandlerContext.getProperty(
+					PropertyNames.OPTION_HANDLING_ENABLED);
+			if (value != null) {
+				optionHandlingEnabled = value.booleanValue();
+			}
+			return optionHandlingEnabled;
+		}
+		
+		public void setOptionHandlingEnabled(final boolean optHandlingEnabled) {
+			this.argHandlerContext.putProperty(
+					PropertyNames.OPTION_HANDLING_ENABLED, 
+					Boolean.valueOf(optHandlingEnabled));
 		}
 		
 		public void setOptions(final Map<String, Option> opts) {
-			this.argParserContext.putProperty(PropertyNames.OPTIONS, opts);
+			this.argHandlerContext.putProperty(PropertyNames.OPTIONS, opts);
+		}
+		
+		public void setParseResult(final ParseResult result) {
+			this.argHandlerContext.putProperty(
+					PropertyNames.PARSE_RESULT, result);
 		}
 	}
 	
-	private static enum DefaultArgParser implements ArgParser {
+	private static enum DefaultArgHandler implements ArgHandler {
 
 		INSTANCE;
 		
 		@Override
-		public ParseResult parse(final String arg, final ArgParserContext context) {
-			return new ParseResult(arg);
+		public void handle(final String arg, final ArgHandlerContext context) {
+			ArgHandlerContextProperties properties =
+					new ArgHandlerContextProperties(context);
+			properties.setParseResult(new ParseResult(arg));
 		}
 		
 		@Override
 		public String toString() {
-			return DefaultArgParser.class.getSimpleName();
+			return DefaultArgHandler.class.getSimpleName();
 		}
 		
 	}
 
-	private static final class EndOfOptionsArgParser extends AbstractArgParser {
+	private static final class EndOfOptionsArgHandler 
+		extends AbstractArgHandler {
 		
-		public EndOfOptionsArgParser(final ArgParser parser) {
-			super(parser);
+		public EndOfOptionsArgHandler(final ArgHandler handler) {
+			super(handler);
 		}
 		
 		@Override
-		public ParseResult parse(final String arg, final ArgParserContext context) {
-			ArgParserContextProperties properties = 
-					new ArgParserContextProperties(context); 
-			if (properties.isOptionParsingEnabled()) {
-				properties.setOptionParsingEnabled(false);
+		public void handle(final String arg, final ArgHandlerContext context) {
+			ArgHandlerContextProperties properties = 
+					new ArgHandlerContextProperties(context); 
+			if (properties.isOptionHandlingEnabled()) {
+				properties.setOptionHandlingEnabled(false);
 			}
-			return this.getArgParser().parse(arg, context);
+			this.getArgHandler().handle(arg, context);
 		}
 		
 	}
 	
-	private static final class EndOfOptionsDelimiterParser extends AbstractArgParser {
+	private static final class EndOfOptionsDelimiterParser 
+		extends AbstractArgHandler {
 		
-		public EndOfOptionsDelimiterParser(final ArgParser argParser) {
-			super(argParser);
+		public EndOfOptionsDelimiterParser(final ArgHandler argHandler) {
+			super(argHandler);
 		}
 		
 		@Override
-		public ParseResult parse(final String arg, final ArgParserContext context) {
-			ArgParserContextProperties properties = 
-					new ArgParserContextProperties(context);
-			if (!(properties.isOptionParsingEnabled()
+		public void handle(final String arg, final ArgHandlerContext context) {
+			ArgHandlerContextProperties properties = 
+					new ArgHandlerContextProperties(context);
+			if (!(properties.isOptionHandlingEnabled()
 					&& arg.equals(EndOfOptionsDelimiter.INSTANCE.toString()))) {
-				return this.getArgParser().parse(arg, context);
+				this.getArgHandler().handle(arg, context);
+				return;
 			}
-			properties.setOptionParsingEnabled(false);
-			return new ParseResult(EndOfOptionsDelimiter.INSTANCE);
+			properties.setOptionHandlingEnabled(false);
+			properties.setParseResult(new ParseResult(
+					EndOfOptionsDelimiter.INSTANCE));
 		}
 
 	}
 	
-	private static final class GnuLongOptionParser extends OptionParser {
+	private static final class GnuLongOptionHandler extends OptionHandler {
 		
-		public GnuLongOptionParser(final ArgParser parser) {
-			super(parser, GnuLongOption.class);
+		public GnuLongOptionHandler(final ArgHandler handler) {
+			super(handler, GnuLongOption.class);
 		}
 
 		@Override
-		protected boolean isOption(
-				final String arg, final ArgParserContext context) {
-			return arg.startsWith("--") && arg.length() > 2;
-		}
-
-		@Override
-		protected ParseResult parseOption(
-				final String arg, final ArgParserContext context) {
+		protected void handleOption(
+				final String arg, final ArgHandlerContext context) {
 			String option = arg;
 			String optionArg = null;
 			String[] argElements = arg.split("=", 2);
@@ -275,8 +292,8 @@ public final class ArgsParser {
 				option = argElements[0];
 				optionArg = argElements[1];
 			}
-			ArgParserContextProperties properties = 
-					new ArgParserContextProperties(context);
+			ArgHandlerContextProperties properties = 
+					new ArgHandlerContextProperties(context);
 			Map<String, Option> options = properties.getOptions();
 			Option opt = options.get(option);
 			if (opt == null) {
@@ -292,46 +309,45 @@ public final class ArgsParser {
 					optionArg = args[argIndex];
 				}
 			}
-			return new ParseResult(new OptionOccurrence(
-					opt, opt.newOptionArg(optionArg)));
-		}
-		
-	}
-	
-	private static final class LongOptionParser extends OptionParser {
-		
-		public LongOptionParser(final ArgParser parser) {
-			super(new PosixOptionParser(parser), LongOption.class);
+			properties.setParseResult(new ParseResult(new OptionOccurrence(
+					opt, opt.newOptionArg(optionArg))));
 		}
 
 		@Override
 		protected boolean isOption(
-				final String arg, final ArgParserContext context) {
-			return arg.length() > 1 
-					&& arg.startsWith("-") 
-					&& !arg.startsWith("--");
+				final String arg, final ArgHandlerContext context) {
+			return arg.startsWith("--") && arg.length() > 2;
+		}
+		
+	}
+	
+	private static final class LongOptionHandler extends OptionHandler {
+		
+		public LongOptionHandler(final ArgHandler handler) {
+			super(new PosixOptionHandler(handler), LongOption.class);
 		}
 
 		@Override
-		protected ParseResult parseOption(
-				final String arg, final ArgParserContext context) {
+		protected void handleOption(
+				final String arg, final ArgHandlerContext context) {
 			String option = arg;
-			ArgParserContextProperties properties = 
-					new ArgParserContextProperties(context);
+			ArgHandlerContextProperties properties = 
+					new ArgHandlerContextProperties(context);
 			Map<String, Option> options = properties.getOptions();
 			Option opt = options.get(option);
 			if (opt == null) {
-				OptionParser posixOptionParser = 
-						(PosixOptionParser) this.getArgParser();
+				OptionHandler posixOptionHandler = 
+						(PosixOptionHandler) this.getArgHandler();
 				boolean hasPosixOption = false;
 				for (Option o : options.values()) {
-					if (posixOptionParser.getOptionClass().isInstance(o)) {
+					if (posixOptionHandler.getOptionClass().isInstance(o)) {
 						hasPosixOption = true;
 						break;
 					}
 				}
 				if (hasPosixOption) {
-					return posixOptionParser.parseOption(arg, context);
+					posixOptionHandler.handleOption(arg, context);
+					return;
 				}
 				throw new UnknownOptionException(option);
 			}
@@ -345,19 +361,27 @@ public final class ArgsParser {
 					optionArg = args[argIndex];
 				}
 			}
-			return new ParseResult(new OptionOccurrence(
-					opt, opt.newOptionArg(optionArg)));
+			properties.setParseResult(new ParseResult(new OptionOccurrence(
+					opt, opt.newOptionArg(optionArg))));
+		}
+
+		@Override
+		protected boolean isOption(
+				final String arg, final ArgHandlerContext context) {
+			return arg.length() > 1 
+					&& arg.startsWith("-") 
+					&& !arg.startsWith("--");
 		}
 		
 	}
 	
-	private static abstract class OptionParser extends AbstractArgParser {
+	private static abstract class OptionHandler extends AbstractArgHandler {
 		
 		private final Class<?> optionClass;
 		
-		protected OptionParser(final ArgParser parser, 
+		protected OptionHandler(final ArgHandler handler, 
 				final Class<? extends Option> optClass) {
-			super(parser);
+			super(handler);
 			if (optClass == null) {
 				throw new NullPointerException("Option class must not be null");
 			}
@@ -368,16 +392,14 @@ public final class ArgsParser {
 			return this.optionClass;
 		}
 		
-		protected abstract boolean isOption(
-				final String arg, final ArgParserContext context);
-		
 		@Override
-		public final ParseResult parse(
-				final String arg, final ArgParserContext context) {
-			ArgParserContextProperties properties = 
-					new ArgParserContextProperties(context);
-			if (!properties.isOptionParsingEnabled()) {
-				return this.getArgParser().parse(arg, context);
+		public final void handle(
+				final String arg, final ArgHandlerContext context) {
+			ArgHandlerContextProperties properties = 
+					new ArgHandlerContextProperties(context);
+			if (!properties.isOptionHandlingEnabled()) {
+				this.getArgHandler().handle(arg, context);
+				return;
 			}
 			boolean hasOption = false;
 			Map<String, Option> options = properties.getOptions();
@@ -388,39 +410,36 @@ public final class ArgsParser {
 				}
 			}
 			if (!hasOption) {
-				return this.getArgParser().parse(arg, context);
+				this.getArgHandler().handle(arg, context);
+				return;
 			}
 			if (!this.isOption(arg, context)) {
-				return this.getArgParser().parse(arg, context);
+				this.getArgHandler().handle(arg, context);
+				return;
 			}
-			return this.parseOption(arg, context);
+			this.handleOption(arg, context);
 		}
+		
+		protected abstract void handleOption(
+				final String arg, final ArgHandlerContext context);
 
-		protected abstract ParseResult parseOption(
-				final String arg, final ArgParserContext context);
+		protected abstract boolean isOption(
+				final String arg, final ArgHandlerContext context);
 		
 	}
 	
-	private static final class PosixOptionParser extends OptionParser {
+	private static final class PosixOptionHandler extends OptionHandler {
 
-		public PosixOptionParser(final ArgParser parser) {
-			super(parser, PosixOption.class);
+		public PosixOptionHandler(final ArgHandler handler) {
+			super(handler, PosixOption.class);
 		}
 
 		@Override
-		protected boolean isOption(
-				final String arg, final ArgParserContext context) {
-			return arg.length() > 1 
-					&& arg.startsWith("-") 
-					&& !arg.startsWith("--");
-		}
-
-		@Override
-		protected ParseResult parseOption(
-				final String arg, final ArgParserContext context) {
+		protected void handleOption(
+				final String arg, final ArgHandlerContext context) {
 			int argCharIndex = context.getArgCharIndex();
 			if (argCharIndex == -1) { /* not incremented yet */
-				/* initiate incrementing. ArgParser will do the incrementing  */
+				/* initiate incrementing. ArgsParser will do the incrementing */
 				/* index 0 - '-' */
 				argCharIndex = context.incrementArgCharIndex();
 				/* index 1 - first alphanumeric character */
@@ -429,8 +448,8 @@ public final class ArgsParser {
 			char ch = arg.charAt(argCharIndex);
 			String name = Character.toString(ch);
 			String option = "-".concat(name);
-			ArgParserContextProperties properties = 
-					new ArgParserContextProperties(context);
+			ArgHandlerContextProperties properties = 
+					new ArgHandlerContextProperties(context);
 			Map<String, Option> options = properties.getOptions();
 			Option opt = options.get(option);
 			if (opt == null) {
@@ -457,8 +476,16 @@ public final class ArgsParser {
 					}
 				}
 			}
-			return new ParseResult(new OptionOccurrence(
-					opt, opt.newOptionArg(optionArg)));
+			properties.setParseResult(new ParseResult(new OptionOccurrence(
+					opt, opt.newOptionArg(optionArg))));
+		}
+
+		@Override
+		protected boolean isOption(
+				final String arg, final ArgHandlerContext context) {
+			return arg.length() > 1 
+					&& arg.startsWith("-") 
+					&& !arg.startsWith("--");
 		}		
 	}
 	
@@ -466,23 +493,23 @@ public final class ArgsParser {
 			final String[] args, 
 			final Options options, 
 			final boolean posixlyCorrect) {
-		ArgParser endOfOptionsArgParser = null;
+		ArgHandler endOfOptionsArgHandler = null;
 		if (posixlyCorrect) {
-			endOfOptionsArgParser = new EndOfOptionsArgParser(null);
+			endOfOptionsArgHandler = new EndOfOptionsArgHandler(null);
 		}
-		ArgParser argParser = new GnuLongOptionParser(new LongOptionParser(
-				new EndOfOptionsDelimiterParser(endOfOptionsArgParser)));
-		return new ArgsParser(args, options, argParser);
+		ArgHandler argHandler = new GnuLongOptionHandler(new LongOptionHandler(
+				new EndOfOptionsDelimiterParser(endOfOptionsArgHandler)));
+		return new ArgsParser(args, options, argHandler);
 	}
 	
-	private final ArgParser argParser;
-	private ArgParserContext argParserContext;
+	private final ArgHandler argHandler;
+	private ArgHandlerContext argHandlerContext;
 	private final Options options;
 		
 	private ArgsParser(
 			final String[] args, 
 			final Options opts, 
-			final ArgParser parser) {
+			final ArgHandler handler) {
 		for (String arg : args) {
 			if (arg == null) {
 				throw new NullPointerException("argument(s) must not be null");
@@ -491,7 +518,7 @@ public final class ArgsParser {
 		if (opts == null) {
 			throw new NullPointerException("Options must not be null");
 		}
-		ArgParserContext parserContext = new ArgParserContext(args);
+		ArgHandlerContext handlerContext = new ArgHandlerContext(args);
 		List<Option> optsList = opts.toList();
 		if (optsList.size() > 0) {
 			Map<String, Option> optsMap = new HashMap<String, Option>();
@@ -500,26 +527,26 @@ public final class ArgsParser {
 					optsMap.put(o.toString(), o);
 				}
 			}
-			ArgParserContextProperties properties = 
-					new ArgParserContextProperties(parserContext);
-			properties.setOptionParsingEnabled(true);
+			ArgHandlerContextProperties properties = 
+					new ArgHandlerContextProperties(handlerContext);
+			properties.setOptionHandlingEnabled(true);
 			properties.setOptions(optsMap);
 		}
-		this.argParser = parser;
-		this.argParserContext = parserContext;
+		this.argHandler = handler;
+		this.argHandlerContext = handlerContext;
 		this.options = opts;
 	}
 
 	public int getArgCharIndex() {
-		return this.argParserContext.getArgCharIndex();
+		return this.argHandlerContext.getArgCharIndex();
 	}
 	
 	public int getArgIndex() {
-		return this.argParserContext.getArgIndex();
+		return this.argHandlerContext.getArgIndex();
 	}
 	
 	public String[] getArgs() {
-		return this.argParserContext.getArgs();
+		return this.argHandlerContext.getArgs();
 	}
 	
 	public Options getOptions() {
@@ -540,43 +567,43 @@ public final class ArgsParser {
 		int argIndex = this.getArgIndex();
 		int argCharIndex = this.getArgCharIndex();
 		String[] args = this.getArgs();
-		ArgParserContext recentArgParserContext = 
-				new ArgParserContext(this.argParserContext);
+		ArgHandlerContext recentArgHandlerContext = 
+				new ArgHandlerContext(this.argHandlerContext);
 		if (argIndex > -1 && argCharIndex > -1) {
 			/* 
 			 * The argument character index was incremented by this method or 
-			 * another ArgParser
+			 * another ArgHandler
 			 */
 			if (argCharIndex < args[argIndex].length() - 1) {
 				/* 
 				 * if the argument character index is not the last index, 
 				 * increment it 
 				 */
-				argCharIndex = this.argParserContext.incrementArgCharIndex();
+				argCharIndex = this.argHandlerContext.incrementArgCharIndex();
 				next = Character.toString(args[argIndex].charAt(argCharIndex)); 
 			} else {
 				/* 
 				 * if the argument character index is the last index, reset it 
 				 */
-				argCharIndex = this.argParserContext.resetArgCharIndex();
+				argCharIndex = this.argHandlerContext.resetArgCharIndex();
 			}
 		}
 		if (argCharIndex == -1) {
 			/* 
 			 * The argument character index was not incremented or was reset by 
-			 * this method or another ArgParser
+			 * this method or another ArgHandler
 			 */
 			if (argIndex < args.length - 1) {
 				/* 
 				 * if the argument index is not the last index, increment it
 				 */
-				argIndex = this.argParserContext.incrementArgIndex();
+				argIndex = this.argHandlerContext.incrementArgIndex();
 				next = args[argIndex];
 			} else {
 				/* 
 				 * failure atomicity (return back to most recent working state) 
 				 */
-				this.argParserContext = recentArgParserContext;
+				this.argHandlerContext = recentArgHandlerContext;
 				throw new NoSuchElementException();
 			}
 		}
@@ -584,18 +611,17 @@ public final class ArgsParser {
 	}
 	
 	public ParseResult parseNext() {
-		ArgParserContext recentArgParserContext = 
-				new ArgParserContext(this.argParserContext);
+		ArgHandlerContext recentArgHandlerContext = 
+				new ArgHandlerContext(this.argHandlerContext);
 		this.next();
-		ParseResult parseResult = null;
 		try {
-			parseResult = this.argParser.parse(
-					this.getArgs()[this.getArgIndex()], this.argParserContext);
+			this.argHandler.handle(
+					this.getArgs()[this.getArgIndex()], this.argHandlerContext);
 		} catch (Throwable t) {
 			/* 
 			 * failure atomicity (return back to most recent working state) 
 			 */
-			this.argParserContext = recentArgParserContext;
+			this.argHandlerContext = recentArgHandlerContext;
 			if (t instanceof Error) {
 				Error e = (Error) t;
 				throw e;
@@ -605,7 +631,9 @@ public final class ArgsParser {
 				throw rte;
 			}
 		}
-		return parseResult;
+		ArgHandlerContextProperties properties = 
+				new ArgHandlerContextProperties(this.argHandlerContext);
+		return properties.getParseResult();
 	}
 
 	@Override
