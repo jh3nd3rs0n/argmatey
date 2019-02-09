@@ -4,10 +4,10 @@ import java.util.List;
 
 public final class ParseResult {
 	
-	private final Object object;
+	private final Object result;
 	
-	ParseResult(final Object obj) {
-		this.object = obj;
+	ParseResult(final Object rslt) {
+		this.result = rslt;
 	}
 
 	@Override
@@ -22,32 +22,28 @@ public final class ParseResult {
 			return false;
 		}
 		ParseResult other = (ParseResult) obj;
-		if (this.object == null) {
-			if (other.object != null) {
+		if (this.result == null) {
+			if (other.result != null) {
 				return false;
 			}
-		} else if (!this.object.equals(other.object)) {
+		} else if (!this.result.equals(other.result)) {
 			return false;
 		}
 		return true;
 	}
 
 	public EndOfOptionsDelimiter getEndOfOptionsDelimiter() {
-		if (this.object instanceof EndOfOptionsDelimiter) {
-			return (EndOfOptionsDelimiter) this.object;
+		if (this.result instanceof EndOfOptionsDelimiter) {
+			return (EndOfOptionsDelimiter) this.result;
 		}
 		return null;
 	}
 	
 	public String getNonparsedArg() {
-		if (this.object instanceof String) {
-			return (String) this.object;
+		if (this.result instanceof String) {
+			return (String) this.result;
 		}
 		return null;
-	}
-	
-	public Object getObject() {
-		return this.object;
 	}
 	
 	public Option getOption() {
@@ -56,7 +52,7 @@ public final class ParseResult {
 		}
 		return null;
 	}
-
+	
 	public OptionArg getOptionArg() {
 		if (this.hasOptionOccurrence()) {
 			return this.getOptionOccurrence().getOptionArg();
@@ -65,10 +61,14 @@ public final class ParseResult {
 	}
 
 	public OptionOccurrence getOptionOccurrence() {
-		if (this.object instanceof OptionOccurrence) {
-			return (OptionOccurrence) this.object;
+		if (this.result instanceof OptionOccurrence) {
+			return (OptionOccurrence) this.result;
 		}
 		return null;
+	}
+
+	public Object getResult() {
+		return this.result;
 	}
 	
 	public boolean hasEndOfOptionsDelimiter() {
@@ -79,7 +79,7 @@ public final class ParseResult {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((this.object == null) ? 0 : this.object.hashCode());
+		result = prime * result + ((this.result == null) ? 0 : this.result.hashCode());
 		return result;
 	}
 	
@@ -147,12 +147,12 @@ public final class ParseResult {
 
 	@Override
 	public String toString() {
-		StringBuilder builder = new StringBuilder();
-		builder.append(this.getClass().getSimpleName())
-			.append(" [object=")
-			.append(this.object)
+		StringBuilder sb = new StringBuilder();
+		sb.append(this.getClass().getSimpleName())
+			.append(" [result=")
+			.append(this.result)
 			.append("]");
-		return builder.toString();
+		return sb.toString();
 	}
 	
 }

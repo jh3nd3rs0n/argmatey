@@ -109,14 +109,14 @@ public final class OptionOccurrence {
 
 	@Override
 	public String toString() {
-		StringBuilder builder = new StringBuilder();
-		builder.append(this.getClass().getSimpleName())
+		StringBuilder sb = new StringBuilder();
+		sb.append(this.getClass().getSimpleName())
 			.append(" [option=")
 			.append(this.option)
 			.append(", optionArg=")
 			.append(this.optionArg)
 			.append("]");
-		return builder.toString();
+		return sb.toString();
 	}
 	
 }

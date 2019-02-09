@@ -154,7 +154,7 @@ public class Base64OptionsTest {
 		
 		while (argsParser.hasNext()) {
 			ParseResult parseResult = argsParser.parseNext();
-			actual.add(parseResult.getObject());
+			actual.add(parseResult.getResult());
 		}
 		
 		assertEquals(expected, actual);

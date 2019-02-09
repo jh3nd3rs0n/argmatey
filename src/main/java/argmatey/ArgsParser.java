@@ -31,12 +31,12 @@ public final class ArgsParser {
 
 		@Override
 		public String toString() {
-			StringBuilder builder = new StringBuilder();
-			builder.append(this.getClass().getSimpleName())
+			StringBuilder sb = new StringBuilder();
+			sb.append(this.getClass().getSimpleName())
 				.append(" [argHandler=")
 				.append(this.argHandler)
 				.append("]");
-			return builder.toString();
+			return sb.toString();
 		}	
 		
 	}
@@ -128,8 +128,8 @@ public final class ArgsParser {
 
 		@Override
 		public String toString() {
-			StringBuilder builder = new StringBuilder();
-			builder.append(this.getClass().getSimpleName())
+			StringBuilder sb = new StringBuilder();
+			sb.append(this.getClass().getSimpleName())
 				.append(" [argCharIndex=")
 				.append(this.argCharIndex)
 				.append(", argIndex=")
@@ -139,7 +139,7 @@ public final class ArgsParser {
 				.append(", properties=")
 				.append(this.properties)
 				.append("]");
-			return builder.toString();
+			return sb.toString();
 		}
 		
 	}
@@ -253,10 +253,10 @@ public final class ArgsParser {
 		
 	}
 	
-	private static final class EndOfOptionsDelimiterParser 
+	private static final class EndOfOptionsDelimiterHandler 
 		extends AbstractArgHandler {
 		
-		public EndOfOptionsDelimiterParser(final ArgHandler argHandler) {
+		public EndOfOptionsDelimiterHandler(final ArgHandler argHandler) {
 			super(argHandler);
 		}
 		
@@ -498,7 +498,7 @@ public final class ArgsParser {
 			endOfOptionsArgHandler = new EndOfOptionsArgHandler(null);
 		}
 		ArgHandler argHandler = new GnuLongOptionHandler(new LongOptionHandler(
-				new EndOfOptionsDelimiterParser(endOfOptionsArgHandler)));
+				new EndOfOptionsDelimiterHandler(endOfOptionsArgHandler)));
 		return new ArgsParser(args, options, argHandler);
 	}
 	
@@ -638,8 +638,8 @@ public final class ArgsParser {
 
 	@Override
 	public String toString() {
-		StringBuilder builder = new StringBuilder();
-		builder.append(this.getClass().getSimpleName())
+		StringBuilder sb = new StringBuilder();
+		sb.append(this.getClass().getSimpleName())
 			.append(" [options=")
 			.append(this.options)
 			.append(", getArgCharIndex()=")
@@ -649,7 +649,7 @@ public final class ArgsParser {
 			.append(", getArgs()=")
 			.append(Arrays.toString(this.getArgs()))
 			.append("]");
-		return builder.toString();
+		return sb.toString();
 	}
 
 }

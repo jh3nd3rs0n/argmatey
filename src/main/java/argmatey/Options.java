@@ -87,12 +87,12 @@ public final class Options {
 
 	@Override
 	public String toString() {
-		StringBuilder builder = new StringBuilder();
-		builder.append(this.getClass().getSimpleName())
+		StringBuilder sb = new StringBuilder();
+		sb.append(this.getClass().getSimpleName())
 			.append(" [options=")
 			.append(this.options)
 			.append("]");
-		return builder.toString();
+		return sb.toString();
 	}
 
 }
