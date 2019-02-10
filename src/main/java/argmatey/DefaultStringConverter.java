@@ -1,6 +1,5 @@
 package argmatey;
 
-import java.lang.ref.WeakReference;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -8,75 +7,45 @@ import java.lang.reflect.Modifier;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-import java.util.WeakHashMap;
 
 public final class DefaultStringConverter implements StringConverter {
-
-	private static final Map<Class<?>, WeakReference<Constructor<?>>> CONSTRUCTORS = 
-			new WeakHashMap<Class<?>, WeakReference<Constructor<?>>>();
-	
-	private static final Map<Class<?>, WeakReference<Method>> METHODS = 
-			new WeakHashMap<Class<?>, WeakReference<Method>>();
 	
 	private static Method getStaticStringConversionMethod(final Class<?> type) {
-		Method method = null;
-		if (METHODS.containsKey(type)) {
-			method = METHODS.get(type).get();
-		} else {
-			for (Method m : type.getDeclaredMethods()) {
-				int modifiers = m.getModifiers();
-				Class<?> returnType = m.getReturnType();
-				Class<?>[] parameterTypes = m.getParameterTypes();
-				boolean isPublic = Modifier.isPublic(modifiers);
-				boolean isStatic = Modifier.isStatic(modifiers);
-				boolean isReturnTypeClass = returnType.equals(type);
-				boolean isParameterTypeString = parameterTypes.length == 1 
-						&& parameterTypes[0].equals(String.class);
-				if (isPublic 
-						&& isStatic 
-						&& isReturnTypeClass 
-						&& isParameterTypeString) {
-					method = m;
-					break;
-				}
-			}
-			if (method != null) {
-				METHODS.put(type, new WeakReference<Method>(method));
+		for (Method method : type.getDeclaredMethods()) {
+			int modifiers = method.getModifiers();
+			Class<?> returnType = method.getReturnType();
+			Class<?>[] parameterTypes = method.getParameterTypes();
+			boolean isPublic = Modifier.isPublic(modifiers);
+			boolean isStatic = Modifier.isStatic(modifiers);
+			boolean isReturnTypeClass = returnType.equals(type);
+			boolean isParameterTypeString = parameterTypes.length == 1 
+					&& parameterTypes[0].equals(String.class);
+			if (isPublic 
+					&& isStatic 
+					&& isReturnTypeClass 
+					&& isParameterTypeString) {
+				return method;
 			}
 		}
-		return method;
+		return null;
 	}
 	
 	private static <T> Constructor<T> getStringParameterConstructor(
 			final Class<T> type) {
-		Constructor<T> constructor = null;
-		if (CONSTRUCTORS.containsKey(type)) {
-			@SuppressWarnings("unchecked")
-			Constructor<T> ctor = (Constructor<T>) CONSTRUCTORS.get(type).get();
-			constructor = ctor;
-		} else {
-			for (Constructor<?> c : type.getConstructors()) {
-				int modifiers = c.getModifiers();
-				Class<?>[] parameterTypes = c.getParameterTypes();
-				boolean isInstantiatable = !Modifier.isAbstract(modifiers)
-						&& !Modifier.isInterface(modifiers);
-				boolean isParameterTypeString = parameterTypes.length == 1 
-						&& parameterTypes[0].equals(String.class);
-				if (isInstantiatable && isParameterTypeString) {
-					@SuppressWarnings("unchecked")
-					Constructor<T> ctor = (Constructor<T>) c;
-					constructor = ctor;
-					break;
-				}
-			}
-			if (constructor != null) {
-				CONSTRUCTORS.put(
-						type, 
-						new WeakReference<Constructor<?>>(constructor));
+		for (Constructor<?> constructor : type.getConstructors()) {
+			int modifiers = constructor.getModifiers();
+			Class<?>[] parameterTypes = constructor.getParameterTypes();
+			boolean isInstantiatable = !Modifier.isAbstract(modifiers)
+					&& !Modifier.isInterface(modifiers);
+			boolean isParameterTypeString = parameterTypes.length == 1 
+					&& parameterTypes[0].equals(String.class);
+			if (isInstantiatable && isParameterTypeString) {
+				@SuppressWarnings("unchecked")
+				Constructor<T> ctor = (Constructor<T>) constructor;
+				return ctor;
 			}
 		}
-		return constructor;
+		return null;
 	}
 
 	private final Class<?> convertedType;
