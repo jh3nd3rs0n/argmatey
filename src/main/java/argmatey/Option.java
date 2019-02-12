@@ -304,7 +304,7 @@ public abstract class Option {
 			try {
 				optArg = this.optionArgSpec.newOptionArg(optionArg);
 			} catch (IllegalArgumentException e) {
-				throw new IllegalOptionArgException(this, optionArg, e.getCause());
+				throw new IllegalOptionArgException(this, optionArg, e);
 			}
 		}
 		return optArg;

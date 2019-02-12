@@ -104,8 +104,7 @@ public final class DefaultStringConverter implements StringConverter {
 								sb.append(", ");
 							}
 						}
-						cause = new IllegalArgumentException(
-								sb.toString(), cause);
+						cause = new IllegalArgumentException(sb.toString());
 					}
 					throw new IllegalArgumentException(cause);
 				}
