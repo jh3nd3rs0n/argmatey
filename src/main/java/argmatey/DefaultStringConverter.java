@@ -104,9 +104,17 @@ public final class DefaultStringConverter implements StringConverter {
 								sb.append(", ");
 							}
 						}
-						cause = new IllegalArgumentException(sb.toString());
+						throw new IllegalArgumentException(sb.toString());
 					}
-					throw new IllegalArgumentException(cause);
+					if (cause instanceof Error) {
+						Error err = (Error) cause;
+						throw err;
+					}
+					if (cause instanceof RuntimeException) {
+						RuntimeException rte = (RuntimeException) cause;
+						throw rte;
+					}
+					throw new RuntimeException(cause);
 				}
 			} else if (this.stringParameterConstructor != null) {
 				try {
@@ -119,7 +127,16 @@ public final class DefaultStringConverter implements StringConverter {
 				} catch (IllegalArgumentException e) {
 					throw new AssertionError(e);
 				} catch (InvocationTargetException e) {
-					throw new IllegalArgumentException(e.getCause());
+					Throwable cause = e.getCause();
+					if (cause instanceof Error) {
+						Error err = (Error) cause;
+						throw err;
+					}
+					if (cause instanceof RuntimeException) {
+						RuntimeException rte = (RuntimeException) cause;
+						throw rte;
+					}
+					throw new RuntimeException(cause);
 				}
 			}
 		}
