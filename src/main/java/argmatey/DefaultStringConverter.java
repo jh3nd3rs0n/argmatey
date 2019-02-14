@@ -4,9 +4,6 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
 
 public final class DefaultStringConverter implements StringConverter {
 	
@@ -92,20 +89,6 @@ public final class DefaultStringConverter implements StringConverter {
 					throw new AssertionError(e);
 				} catch (InvocationTargetException e) {
 					Throwable cause = e.getCause();
-					if (this.convertedType.isEnum()) {
-						StringBuilder sb = new StringBuilder(
-								"must be one of the following: ");
-						List<?> list = Arrays.asList(
-								this.convertedType.getEnumConstants());
-						for (Iterator<?> iterator = list.iterator(); 
-								iterator.hasNext();) {
-							sb.append(iterator.next().toString());
-							if (iterator.hasNext()) {
-								sb.append(", ");
-							}
-						}
-						throw new IllegalArgumentException(sb.toString());
-					}
 					if (cause instanceof Error) {
 						Error err = (Error) cause;
 						throw err;
