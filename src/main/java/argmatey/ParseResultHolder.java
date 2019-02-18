@@ -2,12 +2,12 @@ package argmatey;
 
 import java.util.List;
 
-public final class ParseResult {
+public final class ParseResultHolder {
 	
-	private final Object result;
+	private final Object parseResult;
 	
-	ParseResult(final Object rslt) {
-		this.result = rslt;
+	ParseResultHolder(final Object result) {
+		this.parseResult = result;
 	}
 
 	@Override
@@ -18,30 +18,30 @@ public final class ParseResult {
 		if (obj == null) {
 			return false;
 		}
-		if (!(obj instanceof ParseResult)) {
+		if (!(obj instanceof ParseResultHolder)) {
 			return false;
 		}
-		ParseResult other = (ParseResult) obj;
-		if (this.result == null) {
-			if (other.result != null) {
+		ParseResultHolder other = (ParseResultHolder) obj;
+		if (this.parseResult == null) {
+			if (other.parseResult != null) {
 				return false;
 			}
-		} else if (!this.result.equals(other.result)) {
+		} else if (!this.parseResult.equals(other.parseResult)) {
 			return false;
 		}
 		return true;
 	}
 
 	public EndOfOptionsDelimiter getEndOfOptionsDelimiter() {
-		if (this.result instanceof EndOfOptionsDelimiter) {
-			return (EndOfOptionsDelimiter) this.result;
+		if (this.parseResult instanceof EndOfOptionsDelimiter) {
+			return (EndOfOptionsDelimiter) this.parseResult;
 		}
 		return null;
 	}
 	
 	public String getNonparsedArg() {
-		if (this.result instanceof String) {
-			return (String) this.result;
+		if (this.parseResult instanceof String) {
+			return (String) this.parseResult;
 		}
 		return null;
 	}
@@ -61,14 +61,14 @@ public final class ParseResult {
 	}
 
 	public OptionOccurrence getOptionOccurrence() {
-		if (this.result instanceof OptionOccurrence) {
-			return (OptionOccurrence) this.result;
+		if (this.parseResult instanceof OptionOccurrence) {
+			return (OptionOccurrence) this.parseResult;
 		}
 		return null;
 	}
 
-	public Object getResult() {
-		return this.result;
+	public Object getParseResult() {
+		return this.parseResult;
 	}
 	
 	public boolean hasEndOfOptionsDelimiter() {
@@ -79,7 +79,8 @@ public final class ParseResult {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((this.result == null) ? 0 : this.result.hashCode());
+		result = prime * result + ((this.parseResult == null) ? 
+				0 : this.parseResult.hashCode());
 		return result;
 	}
 	
@@ -149,8 +150,8 @@ public final class ParseResult {
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		sb.append(this.getClass().getSimpleName())
-			.append(" [result=")
-			.append(this.result)
+			.append(" [parseResult=")
+			.append(this.parseResult)
 			.append("]");
 		return sb.toString();
 	}

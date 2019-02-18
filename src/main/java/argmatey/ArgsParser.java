@@ -153,7 +153,8 @@ public final class ArgsParser {
 			
 			public static final String OPTIONS = "OPTIONS";
 			
-			public static final String PARSE_RESULT = "PARSE_RESULT";
+			public static final String PARSE_RESULT_HOLDER = 
+					"PARSE_RESULT_HOLDER";
 			
 			private PropertyNames() { }
 
@@ -179,11 +180,11 @@ public final class ArgsParser {
 			return options;
 		}
 		
-		public ParseResult getParseResult() {
-			ParseResult parseResult = null;
-			ParseResult value = 
-					(ParseResult) this.argHandlerContext.getProperty(
-							PropertyNames.PARSE_RESULT);
+		public ParseResultHolder getParseResultHolder() {
+			ParseResultHolder parseResult = null;
+			ParseResultHolder value = 
+					(ParseResultHolder) this.argHandlerContext.getProperty(
+							PropertyNames.PARSE_RESULT_HOLDER);
 			if (value != null) {
 				parseResult = value;
 			}
@@ -210,9 +211,10 @@ public final class ArgsParser {
 			this.argHandlerContext.putProperty(PropertyNames.OPTIONS, opts);
 		}
 		
-		public void setParseResult(final ParseResult result) {
+		public void setParseResultHolder(
+				final ParseResultHolder parseResultHolder) {
 			this.argHandlerContext.putProperty(
-					PropertyNames.PARSE_RESULT, result);
+					PropertyNames.PARSE_RESULT_HOLDER, parseResultHolder);
 		}
 	}
 	
@@ -224,7 +226,7 @@ public final class ArgsParser {
 		public void handle(final String arg, final ArgHandlerContext context) {
 			ArgHandlerContextProperties properties =
 					new ArgHandlerContextProperties(context);
-			properties.setParseResult(new ParseResult(arg));
+			properties.setParseResultHolder(new ParseResultHolder(arg));
 		}
 		
 		@Override
@@ -270,7 +272,7 @@ public final class ArgsParser {
 				return;
 			}
 			properties.setOptionHandlingEnabled(false);
-			properties.setParseResult(new ParseResult(
+			properties.setParseResultHolder(new ParseResultHolder(
 					EndOfOptionsDelimiter.INSTANCE));
 		}
 
@@ -309,8 +311,8 @@ public final class ArgsParser {
 					optionArg = args[argIndex];
 				}
 			}
-			properties.setParseResult(new ParseResult(new OptionOccurrence(
-					opt, opt.newOptionArg(optionArg))));
+			properties.setParseResultHolder(new ParseResultHolder(
+					new OptionOccurrence(opt, opt.newOptionArg(optionArg))));
 		}
 
 		@Override
@@ -361,8 +363,8 @@ public final class ArgsParser {
 					optionArg = args[argIndex];
 				}
 			}
-			properties.setParseResult(new ParseResult(new OptionOccurrence(
-					opt, opt.newOptionArg(optionArg))));
+			properties.setParseResultHolder(new ParseResultHolder(
+					new OptionOccurrence(opt, opt.newOptionArg(optionArg))));
 		}
 
 		@Override
@@ -476,8 +478,8 @@ public final class ArgsParser {
 					}
 				}
 			}
-			properties.setParseResult(new ParseResult(new OptionOccurrence(
-					opt, opt.newOptionArg(optionArg))));
+			properties.setParseResultHolder(new ParseResultHolder(
+					new OptionOccurrence(opt, opt.newOptionArg(optionArg))));
 		}
 
 		@Override
@@ -610,7 +612,7 @@ public final class ArgsParser {
 		return next;
 	}
 	
-	public ParseResult parseNext() {
+	public ParseResultHolder parseNext() {
 		ArgHandlerContext recentArgHandlerContext = 
 				new ArgHandlerContext(this.argHandlerContext);
 		this.next();
@@ -633,7 +635,7 @@ public final class ArgsParser {
 		}
 		ArgHandlerContextProperties properties = 
 				new ArgHandlerContextProperties(this.argHandlerContext);
-		return properties.getParseResult();
+		return properties.getParseResultHolder();
 	}
 
 	@Override
