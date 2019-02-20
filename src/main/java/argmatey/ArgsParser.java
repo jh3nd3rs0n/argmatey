@@ -635,7 +635,9 @@ public final class ArgsParser {
 		}
 		ArgHandlerContextProperties properties = 
 				new ArgHandlerContextProperties(this.argHandlerContext);
-		return properties.getParseResultHolder();
+		ParseResultHolder parseResultHolder = properties.getParseResultHolder();
+		properties.setParseResultHolder(null);
+		return parseResultHolder;
 	}
 
 	@Override
