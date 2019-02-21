@@ -21,6 +21,7 @@ public abstract class Option {
 		private boolean optionHelpTextProviderSet;
 		private OptionUsageProvider optionUsageProvider;
 		private boolean optionUsageProviderSet;
+		private int ordinal;
 		private final List<Builder> otherBuilders;
 		private boolean special;
 		private boolean specialSet;
@@ -45,6 +46,7 @@ public abstract class Option {
 			this.optionArgSpecSet = false;
 			this.optionHelpTextProviderSet = false;
 			this.optionUsageProviderSet = false;
+			this.ordinal = 0;
 			this.otherBuilders = new ArrayList<Builder>();
 			this.special = false;
 			this.specialSet = false;
@@ -81,6 +83,11 @@ public abstract class Option {
 				final OptionUsageProvider optUsageProvider) {
 			this.optionUsageProvider = optUsageProvider;
 			this.optionUsageProviderSet = true;
+			return this;
+		}
+		
+		public Builder ordinal(final int i) {
+			this.ordinal = i;
 			return this;
 		}
 		
@@ -178,6 +185,7 @@ public abstract class Option {
 	private final OptionArgSpec optionArgSpec;
 	private final OptionHelpTextProvider optionHelpTextProvider;
 	private final OptionUsageProvider optionUsageProvider;
+	private final int ordinal;
 	private final List<Option> otherOptions;
 	private final boolean special;
 	private final String string;
@@ -190,6 +198,7 @@ public abstract class Option {
 		OptionHelpTextProvider optHelpTextProvider = 
 				builder.optionHelpTextProvider;
 		OptionUsageProvider optUsageProvider = builder.optionUsageProvider;
+		int ord = builder.ordinal;
 		List<Builder> otherBldrs = new ArrayList<Builder>(
 				builder.otherBuilders);
 		boolean spcl = builder.special;
@@ -220,6 +229,7 @@ public abstract class Option {
 		this.optionArgSpec = optArgSpec;
 		this.optionHelpTextProvider = optHelpTextProvider;
 		this.optionUsageProvider = optUsageProvider;
+		this.ordinal = ord;
 		this.otherOptions = otherOpts;
 		this.special = spcl;
 		this.string = str;
@@ -268,6 +278,10 @@ public abstract class Option {
 
 	public final OptionUsageProvider getOptionUsageProvider() {
 		return this.optionUsageProvider;
+	}
+	
+	public final int getOrdinal() {
+		return this.ordinal;
 	}
 	
 	public final List<Option> getOtherOptions() {

@@ -55,6 +55,12 @@ public final class PosixOption extends Option {
 		}
 		
 		@Override
+		public Builder ordinal(final int i) {
+			super.ordinal(i);
+			return this;
+		}
+		
+		@Override
 		public Builder otherBuilders(final argmatey.Option.Builder otherBldr) {
 			super.otherBuilders(otherBldr);
 			return this;

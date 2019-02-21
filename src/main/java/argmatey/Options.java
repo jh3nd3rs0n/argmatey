@@ -2,16 +2,64 @@ package argmatey;
 
 import java.io.PrintStream;
 import java.io.PrintWriter;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public final class Options {
 
+	public static Options copyOf(final List<Option> opts) {
+		return new Options(opts);
+	}
+	
+	public static Options of(final Option... opts) {
+		return new Options(Arrays.asList(opts));
+	}
+	
+	public static Options ofFieldValuesFrom(final Object obj) {
+		return ofFieldValuesFrom(obj, null);
+	}
+	
+	public static Options ofFieldValuesFrom(
+			final Object obj, final Comparator<Option> comparator) {
+		Class<?> cls = obj.getClass();
+		Field[] fields = cls.getFields();
+		List<Option> opts = new ArrayList<Option>();
+		for (Field field : fields) {
+			int modifiers = field.getModifiers();
+			Class<?> type = field.getType();
+			boolean isInstance = !Modifier.isStatic(modifiers);
+			boolean isTypeOption = Option.class.isAssignableFrom(type);
+			if (isInstance && isTypeOption) {
+				Option opt = null;
+				try {
+					opt = (Option) field.get(obj);
+				} catch (IllegalArgumentException e) {
+					throw new AssertionError(e);
+				} catch (IllegalAccessException e) {
+					throw new AssertionError(e);
+				}
+				if (opt == null) {
+					throw new NullPointerException("Option must not be null");
+				}
+				opts.add(opt);
+			}
+		}
+		Comparator<Option> cmprtr = comparator;
+		if (cmprtr == null) {
+			cmprtr = DefaultOptionComparator.INSTANCE;
+		}
+		Collections.sort(opts, cmprtr);
+		return new Options(opts);
+	}
+	
 	private final List<Option> options;
 	
-	public Options(final List<Option> opts) {
+	private Options(final List<Option> opts) {
 		for (Option opt : opts) {
 			if (opt == null) {
 				throw new NullPointerException("Option(s) must not be null");
@@ -20,19 +68,15 @@ public final class Options {
 		this.options = new ArrayList<Option>(opts);
 	}
 	
-	public Options(final Option... opts) {
-		this(Arrays.asList(opts));
-	}
-	
-	public void printHelpText() {
+	public final void printHelpText() {
 		this.printHelpText(System.out);
 	}
 	
-	public void printHelpText(final PrintStream s) {
+	public final void printHelpText(final PrintStream s) {
 		this.printHelpText(new PrintWriter(s));
 	}
 	
-	public void printHelpText(final PrintWriter s) {
+	public final void printHelpText(final PrintWriter s) {
 		boolean earlierHelpTextNotNull = false;
 		String lineSeparator = System.getProperty("line.separator");
 		for (Option option : this.options) {
@@ -50,15 +94,15 @@ public final class Options {
 		}
 	}
 
-	public void printUsage() {
+	public final void printUsage() {
 		this.printUsage(System.out);
 	}
 	
-	public void printUsage(final PrintStream s) {
+	public final void printUsage(final PrintStream s) {
 		this.printUsage(new PrintWriter(s));
 	}
 	
-	public void printUsage(final PrintWriter s) {
+	public final void printUsage(final PrintWriter s) {
 		boolean earlierUsageNotNull = false;
 		for (Option option : this.options) {
 			String usage = null;
@@ -81,12 +125,12 @@ public final class Options {
 		}
 	}
 	
-	public List<Option> toList() {
+	public final List<Option> toList() {
 		return Collections.unmodifiableList(this.options);
 	}
 
 	@Override
-	public String toString() {
+	public final String toString() {
 		StringBuilder sb = new StringBuilder();
 		sb.append(this.getClass().getSimpleName())
 			.append(" [options=")
