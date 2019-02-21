@@ -10,7 +10,7 @@ public enum DefaultOptionComparator implements Comparator<Option> {
 	public int compare(final Option option1, final Option option2) {
 		int diff = option1.getOrdinal() - option2.getOrdinal();
 		if (diff == 0) {
-			return option1.getName().compareTo(option2.getName());
+			return option1.getName().compareToIgnoreCase(option2.getName());
 		}
 		return diff;
 	}
