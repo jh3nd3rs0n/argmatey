@@ -1,6 +1,5 @@
 package argmatey;
 
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -15,7 +14,7 @@ public class Base64OptionsTest {
 
 	public static final class Base64Options {
 		
-		public final Option decodeOption = new PosixOption.Builder('d')
+		public static final Option DECODE_OPTION = new PosixOption.Builder('d')
 				.doc("decode data")
 				.optionHelpTextProvider(new OptionHelpTextProvider() {
 
@@ -38,7 +37,8 @@ public class Base64OptionsTest {
 						new GnuLongOption.Builder("decode"))
 				.build();
 		
-		public final Option ignoreGarbageOption = new PosixOption.Builder('i')
+		public static final Option IGNORE_GARBAGE_OPTION = 
+				new PosixOption.Builder('i')
 				.doc("when decoding, ignore non-alphabet characters")
 				.ordinal(1)
 				.otherBuilders(
@@ -46,7 +46,7 @@ public class Base64OptionsTest {
 						new GnuLongOption.Builder("ignore-garbage"))
 				.build(); 
 		
-		public final Option wrapOption = new PosixOption.Builder('w')
+		public static final Option WRAP_OPTION = new PosixOption.Builder('w')
 				.doc(String.format(
 						"wrap encoded lines after COLS character (default 76)."
 						+ "%n      Use 0 to disable line wrapping"))
@@ -60,13 +60,15 @@ public class Base64OptionsTest {
 						new GnuLongOption.Builder("wrap"))
 				.build(); 
 		
-		public final Option helpOption = new GnuLongOption.Builder("help")
+		public static final Option HELP_OPTION = new GnuLongOption.Builder(
+				"help")
 				.doc("display this help and exit")
 				.ordinal(3)
 				.special(true)
 				.build(); 
 		
-		public final Option versionOption = new GnuLongOption.Builder("version")
+		public static final Option VERSION_OPTION = new GnuLongOption.Builder(
+				"version")
 				.doc("display version information and exit")
 				.optionHelpTextProvider(new OptionHelpTextProvider() {
 
@@ -86,6 +88,8 @@ public class Base64OptionsTest {
 				.special(true)
 				.build(); 
 		
+		private Base64Options() { }
+		
 	}
 	
 	private final String[] args = { 
@@ -96,17 +100,14 @@ public class Base64OptionsTest {
 			"--", "--help", "--version", "file3.txt"
 	};
 	
-	private final Base64Options base64Options = new Base64Options();
-	
-	private final Options options = Options.ofFieldValuesFrom(
-			this.base64Options);
+	private final Options options = Options.newInstance(Base64Options.class);
 	
 	@Test
 	public void testArgs() {
 		
-		Option decodeOption = this.base64Options.decodeOption;
-		Option ignoreGarbageOption = this.base64Options.ignoreGarbageOption;
-		Option wrapOption = this.base64Options.wrapOption;
+		Option decodeOption = Base64Options.DECODE_OPTION;
+		Option ignoreGarbageOption = Base64Options.IGNORE_GARBAGE_OPTION;
+		Option wrapOption = Base64Options.WRAP_OPTION;
 		Option decodeLongOption = decodeOption.getOtherOptions().get(0);
 		Option ignoreGarbageLongOption = 
 				ignoreGarbageOption.getOtherOptions().get(0);
@@ -134,18 +135,15 @@ public class Base64OptionsTest {
 		expected.add(new OptionOccurrence(decodeLongOption, null));
 		expected.add(new OptionOccurrence(ignoreGarbageLongOption, null));
 		expected.add(new OptionOccurrence(
-				wrapLongOption, 
-				wrapLongOption.newOptionArg("54321")));
+				wrapLongOption, wrapLongOption.newOptionArg("54321")));
 		expected.add("file1.txt");
 		expected.add("file2.txt");
 		expected.add(new OptionOccurrence(decodeGnuLongOption, null));
 		expected.add(new OptionOccurrence(ignoreGarbageGnuLongOption, null));
 		expected.add(new OptionOccurrence(
-				wrapGnuLongOption, 
-				wrapGnuLongOption.newOptionArg("654321")));
+				wrapGnuLongOption, wrapGnuLongOption.newOptionArg("654321")));
 		expected.add(new OptionOccurrence(
-				wrapGnuLongOption, 
-				wrapGnuLongOption.newOptionArg("7654321")));
+				wrapGnuLongOption, wrapGnuLongOption.newOptionArg("7654321")));
 		expected.add(EndOfOptionsDelimiter.INSTANCE);
 		expected.add("--help");
 		expected.add("--version");

@@ -11,40 +11,35 @@ import java.util.Comparator;
 import java.util.List;
 
 public final class Options {
-
-	public static Options copyOf(final List<Option> opts) {
-		return new Options(opts);
+	
+	public static Options newInstance(final Class<?> cls) {
+		return newInstance(cls, null);
 	}
 	
-	public static Options of(final Option... opts) {
-		return new Options(Arrays.asList(opts));
-	}
-	
-	public static Options ofFieldValuesFrom(final Object obj) {
-		return ofFieldValuesFrom(obj, null);
-	}
-	
-	public static Options ofFieldValuesFrom(
-			final Object obj, final Comparator<Option> comparator) {
-		Class<?> cls = obj.getClass();
+	public static Options newInstance(
+			final Class<?> cls, final Comparator<Option> comparator) {
 		Field[] fields = cls.getFields();
 		List<Option> opts = new ArrayList<Option>();
 		for (Field field : fields) {
 			int modifiers = field.getModifiers();
 			Class<?> type = field.getType();
-			boolean isInstance = !Modifier.isStatic(modifiers);
+			boolean isStatic = Modifier.isStatic(modifiers);
 			boolean isTypeOption = Option.class.isAssignableFrom(type);
-			if (isInstance && isTypeOption) {
+			if (isStatic && isTypeOption) {
 				Option opt = null;
 				try {
-					opt = (Option) field.get(obj);
+					opt = (Option) field.get(null);
 				} catch (IllegalArgumentException e) {
 					throw new AssertionError(e);
 				} catch (IllegalAccessException e) {
 					throw new AssertionError(e);
 				}
 				if (opt == null) {
-					throw new NullPointerException("Option must not be null");
+					throw new NullPointerException(String.format(
+							"Field '%s %s' in class '%s' must not be null",
+							Modifier.toString(modifiers),
+							field.getName(),
+							cls.getName()));
 				}
 				opts.add(opt);
 			}
@@ -54,7 +49,15 @@ public final class Options {
 			cmprtr = DefaultOptionComparator.INSTANCE;
 		}
 		Collections.sort(opts, cmprtr);
+		return newInstance(opts);
+	}
+
+	public static Options newInstance(final List<Option> opts) {
 		return new Options(opts);
+	}
+	
+	public static Options newInstance(final Option... opts) {
+		return newInstance(Arrays.asList(opts));
 	}
 	
 	private final List<Option> options;

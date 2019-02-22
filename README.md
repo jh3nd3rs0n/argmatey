@@ -1,6 +1,6 @@
 # ArgMatey
 
-ArgMatey is a simple yet comprehensive Java command line argument parsing library that has the following features:
+ArgMatey is a comprehensive Java command line argument parsing library that has the following features:
 
 - API terminology and option syntax and behavior based on the [POSIX Utility Conventions](http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap12.html), GNU's function [getopt_long](http://www.gnu.org/software/libc/manual/html_node/Getopt-Long-Options.html#Getopt-Long-Options), and GNU's [Argp](http://www.gnu.org/software/libc/manual/html_node/Argp.html#Argp) interface
  
