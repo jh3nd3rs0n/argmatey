@@ -51,6 +51,10 @@ public final class OptionOccurrence {
 		return this.optionArg;
 	}
 	
+	public boolean has(final Option opt) {
+		return opt.equals(this.option);
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -62,10 +66,6 @@ public final class OptionOccurrence {
 	
 	public boolean hasOptionArg() {
 		return this.optionArg != null;
-	}
-	
-	public boolean hasOptionFrom(final Option opt) {
-		return opt.getAllOptions().contains(this.option);
 	}
 	
 	public boolean hasOptionOf(final String opt) {
@@ -105,6 +105,10 @@ public final class OptionOccurrence {
 		opts.add(opt3);
 		opts.addAll(Arrays.asList(additionalOpts));
 		return this.hasOptionOfAnyOf(opts);
+	}
+	
+	public boolean hasOrHasOptionFrom(final Option opt) {
+		return this.has(opt) || opt.getAllOtherOptions().contains(this.option);
 	}
 
 	@Override

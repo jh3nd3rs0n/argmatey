@@ -5,19 +5,20 @@ import java.io.PrintWriter;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public final class Options {
+public class Options {
 	
-	public static Options newInstance(final Class<?> cls) {
-		return newInstance(cls, null);
+	private final List<Option> options;
+	
+	protected Options() {
+		this(DefaultOptionComparator.INSTANCE);
 	}
 	
-	public static Options newInstance(
-			final Class<?> cls, final Comparator<Option> comparator) {
+	protected Options(final Comparator<Option> comparator) {
+		Class<?> cls = this.getClass();
 		Field[] fields = cls.getFields();
 		List<Option> opts = new ArrayList<Option>();
 		for (Field field : fields) {
@@ -49,20 +50,10 @@ public final class Options {
 			cmprtr = DefaultOptionComparator.INSTANCE;
 		}
 		Collections.sort(opts, cmprtr);
-		return newInstance(opts);
-	}
-
-	public static Options newInstance(final List<Option> opts) {
-		return new Options(opts);
+		this.options = new ArrayList<Option>(opts);
 	}
 	
-	public static Options newInstance(final Option... opts) {
-		return newInstance(Arrays.asList(opts));
-	}
-	
-	private final List<Option> options;
-	
-	private Options(final List<Option> opts) {
+	public Options(final List<Option> opts) {
 		for (Option opt : opts) {
 			if (opt == null) {
 				throw new NullPointerException("Option(s) must not be null");

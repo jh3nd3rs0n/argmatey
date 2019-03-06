@@ -12,7 +12,7 @@ import org.junit.Test;
 
 public class Base64OptionsTest {
 
-	public static final class Base64Options {
+	public static final class Base64Options extends Options {
 		
 		public static final Option DECODE_OPTION = new PosixOption.Builder('d')
 				.doc("decode data")
@@ -87,9 +87,7 @@ public class Base64OptionsTest {
 				.ordinal(4)
 				.special(true)
 				.build(); 
-		
-		private Base64Options() { }
-		
+				
 	}
 	
 	private final String[] args = { 
@@ -100,7 +98,7 @@ public class Base64OptionsTest {
 			"--", "--help", "--version", "file3.txt"
 	};
 	
-	private final Options options = Options.newInstance(Base64Options.class);
+	private final Options options = new Base64Options();
 	
 	@Test
 	public void testArgs() {

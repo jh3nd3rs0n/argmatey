@@ -12,7 +12,7 @@ ArgMatey is a comprehensive Java command line argument parsing library that has 
     
   - GNU long options (examples: `--help` `--version` `--output-file=file.txt`)
      
-- Incremental command line argument parsing (similar to getopt, getopt_long, and Argp). This is useful for interpreting the following:
+- Iterative command line argument parsing (similar to getopt, getopt_long, and Argp). This is useful for interpreting the following:
 
   - Multiple instances of the same option
   

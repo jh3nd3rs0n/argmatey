@@ -71,6 +71,13 @@ public final class ParseResultHolder {
 		return this.parseResult;
 	}
 	
+	public boolean has(final Option opt) {
+		if (this.hasOptionOccurrence()) {
+			return this.getOptionOccurrence().has(opt);
+		}
+		return false;
+	}
+	
 	public boolean hasEndOfOptionsDelimiter() {
 		return this.getEndOfOptionsDelimiter() != null;
 	}
@@ -96,13 +103,6 @@ public final class ParseResultHolder {
 		return this.getOptionArg() != null;
 	}
 	
-	public boolean hasOptionFrom(final Option opt) {
-		if (this.hasOptionOccurrence()) {
-			return this.getOptionOccurrence().hasOptionFrom(opt);
-		}
-		return false;
-	}
-	
 	public boolean hasOptionOccurrence() {
 		return this.getOptionOccurrence() != null;
 	}
@@ -113,14 +113,14 @@ public final class ParseResultHolder {
 		}
 		return false;
 	}
-
+	
 	public boolean hasOptionOfAnyOf(final List<String> opts) {
 		if (this.hasOptionOccurrence()) {
 			return this.getOptionOccurrence().hasOptionOfAnyOf(opts);
 		}
 		return false;
 	}
-	
+
 	public boolean hasOptionOfAnyOf(final String opt1, final String opt2) {
 		if (this.hasOptionOccurrence()) {
 			return this.getOptionOccurrence().hasOptionOfAnyOf(opt1, opt2);
@@ -142,6 +142,13 @@ public final class ParseResultHolder {
 		if (this.hasOptionOccurrence()) {
 			return this.getOptionOccurrence().hasOptionOfAnyOf(
 					opt1, opt2, opt3, additionalOpts);
+		}
+		return false;
+	}
+	
+	public boolean hasOrHasOptionFrom(final Option opt) {
+		if (this.hasOptionOccurrence()) {
+			return this.getOptionOccurrence().hasOrHasOptionFrom(opt);
 		}
 		return false;
 	}
