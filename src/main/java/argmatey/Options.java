@@ -21,12 +21,13 @@ public abstract class Options {
 		this(new ArrayList<Option>(), comparator);
 	}
 	
-	protected Options(final List<Option> addedOpts) {
-		this(addedOpts, DefaultOptionComparator.INSTANCE);
+	protected Options(final List<Option> additionalOpts) {
+		this(additionalOpts, DefaultOptionComparator.INSTANCE);
 	}
 	
 	protected Options(
-			final List<Option> addedOpts, final Comparator<Option> comparator) {
+			final List<Option> additionalOpts, 
+			final Comparator<Option> comparator) {
 		Class<?> cls = this.getClass();
 		Field[] fields = cls.getFields();
 		List<Option> opts = new ArrayList<Option>();
@@ -55,13 +56,13 @@ public abstract class Options {
 				opts.add(opt);
 			}
 		}
-		for (Option addedOpt : addedOpts) {
-			if (addedOpt == null) {
+		for (Option additionalOpt : additionalOpts) {
+			if (additionalOpt == null) {
 				throw new NullPointerException(
-						"added Option(s) must not be null");
+						"additional Option(s) must not be null");
 			}
 		}
-		opts.addAll(addedOpts);
+		opts.addAll(additionalOpts);
 		Comparator<Option> cmprtr = comparator;
 		if (cmprtr == null) {
 			cmprtr = DefaultOptionComparator.INSTANCE;

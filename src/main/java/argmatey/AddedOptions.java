@@ -5,12 +5,12 @@ import java.util.List;
 
 public final class AddedOptions extends Options {
 
-	public AddedOptions(final List<Option> addedOpts) {
-		super(addedOpts, new NullComparator<Option>());
+	public AddedOptions(final List<Option> opts) {
+		super(opts, new NullComparator<Option>());
 	}
 	
-	public AddedOptions(final Option... addedOpts) {
-		this(Arrays.asList(addedOpts));
+	public AddedOptions(final Option... opts) {
+		this(Arrays.asList(opts));
 	}
 
 }
