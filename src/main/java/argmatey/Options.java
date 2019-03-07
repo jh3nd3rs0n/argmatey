@@ -5,29 +5,28 @@ import java.io.PrintWriter;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public abstract class Options {
+public class Options {
+
+	public static Options newInstance(final List<Option> opts) {
+		return new Options(opts);
+	}
+	
+	public static Options newInstance(final Option... opts) {
+		return new Options(Arrays.asList(opts));
+	}
 	
 	private final List<Option> options;
 	
 	protected Options() {
-		this(new ArrayList<Option>(), DefaultOptionComparator.INSTANCE);
+		this(DefaultOptionComparator.INSTANCE);
 	}
 	
 	protected Options(final Comparator<Option> comparator) {
-		this(new ArrayList<Option>(), comparator);
-	}
-	
-	protected Options(final List<Option> additionalOpts) {
-		this(additionalOpts, DefaultOptionComparator.INSTANCE);
-	}
-	
-	protected Options(
-			final List<Option> additionalOpts, 
-			final Comparator<Option> comparator) {
 		Class<?> cls = this.getClass();
 		Field[] fields = cls.getFields();
 		List<Option> opts = new ArrayList<Option>();
@@ -56,18 +55,20 @@ public abstract class Options {
 				opts.add(opt);
 			}
 		}
-		for (Option additionalOpt : additionalOpts) {
-			if (additionalOpt == null) {
-				throw new NullPointerException(
-						"additional Option(s) must not be null");
-			}
-		}
-		opts.addAll(additionalOpts);
 		Comparator<Option> cmprtr = comparator;
 		if (cmprtr == null) {
 			cmprtr = DefaultOptionComparator.INSTANCE;
 		}
 		Collections.sort(opts, cmprtr);
+		this.options = new ArrayList<Option>(opts);
+	}
+	
+	private Options(final List<Option> opts) {
+		for (Option opt : opts) {
+			if (opt == null) {
+				throw new NullPointerException("Option(s) must not be null");
+			}
+		}
 		this.options = new ArrayList<Option>(opts);
 	}
 	
