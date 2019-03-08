@@ -22,6 +22,12 @@ ArgMatey is a comprehensive Java command line argument parsing library that has 
  
 - Complete customization of usage and help text for the options. This is useful for retaining the format of the usage and help text generated from an earlier command line argument parsing library.
 
+The following are some examples of projects using ArgMatey:
+
+- [JBase64Transformer](https://github.com/jh3nd3rs0n/jbase64transformer)
+
+- [JSocksServer](https://github.com/jh3nd3rs0n/jsocksserver)
+
 ## Contents
 
 - <a href="#requirements">Requirements</a>
