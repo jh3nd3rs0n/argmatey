@@ -235,6 +235,14 @@ public abstract class Option {
 		this.string = str;
 	}
 	
+	public final boolean equalsOrHas(final Option opt) {
+		return this.equals(opt) || this.has(opt);
+	}
+	
+	public final boolean equalsOrIsFrom(final Option opt) {
+		return this.equals(opt) || this.isFrom(opt);
+	}
+	
 	public final List<Option> getAllOptions() {
 		List<Option> allOptions = new ArrayList<Option>();
 		allOptions.add(this);
@@ -250,7 +258,7 @@ public abstract class Option {
 		}
 		return Collections.unmodifiableList(allOtherOptions);
 	}
-
+	
 	public final String getDoc() {
 		return this.doc;
 	}
@@ -275,19 +283,19 @@ public abstract class Option {
 	public final OptionHelpTextProvider getOptionHelpTextProvider() {
 		return this.optionHelpTextProvider;
 	}
-
+	
 	public final OptionUsageProvider getOptionUsageProvider() {
 		return this.optionUsageProvider;
 	}
-	
+
 	public final int getOrdinal() {
 		return this.ordinal;
 	}
-	
+
 	public final List<Option> getOtherOptions() {
 		return Collections.unmodifiableList(this.otherOptions);
 	}
-
+	
 	public final String getUsage() {
 		String usage = null;
 		if (this.optionUsageProvider != null) {
@@ -297,8 +305,74 @@ public abstract class Option {
 		return usage;
 	}
 	
+	public final boolean has(final Option opt) {
+		return this.getAllOtherOptions().contains(opt);
+	}
+
+	public final boolean isFrom(final Option opt) {
+		return opt.getAllOtherOptions().contains(this);
+	}
+	
 	public final boolean isHidden() {
 		return this.hidden;
+	}
+	
+	public final boolean isOf(final String opt) {
+		return this.string.equals(opt);
+	}
+	
+	public final boolean isOfAnyOfOrHasOptionOfAnyOf(final List<String> opts) {
+		List<Option> allOtherOptions = this.getAllOtherOptions();
+		for (String opt : opts) {
+			if (this.isOf(opt)) {
+				return true;
+			}
+			for (Option o : allOtherOptions) {
+				if (o.isOf(opt)) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
+	public final boolean isOfAnyOfOrHasOptionOfAnyOf(
+			final String opt1, 
+			final String opt2) {
+		return this.isOfAnyOfOrHasOptionOfAnyOf(Arrays.asList(opt1, opt2));
+	}
+	
+	public final boolean isOfAnyOfOrHasOptionOfAnyOf(
+			final String opt1, 
+			final String opt2, 
+			final String opt3) {
+		return this.isOfAnyOfOrHasOptionOfAnyOf(Arrays.asList(opt1, opt2, 
+				opt3));
+	}
+	
+	public final boolean isOfAnyOfOrHasOptionOfAnyOf(
+			final String opt1, 
+			final String opt2, 
+			final String opt3, 
+			final String... additionalOpts) {
+		List<String> opts = new ArrayList<String>();
+		opts.add(opt1);
+		opts.add(opt2);
+		opts.add(opt3);
+		opts.addAll(Arrays.asList(additionalOpts));
+		return this.isOfAnyOfOrHasOptionOfAnyOf(opts);
+	}
+	
+	public final boolean isOfOrHasOptionOf(final String opt) {
+		if (this.isOf(opt)) {
+			return true;
+		}
+		for (Option o : this.getAllOtherOptions()) {
+			if (o.isOf(opt)) {
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	public final boolean isSpecial() {

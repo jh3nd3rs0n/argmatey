@@ -1,7 +1,5 @@
 package argmatey;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public final class OptionOccurrence {
@@ -52,7 +50,7 @@ public final class OptionOccurrence {
 	}
 	
 	public boolean has(final Option opt) {
-		return opt.equals(this.option);
+		return this.option.equals(opt);
 	}
 	
 	@Override
@@ -69,46 +67,30 @@ public final class OptionOccurrence {
 	}
 	
 	public boolean hasOptionOf(final String opt) {
-		return opt.equals(this.option.toString());
+		return this.option.isOfOrHasOptionOf(opt);
 	}
 	
 	public boolean hasOptionOfAnyOf(final List<String> opts) {
-		for (String opt : opts) {
-			if (opt.equals(this.option.toString())) {
-				return true;
-			}
-		}
-		return false;
+		return this.option.isOfAnyOfOrHasOptionOfAnyOf(opts);
 	}
 	
 	public boolean hasOptionOfAnyOf(final String opt1, final String opt2) {
-		List<String> opts = new ArrayList<String>();
-		opts.add(opt1);
-		opts.add(opt2);
-		return this.hasOptionOfAnyOf(opts);
+		return this.option.isOfAnyOfOrHasOptionOfAnyOf(opt1, opt2);
 	}
 	
 	public boolean hasOptionOfAnyOf(final String opt1, final String opt2,
 			final String opt3) {
-		List<String> opts = new ArrayList<String>();
-		opts.add(opt1);
-		opts.add(opt2);
-		opts.add(opt3);
-		return this.hasOptionOfAnyOf(opts);
+		return this.option.isOfAnyOfOrHasOptionOfAnyOf(opt1, opt2, opt3);
 	}
 	
 	public boolean hasOptionOfAnyOf(final String opt1, final String opt2,
 			final String opt3, final String... additionalOpts) {
-		List<String> opts = new ArrayList<String>();
-		opts.add(opt1);
-		opts.add(opt2);
-		opts.add(opt3);
-		opts.addAll(Arrays.asList(additionalOpts));
-		return this.hasOptionOfAnyOf(opts);
+		return this.option.isOfAnyOfOrHasOptionOfAnyOf(opt1, opt2, opt3, 
+				additionalOpts);
 	}
 	
 	public boolean hasOrHasOptionFrom(final Option opt) {
-		return this.has(opt) || opt.getAllOtherOptions().contains(this.option);
+		return this.option.equalsOrIsFrom(opt);
 	}
 
 	@Override
