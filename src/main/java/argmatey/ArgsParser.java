@@ -612,6 +612,29 @@ public final class ArgsParser {
 		return next;
 	}
 	
+	public void parseEachRemainingTo(
+			final ParseResultHandler parseResultHandler) {
+		while (this.hasNext()) {
+			ParseResultHolder parseResultHolder = this.parseNext();
+			parseResultHandler.handle(parseResultHolder);
+			if (parseResultHolder.hasEndOfOptionsDelimiter()) {
+				parseResultHandler.handle(
+						parseResultHolder.getEndOfOptionsDelimiter());
+			}
+			if (parseResultHolder.hasNonparsedArg()) {
+				parseResultHandler.handle(parseResultHolder.getNonparsedArg());
+			}
+			if (parseResultHolder.hasOptionOccurrence()) {
+				OptionOccurrence optionOccurrence = 
+						parseResultHolder.getOptionOccurrence();
+				parseResultHandler.handle(optionOccurrence);
+				parseResultHandler.handle(optionOccurrence.getOption(), 
+						optionOccurrence.getOptionArg());
+			}
+			parseResultHandler.handle(parseResultHolder.getParseResult());
+		}
+	}
+	
 	public ParseResultHolder parseNext() {
 		ArgHandlerContext recentArgHandlerContext = 
 				new ArgHandlerContext(this.argHandlerContext);
