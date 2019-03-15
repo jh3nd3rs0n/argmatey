@@ -67,26 +67,25 @@ public final class OptionOccurrence {
 	}
 	
 	public boolean hasOptionOf(final String opt) {
-		return this.option.isOfOrHasOptionOf(opt);
+		return this.option.isOf(opt);
 	}
 	
 	public boolean hasOptionOfAnyOf(final List<String> opts) {
-		return this.option.isOfAnyOfOrHasOptionOfAnyOf(opts);
+		return this.option.isOfAnyOf(opts);
 	}
 	
 	public boolean hasOptionOfAnyOf(final String opt1, final String opt2) {
-		return this.option.isOfAnyOfOrHasOptionOfAnyOf(opt1, opt2);
+		return this.option.isOfAnyOf(opt1, opt2);
 	}
 	
 	public boolean hasOptionOfAnyOf(final String opt1, final String opt2,
 			final String opt3) {
-		return this.option.isOfAnyOfOrHasOptionOfAnyOf(opt1, opt2, opt3);
+		return this.option.isOfAnyOf(opt1, opt2, opt3);
 	}
 	
 	public boolean hasOptionOfAnyOf(final String opt1, final String opt2,
 			final String opt3, final String... additionalOpts) {
-		return this.option.isOfAnyOfOrHasOptionOfAnyOf(opt1, opt2, opt3, 
-				additionalOpts);
+		return this.option.isOfAnyOf(opt1, opt2, opt3, additionalOpts);
 	}
 	
 	public boolean hasOrHasOptionFrom(final Option opt) {
