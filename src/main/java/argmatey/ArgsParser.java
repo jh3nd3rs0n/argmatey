@@ -616,22 +616,40 @@ public final class ArgsParser {
 			final ParseResultHandler parseResultHandler) {
 		while (this.hasNext()) {
 			ParseResultHolder parseResultHolder = this.parseNext();
-			parseResultHandler.handle(parseResultHolder);
-			if (parseResultHolder.hasEndOfOptionsDelimiter()) {
-				parseResultHandler.handle(
-						parseResultHolder.getEndOfOptionsDelimiter());
+			ArgHandlerContext recentArgHandlerContext = 
+					new ArgHandlerContext(this.argHandlerContext);
+			try {
+				parseResultHandler.handle(parseResultHolder);
+				if (parseResultHolder.hasEndOfOptionsDelimiter()) {
+					parseResultHandler.handle(
+							parseResultHolder.getEndOfOptionsDelimiter());
+				}
+				if (parseResultHolder.hasNonparsedArg()) {
+					parseResultHandler.handle(
+							parseResultHolder.getNonparsedArg());
+				}
+				if (parseResultHolder.hasOptionOccurrence()) {
+					OptionOccurrence optionOccurrence = 
+							parseResultHolder.getOptionOccurrence();
+					parseResultHandler.handle(optionOccurrence);
+					parseResultHandler.handle(optionOccurrence.getOption(), 
+							optionOccurrence.getOptionArg());
+				}
+				parseResultHandler.handle(parseResultHolder.getParseResult());
+			} catch (Throwable t) {
+				/* 
+				 * failure atomicity (return back to most recent working state) 
+				 */
+				this.argHandlerContext = recentArgHandlerContext;
+				if (t instanceof Error) {
+					Error e = (Error) t;
+					throw e;
+				}
+				if (t instanceof RuntimeException) {
+					RuntimeException rte = (RuntimeException) t;
+					throw rte;
+				}
 			}
-			if (parseResultHolder.hasNonparsedArg()) {
-				parseResultHandler.handle(parseResultHolder.getNonparsedArg());
-			}
-			if (parseResultHolder.hasOptionOccurrence()) {
-				OptionOccurrence optionOccurrence = 
-						parseResultHolder.getOptionOccurrence();
-				parseResultHandler.handle(optionOccurrence);
-				parseResultHandler.handle(optionOccurrence.getOption(), 
-						optionOccurrence.getOptionArg());
-			}
-			parseResultHandler.handle(parseResultHolder.getParseResult());
 		}
 	}
 	
