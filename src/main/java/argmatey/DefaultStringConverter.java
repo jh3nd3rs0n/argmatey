@@ -5,8 +5,31 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 
+/**
+ * Default {@code StringConverter} that converts the provided {@code String} to 
+ * the provided type. This {@code StringConverter} uses the provided type's 
+ * public static method that has one method parameter of type {@code String} 
+ * and a method return type of the provided type. If the provided type does 
+ * not have that type of method, this {@code StringConverter} uses the 
+ * provided type's public instantiatable constructor that has one constructor 
+ * parameter of type {@code String}. If the provided type has neither, a 
+ * {@code IllegalArgumentException} is thrown.
+ */
 public final class DefaultStringConverter implements StringConverter {
 	
+	/**
+	 * Returns the provided type's {@code Method} that is public and static 
+	 * and has one method parameter of type {@code String} and a method return 
+	 * type of the provided type. If the provided type has no such method, 
+	 * {@code null} is returned.
+	 *  
+	 * @param type the provided type
+	 * 
+	 * @return the provided type's {@code Method} that is public and static 
+	 * and has one method parameter of type {@code String} and a method return 
+	 * type of the provided type or {@code null} if no such method is found in 
+	 * the provided type
+	 */
 	private static Method getStaticStringConversionMethod(final Class<?> type) {
 		for (Method method : type.getDeclaredMethods()) {
 			int modifiers = method.getModifiers();
@@ -27,6 +50,17 @@ public final class DefaultStringConverter implements StringConverter {
 		return null;
 	}
 	
+	/**
+	 * Returns the provided type's {@code Constructor} that is public and 
+	 * instantiatable and has a constructor parameter of type {@code String}. 
+	 * If the provided type has no such constructor, {@code null} is returned.
+	 * 
+	 * @param type the provided type
+	 * 
+	 * @return the provided type's {@code Constructor} that is public and 
+	 * instantiatable and has a constructor parameter of type {@code String} or 
+	 * {@code null} if no such constructor is found
+	 */
 	private static <T> Constructor<T> getStringParameterConstructor(
 			final Class<T> type) {
 		for (Constructor<?> constructor : type.getConstructors()) {
@@ -45,10 +79,33 @@ public final class DefaultStringConverter implements StringConverter {
 		return null;
 	}
 
+	/** The type to which the {@code String} is converted. */
 	private final Class<?> convertedType;
+	
+	/** 
+	 * The {@code Method} that is public and static and has one method 
+	 * parameter of type {@code String} and a method return type of the 
+	 * converted type. 
+	 */
 	private final Method staticStringConversionMethod;
+	
+	/**
+	 * The {@code Constructor} that is public and instantiatable and has a 
+	 * constructor parameter of type {@code String}.
+	 */
 	private final Constructor<?> stringParameterConstructor;
-			
+	
+	/**
+	 * Constructs a {@code DefaultStringConverter} with the provided type.
+	 * 
+	 * @param type the provided type
+	 * 
+	 * @throws IllegalArgumentException if the provided type does not have 
+	 * either a public static method that has one method parameter of type 
+	 * {@code String} and a method return type of the provided type nor a 
+	 * public instantiatable constructor that has one constructor parameter of 
+	 * type {@code String}" 
+	 */
 	public DefaultStringConverter(final Class<?> type) {
 		Method method = null;
 		Constructor<?> constructor = null;
@@ -61,7 +118,7 @@ public final class DefaultStringConverter implements StringConverter {
 				throw new IllegalArgumentException(String.format(
 						"type %1$s does not have either a public static method "
 						+ "that has one method parameter of type %2$s and a "
-						+ "method return type of the option argument type nor "
+						+ "method return type of the provided type nor "
 						+ "a public instantiatable constructor that has one "
 						+ "constructor parameter of type %2$s", 
 						type.getName(),
@@ -73,6 +130,16 @@ public final class DefaultStringConverter implements StringConverter {
 		this.stringParameterConstructor = constructor;
 	}
 	
+	/**
+	 * Converts the provided {@code String} to an {@code Object} of the 
+	 * provided type. If the provided type is {@code String}, the provided 
+	 * {@code String} is returned.
+	 * 
+	 * @param string the provided {@code String}
+	 * 
+	 * @return the converted {@code Object} of the provided type or the 
+	 * provided {@code String} if the provided type is {@code String}
+	 */
 	@Override
 	public Object convert(final String string) {
 		Object object = null;
@@ -126,10 +193,22 @@ public final class DefaultStringConverter implements StringConverter {
 		return object;
 	}
 
+	/**
+	 * Returns the type to which the {@code String} is converted.
+	 * 
+	 * @return the type to which the {@code String} is converted
+	 */
 	public Class<?> getConvertedType() {
 		return this.convertedType;
 	}
 	
+	/**
+	 * Returns the {@code String} representation of this 
+	 * {@code DefaultStringConverter}.
+	 * 
+	 * @return the {@code String} representation of this 
+	 * {@code DefaultStringConverter}
+	 */
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
