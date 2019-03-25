@@ -71,13 +71,6 @@ public final class ParseResultHolder {
 		return this.parseResult;
 	}
 	
-	public boolean has(final Option opt) {
-		if (this.hasOptionOccurrence()) {
-			return this.getOptionOccurrence().has(opt);
-		}
-		return false;
-	}
-	
 	public boolean hasEndOfOptionsDelimiter() {
 		return this.getEndOfOptionsDelimiter() != null;
 	}
@@ -146,13 +139,6 @@ public final class ParseResultHolder {
 		return false;
 	}
 	
-	public boolean hasOrHasOptionFrom(final Option opt) {
-		if (this.hasOptionOccurrence()) {
-			return this.getOptionOccurrence().hasOrHasOptionFrom(opt);
-		}
-		return false;
-	}
-
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();

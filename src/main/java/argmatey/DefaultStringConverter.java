@@ -7,13 +7,13 @@ import java.lang.reflect.Modifier;
 
 /**
  * Default {@code StringConverter} that converts the provided {@code String} to 
- * the provided type. This {@code StringConverter} uses the provided type's 
- * public static method that has one method parameter of type {@code String} 
- * and a method return type of the provided type. If the provided type does 
- * not have that type of method, this {@code StringConverter} uses the 
- * provided type's public instantiatable constructor that has one constructor 
- * parameter of type {@code String}. If the provided type has neither, a 
- * {@code IllegalArgumentException} is thrown.
+ * an {@code Object} of the provided type. This {@code StringConverter} uses 
+ * the provided type's public static method that has one method parameter of 
+ * type {@code String} and a method return type of the provided type. If the 
+ * provided type does not have that type of method, this 
+ * {@code StringConverter} uses the provided type's public instantiatable 
+ * constructor that has one constructor parameter of type {@code String}. If 
+ * the provided type has neither, a {@code IllegalArgumentException} is thrown.
  */
 public final class DefaultStringConverter implements StringConverter {
 	
@@ -79,7 +79,10 @@ public final class DefaultStringConverter implements StringConverter {
 		return null;
 	}
 
-	/** The type to which the {@code String} is converted. */
+	/** 
+	 * The provided type of the {@code Object} to which the {@code String} is 
+	 * converted. 
+	 */
 	private final Class<?> convertedType;
 	
 	/** 
@@ -104,7 +107,7 @@ public final class DefaultStringConverter implements StringConverter {
 	 * either a public static method that has one method parameter of type 
 	 * {@code String} and a method return type of the provided type nor a 
 	 * public instantiatable constructor that has one constructor parameter of 
-	 * type {@code String}" 
+	 * type {@code String}
 	 */
 	public DefaultStringConverter(final Class<?> type) {
 		Method method = null;
@@ -194,9 +197,11 @@ public final class DefaultStringConverter implements StringConverter {
 	}
 
 	/**
-	 * Returns the type to which the {@code String} is converted.
+	 * Returns the provided type of the {@code Object} to which the 
+	 * {@code String} is converted.
 	 * 
-	 * @return the type to which the {@code String} is converted
+	 * @return the provided type of the {@code Object} to which the 
+	 * {@code String} is converted
 	 */
 	public Class<?> getConvertedType() {
 		return this.convertedType;

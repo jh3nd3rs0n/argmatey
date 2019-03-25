@@ -235,14 +235,6 @@ public abstract class Option {
 		this.string = str;
 	}
 	
-	public final boolean equalsOrHas(final Option opt) {
-		return this.equals(opt) || this.has(opt);
-	}
-	
-	public final boolean equalsOrIsFrom(final Option opt) {
-		return this.equals(opt) || this.isFrom(opt);
-	}
-	
 	public final List<Option> getAllOptions() {
 		List<Option> allOptions = new ArrayList<Option>();
 		allOptions.add(this);
@@ -303,14 +295,6 @@ public abstract class Option {
 					new OptionUsageParams(this));
 		}
 		return usage;
-	}
-	
-	public final boolean has(final Option opt) {
-		return this.getAllOtherOptions().contains(opt);
-	}
-
-	public final boolean isFrom(final Option opt) {
-		return opt.getAllOtherOptions().contains(this);
 	}
 	
 	public final boolean isHidden() {

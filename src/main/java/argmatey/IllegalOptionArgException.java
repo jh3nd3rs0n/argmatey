@@ -1,8 +1,8 @@
 package argmatey;
 
 /**
- * Thrown when an {@code Option} is provided with a command line option argument 
- * that is illegal or inappropriate.
+ * Thrown when an {@code Option} is provided with a command line option 
+ * argument that is illegal or inappropriate.
  */
 public final class IllegalOptionArgException extends RuntimeException {
 
@@ -15,10 +15,10 @@ public final class IllegalOptionArgException extends RuntimeException {
 	 * illegal or inappropriate command line option argument, the specified 
 	 * detail message, and the provided cause.
 	 * 
-	 * If the specified detail message is not {@code null}, the specified detail
-	 * message is returned. Otherwise, a detail message is created. If the 
-	 * provided cause is not {@code null}, its {@code String} representation is 
-	 * appended to that created detail message.  
+	 * If the specified detail message is not {@code null}, the specified 
+	 * detail message is returned. Otherwise, a detail message is created. If 
+	 * the provided cause is not {@code null}, its {@code String} 
+	 * representation is appended to that created detail message.  
 	 * 
 	 * @param option the provided {@code Option} of the illegal or 
 	 * inappropriate command line option argument
@@ -26,8 +26,9 @@ public final class IllegalOptionArgException extends RuntimeException {
 	 * option argument
 	 * @param message the specified detail message (can be {@code null})
 	 * @param cause the provided cause (can be {@code null})
-	 * @return the specified detail message or a created detail message appended 
-	 * with or without a {@code String} representation of the provided cause 
+	 * @return the specified detail message or a created detail message 
+	 * appended with or without a {@code String} representation of the provided 
+	 * cause 
 	 */
 	private static String getMessage(
 			final Option option, 

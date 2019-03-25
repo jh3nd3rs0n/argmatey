@@ -1,8 +1,8 @@
 package argmatey;
 
 /**
- * Thrown when an {@code Option} is provided with a command line option argument 
- * that is not allowed.
+ * Thrown when an {@code Option} is provided with a command line option 
+ * argument that is not allowed.
  */
 public final class OptionArgNotAllowedException extends RuntimeException {
 	
@@ -17,8 +17,8 @@ public final class OptionArgNotAllowedException extends RuntimeException {
 	
 	/**
 	 * Constructs an {@code OptionArgNotAllowedException} with the provided 
-	 * {@code Option} that was provided with a command line option argument that 
-	 * is not allowed.
+	 * {@code Option} that was provided with a command line option argument 
+	 * that is not allowed.
 	 *  
 	 * @param opt the provided {@code Option} that was provided with a command 
 	 * line option argument that is not allowed
