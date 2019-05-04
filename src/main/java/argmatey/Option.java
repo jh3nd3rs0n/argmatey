@@ -3,9 +3,7 @@ package argmatey;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public abstract class Option {
 
@@ -135,50 +133,6 @@ public abstract class Option {
 		
 	}
 	
-	private static final Map<Class<? extends Option>, OptionUsageProvider> DEFAULT_OPTION_USAGE_PROVIDERS =
-			new HashMap<Class<? extends Option>, OptionUsageProvider>();
-	
-	private static OptionHelpTextProvider defaultOptionHelpTextProvider;
-	
-	static {
-		DEFAULT_OPTION_USAGE_PROVIDERS.put(
-				GnuLongOption.class, DefaultGnuLongOptionUsageProvider.INSTANCE);
-		DEFAULT_OPTION_USAGE_PROVIDERS.put(
-				LongOption.class, DefaultLongOptionUsageProvider.INSTANCE);
-		DEFAULT_OPTION_USAGE_PROVIDERS.put(
-				PosixOption.class, DefaultPosixOptionUsageProvider.INSTANCE);
-		defaultOptionHelpTextProvider = DefaultOptionHelpTextProvider.INSTANCE;
-	}
-	
-	public static OptionHelpTextProvider getDefaultOptionHelpTextProvider() {
-		return defaultOptionHelpTextProvider;
-	}
-
-	public static OptionUsageProvider getDefaultOptionUsageProvider(
-			final Class<? extends Option> optClass) {
-		return DEFAULT_OPTION_USAGE_PROVIDERS.get(optClass);
-	}
-	
-	public static Map<Class<? extends Option>, OptionUsageProvider> getDefaultOptionUsageProviders() {
-		return Collections.unmodifiableMap(DEFAULT_OPTION_USAGE_PROVIDERS);
-	}
-	
-	public static OptionUsageProvider putDefaultOptionUsageProvider(
-			final Class<? extends Option> optClass,
-			final OptionUsageProvider optUsageProvider) {
-		return DEFAULT_OPTION_USAGE_PROVIDERS.put(optClass, optUsageProvider);
-	}
-	
-	public static OptionUsageProvider removeDefaultOptionUsageProvider(
-			final Class<? extends Option> optClass) {
-		return DEFAULT_OPTION_USAGE_PROVIDERS.remove(optClass);
-	}
-	
-	public static void setDefaultOptionHelpTextProvider(
-			final OptionHelpTextProvider optHelpTextProvider) {
-		defaultOptionHelpTextProvider = optHelpTextProvider;
-	}
-	
 	private final String doc;
 	private final boolean hidden;
 	private final String name;
@@ -204,10 +158,10 @@ public abstract class Option {
 		boolean spcl = builder.special;
 		String str = builder.string;
 		if (!builder.optionHelpTextProviderSet) {
-			optHelpTextProvider = getDefaultOptionHelpTextProvider();
+			optHelpTextProvider = OptionHelpTextProviders.getDefault();
 		}
 		if (!builder.optionUsageProviderSet) {
-			optUsageProvider = getDefaultOptionUsageProvider(this.getClass());
+			optUsageProvider = OptionUsageProviders.getDefault(this.getClass());
 		}
 		List<Option> otherOpts = new ArrayList<Option>();
 		for (Builder otherBldr : otherBldrs) {
