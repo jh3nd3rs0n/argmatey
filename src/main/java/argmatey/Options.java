@@ -80,17 +80,16 @@ public class Options {
 		this.printHelpText(new PrintWriter(s));
 	}
 	
-	public final void printHelpText(final PrintWriter s) {
+	public final void printHelpText(final PrintWriter w) {
 		boolean earlierHelpTextNotNull = false;
-		String lineSeparator = System.getProperty("line.separator");
 		for (Option option : this.options) {
 			String helpText = option.getHelpText();
 			if (helpText != null) {
 				if (earlierHelpTextNotNull) {
-					s.write(lineSeparator);
+					w.println();
 				}
-				s.write(helpText);
-				s.flush();
+				w.print(helpText);
+				w.flush();
 				if (!earlierHelpTextNotNull) {
 					earlierHelpTextNotNull = true;
 				}
@@ -106,7 +105,7 @@ public class Options {
 		this.printUsage(new PrintWriter(s));
 	}
 	
-	public final void printUsage(final PrintWriter s) {
+	public final void printUsage(final PrintWriter w) {
 		boolean earlierUsageNotNull = false;
 		for (Option option : this.options) {
 			String usage = null;
@@ -118,10 +117,10 @@ public class Options {
 			}
 			if (usage != null) {
 				if (earlierUsageNotNull) {
-					s.write(" ");
+					w.print(" ");
 				}
-				s.write(String.format("[%s]", usage));
-				s.flush();
+				w.print(String.format("[%s]", usage));
+				w.flush();
 				if (!earlierUsageNotNull) {
 					earlierUsageNotNull = true;
 				}
