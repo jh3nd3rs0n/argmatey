@@ -10,6 +10,20 @@ import java.util.List;
 
 import org.junit.Test;
 
+import argmatey.ArgMatey.ArgsParser;
+import argmatey.ArgMatey.DefaultOptionHelpTextProvider;
+import argmatey.ArgMatey.EndOfOptionsDelimiter;
+import argmatey.ArgMatey.GnuLongOption;
+import argmatey.ArgMatey.LongOption;
+import argmatey.ArgMatey.Option;
+import argmatey.ArgMatey.OptionArgSpec;
+import argmatey.ArgMatey.OptionHelpTextParams;
+import argmatey.ArgMatey.OptionHelpTextProvider;
+import argmatey.ArgMatey.OptionOccurrence;
+import argmatey.ArgMatey.Options;
+import argmatey.ArgMatey.ParseResultHolder;
+import argmatey.ArgMatey.PosixOption;
+
 public class Base64OptionsTest {
 
 	public static final class Base64Options extends Options {

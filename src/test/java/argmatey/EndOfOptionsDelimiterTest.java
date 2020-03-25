@@ -1,8 +1,10 @@
 package argmatey;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
+
+import argmatey.ArgMatey.EndOfOptionsDelimiter;
 
 public class EndOfOptionsDelimiterTest {
 

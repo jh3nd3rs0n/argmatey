@@ -1,8 +1,12 @@
 package argmatey;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
+
+import argmatey.ArgMatey.DefaultStringConverter;
+import argmatey.ArgMatey.StringConverter;
 
 public class DefaultStringConverterTest {
 
