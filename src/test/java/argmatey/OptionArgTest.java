@@ -1,6 +1,6 @@
 package argmatey;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.util.Arrays;
 import java.util.List;
@@ -8,164 +8,134 @@ import java.util.List;
 import org.junit.Test;
 
 import argmatey.ArgMatey.OptionArg;
-import argmatey.ArgMatey.DefaultStringConverter;
 
 public class OptionArgTest {
 
 	@Test
 	public void testGetObjectValue01() {
-		String name = "Aladdin";
-		OptionArg optionArg = OptionArg.newInstance(
-				name, 
-				"[^\\w\\W]", 
-				new DefaultStringConverter(String.class));
-		assertEquals(name, optionArg.getObjectValue());
+		String optionArg = "Aladdin";
+		Object objectValue = optionArg;
+		OptionArg optArg = new OptionArg(optionArg, objectValue);
+		assertEquals(objectValue, optArg.getObjectValue());
 	}
 
 	@Test
 	public void testGetObjectValue02() {
-		String name = "Aladdin";
-		OptionArg optionArg = OptionArg.newInstance(
-				"Aladdin,Jasmine,Apu", 
-				",", 
-				new DefaultStringConverter(String.class));
-		assertEquals(name, optionArg.getObjectValue());
+		String optionArg = "Aladdin,Jasmine,Apu";
+		Object objectValue = "Aladdin";
+		OptionArg optArg = new OptionArg(
+				optionArg, 
+				Arrays.asList(
+						new OptionArg("Aladdin", "Aladdin"), 
+						new OptionArg("Jasmine", "Jasmine"),
+						new OptionArg("Apu", "Apu")));
+		assertEquals(objectValue, optArg.getObjectValue());
 	}
 	
 	@Test
 	public void testGetObjectValues() {
-		List<String> list = Arrays.asList("Aladdin", "Jasmine", "Apu");
-		OptionArg optionArg = OptionArg.newInstance(
-				"Aladdin;Jasmine;Apu", 
-				";", 
-				new DefaultStringConverter(String.class));
-		assertEquals(list, optionArg.getObjectValues());
+		String optionArg = "Aladdin;Jasmine;Apu";
+		List<String> objectValues = Arrays.asList("Aladdin", "Jasmine", "Apu");
+		OptionArg optArg = new OptionArg(
+				optionArg, 
+				Arrays.asList(
+						new OptionArg("Aladdin", "Aladdin"), 
+						new OptionArg("Jasmine", "Jasmine"),
+						new OptionArg("Apu", "Apu")));
+		assertEquals(objectValues, optArg.getObjectValues());
 	}
 	
 	@Test
 	public void testGetTypeValue01() {
+		String optionArg = "42";
 		final int i = 42;
-		OptionArg optionArg = OptionArg.newInstance(
-				"42", 
-				"[^\\w\\W]", 
-				new DefaultStringConverter(Integer.class));
-		assertEquals(
-				Integer.valueOf(i), optionArg.getTypeValue(Integer.class));
+		OptionArg optArg = new OptionArg(optionArg, Integer.valueOf(i));
+		assertEquals(Integer.valueOf(i), optArg.getTypeValue(Integer.class));
 	}
 	
 	@Test
 	public void testGetTypeValue02() {
-		final int i = 42;
-		OptionArg optionArg = OptionArg.newInstance(
-				"42;34;97", 
-				";", 
-				new DefaultStringConverter(Integer.class));
-		assertEquals(
-				Integer.valueOf(i), optionArg.getTypeValue(Integer.class));
+		String optionArg = "42;34;97"; 
+		final int i1 = 42;
+		final int i2 = 34;
+		final int i3 = 97;
+		OptionArg optArg = new OptionArg(
+				optionArg, 
+				Arrays.asList(
+						new OptionArg("42", Integer.valueOf(i1)), 
+						new OptionArg("34", Integer.valueOf(i2)), 
+						new OptionArg("97", Integer.valueOf(i3))));
+		assertEquals(Integer.valueOf(i1), optArg.getTypeValue(Integer.class));
 	}
 	
 	@Test(expected=ClassCastException.class)
 	public void testGetTypeValueForClassCastException() {
-		OptionArg optionArg = OptionArg.newInstance(
-				"42", 
-				"[^\\w\\W]", 
-				new DefaultStringConverter(Integer.class));
-		optionArg.getTypeValue(String.class);
+		String optionArg = "42";
+		final int i = 42;
+		OptionArg optArg = new OptionArg(optionArg, Integer.valueOf(i));
+		optArg.getTypeValue(String.class);
 	}
 	
 	@Test
 	public void testGetTypeValues() {
+		String optionArg = "31 27 36"; 
 		final int i1 = 31;
 		final int i2 = 27;
 		final int i3 = 36;
-		List<Integer> list = Arrays.asList(
+		List<Integer> typeValues = Arrays.asList(
 				Integer.valueOf(i1), Integer.valueOf(i2), Integer.valueOf(i3));
-		OptionArg optionArg = OptionArg.newInstance(
-				"31 27 36", 
-				" ", 
-				new DefaultStringConverter(Integer.class));
-		assertEquals(list, optionArg.getTypeValues(Integer.class));
+		OptionArg optArg = new OptionArg(
+				optionArg, 
+				Arrays.asList(
+						new OptionArg("31", Integer.valueOf(i1)),
+						new OptionArg("27", Integer.valueOf(i2)),
+						new OptionArg("36", Integer.valueOf(i3))));
+		assertEquals(typeValues, optArg.getTypeValues(Integer.class));
 	}
 
 	@Test(expected=ClassCastException.class)
 	public void testGetTypeValuesForClassCastException() {
-		OptionArg optionArg = OptionArg.newInstance(
-				"31 27 36", 
-				" ", 
-				new DefaultStringConverter(Integer.class));
-		optionArg.getTypeValues(String.class);
-	}
-	
-	@Test(expected=IllegalArgumentException.class)
-	public void testNewInstanceForIllegalArgumentException01() {
-		OptionArg.newInstance(
-				"Aladdin", 
-				"[^\\w\\W]", 
-				new DefaultStringConverter(Integer.class));
-	}
-
-	@Test(expected=IllegalArgumentException.class)
-	public void testNewInstanceForIllegalArgumentException02() {
-		OptionArg.newInstance(
-				"1,2,3,Gus,5,6", 
-				",", 
-				new DefaultStringConverter(Integer.class));
-	}
-
-	@Test(expected=NullPointerException.class)
-	public void testNewInstanceForNullPointerException01() {
-		OptionArg.newInstance(
-				null, 
-				"[^\\w\\W]", 
-				new DefaultStringConverter(String.class));
-		
-	}
-
-	@Test(expected=NullPointerException.class)
-	public void testNewInstanceForNullPointerException02() {
-		OptionArg.newInstance(
-				"Jasmine", 
-				null, 
-				new DefaultStringConverter(String.class));
-		
-	}
-
-	@Test(expected=NullPointerException.class)
-	public void testNewInstanceForNullPointerException03() {
-		OptionArg.newInstance(
-				"Apu", 
-				"[^\\w\\W]", 
-				null);
-		
+		String optionArg = "31 27 36";
+		final int i1 = 31;
+		final int i2 = 27;
+		final int i3 = 36;
+		OptionArg optArg = new OptionArg(
+				optionArg, 
+				Arrays.asList(
+						new OptionArg("31", Integer.valueOf(i1)), 
+						new OptionArg("27", Integer.valueOf(i2)), 
+						new OptionArg("36", Integer.valueOf(i3))));
+		optArg.getTypeValues(String.class);
 	}
 	
 	@Test
 	public void testToString01() {
-		String string = "Aladdin";
-		OptionArg optionArg = OptionArg.newInstance(
-				string, 
-				"[^\\w\\W]", 
-				new DefaultStringConverter(String.class));
-		assertEquals(string, optionArg.toString());
+		String optionArg = "Aladdin";
+		Object objectValue = optionArg;
+		OptionArg optArg = new OptionArg(optionArg,	objectValue);
+		assertEquals(optionArg, optArg.toString());
 	}
 		
 	@Test
 	public void testToString02() {
-		String string = "Jasmine,42,status=single";
-		OptionArg optionArg = OptionArg.newInstance(
-				string, 
-				"[^\\w\\W]", 
-				new DefaultStringConverter(String.class));
-		assertEquals(string, optionArg.toString());
+		String optionArg = "Jasmine,42,status=single";
+		Object objectValue = optionArg;
+		OptionArg optArg = new OptionArg(optionArg,	objectValue);
+		assertEquals(optionArg, optArg.toString());
 	}
 		
 	@Test
 	public void testToString03() {
-		String string = "96 39 82";
-		OptionArg optionArg = OptionArg.newInstance(
-				string, 
-				" ", 
-				new DefaultStringConverter(Integer.class));
-		assertEquals(string, optionArg.toString());
+		String optionArg = "96 39 82";
+		final int i1 = 96;
+		final int i2 = 39;
+		final int i3 = 82;
+		OptionArg optArg = new OptionArg(
+				optionArg, 
+				Arrays.asList(
+						new OptionArg("96", Integer.valueOf(i1)), 
+						new OptionArg("39", Integer.valueOf(i2)), 
+						new OptionArg("82", Integer.valueOf(i3))));
+		assertEquals(optionArg, optArg.toString());
 	}
 }
