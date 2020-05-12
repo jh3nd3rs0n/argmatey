@@ -1,0 +1,127 @@
+<html>
+<body>
+
+<h1>ArgMatey</h1>
+
+<p>
+ArgMatey is a comprehensive Java command line argument parsing library that has the following features:
+</p>
+
+<ul>
+
+<li>
+API terminology and option syntax and behavior based on the <a href="http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap12.html">POSIX Utility Conventions</a>, GNU's function <a href="http://www.gnu.org/software/libc/manual/html_node/Getopt-Long-Options.html#Getopt-Long-Options">getopt_long</a>, and GNU's <a href="http://www.gnu.org/software/libc/manual/html_node/Argp.html#Argp">Argp</a> interface
+</li>
+
+<li>Option types:
+
+<ul>
+ 
+<li>POSIX options (examples: <code>-h</code> <code>-v</code> <code>-o file.txt</code>)</li>
+    
+<li>Long options (examples: <code>-help</code> <code>-version</code> <code>-output-file file.txt</code>)</li>
+    
+<li>GNU long options (examples: <code>--help</code> <code>--version</code> <code>--output-file=file.txt</code>)</li>
+
+</ul>
+
+</li>
+
+<li>Iterative command line argument parsing (similar to getopt, getopt_long, and Argp). This is useful for interpreting the following:
+
+<ul>
+
+<li>Multiple instances of the same option</li>
+  
+<li>Multiple instances of options from the same group</li>
+  
+<li>The order of the provided options and arguments</li>
+
+</ul>
+   
+</li>
+ 
+<li>
+Complete customization of usage and help text for the options. This is useful for retaining the format of the usage and help text generated from an earlier command line argument parsing library.
+</li>
+
+<li>
+Single source code file. This is useful for importing ArgMatey to a project as a source code file instead of importing ArgMatey as a Maven dependency or a jar file.
+</li>
+
+</ul>
+
+<p>
+The following are some examples of projects using ArgMatey:
+</p>
+
+<ul>
+
+<li><a href="https://github.com/jh3nd3rs0n/jargyle">Jargyle</a></li>
+
+<li><a href="https://github.com/jh3nd3rs0n/jbase64transformer">JBase64Transformer</a></li>
+
+</ul>
+
+<h2>Contents</h2>
+
+<ul>
+
+<li><a href="#requirements">Requirements</a></li>
+
+<li><a href="#installing">Installing</a></li>
+
+<li><a href="#building">Building</a></li>
+
+</ul>
+
+<h2><a name="requirements">Requirements</a></h2>
+
+<ul>
+
+<li>Apache Maven&#8482; 3.3.9 or higher (for installing and building)</li> 
+
+<li>Java&#8482; SDK 1.6 or higher</li>
+
+</ul>
+
+<h2><a name="installing">Installing</a></h2>
+
+<p>
+To install, run the following commands:
+</p>
+
+<pre>
+
+$ cd argmatey
+$ mvn install
+
+</pre>
+
+<p>
+To add a dependency on ArgMatey using Maven, use the following:
+</p>
+
+<pre>
+
+&lt;dependency&gt;
+	&lt;groupId&gt;argmatey&lt;/groupId&gt;
+	&lt;artifactId&gt;argmatey&lt;/artifactId&gt;
+	&lt;version&gt;1.0-SNAPSHOT&lt;/version&gt;
+&lt;/dependency&gt;
+
+</pre>
+
+<h2><a name="building">Building</a></h2>
+
+<p>
+To build and package ArgMatey as a jar file, run the following command:
+</p>
+
+<pre>
+
+$ mvn package
+
+</pre>
+</body>
+</html>
