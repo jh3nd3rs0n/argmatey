@@ -2,23 +2,23 @@
 
 ArgMatey is a comprehensive Java command line argument parsing library that has the following features:
 
-- API terminology and option syntax and behavior based on the [POSIX Utility Conventions](http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap12.html), GNU's function [getopt_long](http://www.gnu.org/software/libc/manual/html_node/Getopt-Long-Options.html#Getopt-Long-Options), and GNU's [Argp](http://www.gnu.org/software/libc/manual/html_node/Argp.html#Argp) interface
+API terminology and option syntax and behavior based on the [POSIX Utility Conventions](http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap12.html), GNU's function [getopt_long](http://www.gnu.org/software/libc/manual/html_node/Getopt-Long-Options.html#Getopt-Long-Options), and GNU's [Argp](http://www.gnu.org/software/libc/manual/html_node/Argp.html#Argp) interface
  
-- Option types:
+Option types:
  
-  - POSIX options (examples: `-h` `-v` `-o file.txt`)
+- POSIX options (examples: `-h` `-v` `-o file.txt`)
     
-  - Long options (examples: `-help` `-version` `-output-file file.txt`)
+- Long options (examples: `-help` `-version` `-output-file file.txt`)
     
-  - GNU long options (examples: `--help` `--version` `--output-file=file.txt`)
+- GNU long options (examples: `--help` `--version` `--output-file=file.txt`)
      
-- Iterative command line argument parsing (similar to getopt, getopt_long, and Argp). This is useful for interpreting the following:
+Iterative command line argument parsing (similar to getopt, getopt_long, and Argp). This is useful for interpreting the following:
 
-  - Multiple instances of the same option
+- Multiple instances of the same option
   
-  - Multiple instances of options from the same group
+- Multiple instances of options from the same group
   
-  - The order of the provided options and arguments 
+- The order of the provided options and arguments 
  
 - Complete customization of usage and help text for the options. This is useful for retaining the format of the usage and help text generated from an earlier command line argument parsing library.
 
@@ -32,13 +32,11 @@ The following are some examples of projects using ArgMatey:
 
 ## Contents
 
-- <a href="#requirements">Requirements</a>
+- [Requirements](#requirements)
 
-- <a href="#installing">Installing</a>
+- [Installing](#installing)
 
-- <a href="#building">Building</a>
-
-<a name="requirements"></a>
+- [Building](#building)
 
 ## Requirements
 
@@ -52,33 +50,31 @@ The following are some examples of projects using ArgMatey:
 
 To install, run the following commands:
 
-<pre>
+```bash
 
-$ cd argmatey
-$ mvn install
+    $ cd argmatey
+    $ mvn install
 
-</pre>
+```
 
 To add a dependency on ArgMatey using Maven, use the following:
 
-<pre>
+```xml
 
-&lt;dependency&gt;
-	&lt;groupId&gt;argmatey&lt;/groupId&gt;
-	&lt;artifactId&gt;argmatey&lt;/artifactId&gt;
-	&lt;version&gt;1.0-SNAPSHOT&lt;/version&gt;
-&lt;/dependency&gt;
+    <dependency>
+    	<groupId>argmatey</groupId>
+    	<artifactId>argmatey</artifactId>
+    	<version>1.0-SNAPSHOT</version>
+    </dependency>
 
-</pre>
-
-<a name="building"></a>
+```
 
 ## Building
 
 To build and package ArgMatey as a jar file, run the following command:
 
-<pre>
+```bash
 
-$ mvn package
+    $ mvn package
 
-</pre>
+```
