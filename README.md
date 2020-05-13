@@ -20,9 +20,9 @@ Iterative command line argument parsing (similar to getopt, getopt_long, and Arg
   
 - The order of the provided options and arguments 
  
-- Complete customization of usage and help text for the options. This is useful for retaining the format of the usage and help text generated from an earlier command line argument parsing library.
+Complete customization of usage and help text for the options. This is useful for retaining the format of the usage and help text generated from an earlier command line argument parsing library.
 
-- Single source code file. This is useful for importing ArgMatey to a project as a source code file instead of importing ArgMatey as a Maven dependency or a jar file.
+Single source code file. This is useful for importing ArgMatey to a project as a source code file instead of importing ArgMatey as a Maven dependency or a jar file.
 
 The following are some examples of projects using ArgMatey:
 
