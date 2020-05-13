@@ -6,6 +6,9 @@
 	<version>1.0-SNAPSHOT</version>
 	<name>ArgMatey</name>
 	<description>A comprehensive Java command line argument parsing library</description>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
 	<build>
 		<plugins>
 			<plugin>
