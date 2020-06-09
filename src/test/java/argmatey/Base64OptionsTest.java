@@ -25,85 +25,76 @@ import argmatey.ArgMatey.ParseResultHolder;
 import argmatey.ArgMatey.PosixOption;
 
 public class Base64OptionsTest {
-
-	public static final class Base64Options extends Options {
-		
-		public static final Option DECODE_OPTION = new PosixOption.Builder('d')
-				.doc("decode data")
-				.optionHelpTextProvider(new OptionHelpTextProvider() {
-
-					@Override
-					public String getOptionHelpText(
-							final OptionHelpTextParams params) {
-						StringBuilder sb = new StringBuilder();
-						sb.append("OPTIONS:");
-						sb.append(System.getProperty("line.separator"));
-						OptionHelpTextProvider provider =
-								DefaultOptionHelpTextProvider.INSTANCE;
-						sb.append(provider.getOptionHelpText(params));
-						return sb.toString();
-					}
-					
-				})
-				.ordinal(0)
-				.otherBuilders(
-						new LongOption.Builder("decode"),
-						new GnuLongOption.Builder("decode"))
-				.build();
-		
-		public static final Option IGNORE_GARBAGE_OPTION = 
-				new PosixOption.Builder('i')
-				.doc("when decoding, ignore non-alphabet characters")
-				.ordinal(1)
-				.otherBuilders(
-						new LongOption.Builder("ignore-garbage"),
-						new GnuLongOption.Builder("ignore-garbage"))
-				.build(); 
-		
-		public static final Option WRAP_OPTION = new PosixOption.Builder('w')
-				.doc(String.format(
-						"wrap encoded lines after COLS character (default 76)."
-						+ "%n      Use 0 to disable line wrapping"))
-				.optionArgSpec(new OptionArgSpec.Builder()
-						.name("COLS")
-						.type(Integer.class)
-						.build())
-				.ordinal(2)
-				.otherBuilders(
-						new LongOption.Builder("wrap"),
-						new GnuLongOption.Builder("wrap"))
-				.build(); 
-		
-		public static final Option HELP_OPTION = new GnuLongOption.Builder(
-				"help")
-				.doc("display this help and exit")
-				.ordinal(3)
-				.special(true)
-				.build(); 
-		
-		public static final Option VERSION_OPTION = new GnuLongOption.Builder(
-				"version")
-				.doc("display version information and exit")
-				.optionHelpTextProvider(new OptionHelpTextProvider() {
-
-					@Override
-					public String getOptionHelpText(
-							final OptionHelpTextParams params) {
-						StringBuilder sb = new StringBuilder();
-						OptionHelpTextProvider provider =
-								DefaultOptionHelpTextProvider.INSTANCE;
-						sb.append(provider.getOptionHelpText(params));
-						sb.append(System.getProperty("line.separator"));
-						return sb.toString();
-					}
-					
-				})
-				.ordinal(4)
-				.special(true)
-				.build(); 
-				
-	}
 	
+	public static final Option DECODE_OPTION = new PosixOption.Builder('d')
+		.doc("decode data")
+		.optionHelpTextProvider(new OptionHelpTextProvider() {
+		
+			@Override
+			public String getOptionHelpText(
+					final OptionHelpTextParams params) {
+				StringBuilder sb = new StringBuilder();
+				sb.append("OPTIONS:");
+				sb.append(System.getProperty("line.separator"));
+				OptionHelpTextProvider provider =
+						new DefaultOptionHelpTextProvider();
+				sb.append(provider.getOptionHelpText(params));
+				return sb.toString();
+			}
+			
+		})
+		.otherBuilders(
+				new LongOption.Builder("decode"),
+				new GnuLongOption.Builder("decode"))
+		.build();
+	
+	public static final Option IGNORE_GARBAGE_OPTION = 
+		new PosixOption.Builder('i')
+		.doc("when decoding, ignore non-alphabet characters")
+		.otherBuilders(
+				new LongOption.Builder("ignore-garbage"),
+				new GnuLongOption.Builder("ignore-garbage"))
+		.build();
+
+	public static final Option WRAP_OPTION = new PosixOption.Builder('w')
+		.doc(String.format(
+				"wrap encoded lines after COLS character (default 76)."
+				+ "%n      Use 0 to disable line wrapping"))
+		.optionArgSpec(new OptionArgSpec.Builder()
+				.name("COLS")
+				.type(Integer.class)
+				.build())
+		.otherBuilders(
+				new LongOption.Builder("wrap"),
+				new GnuLongOption.Builder("wrap"))
+		.build();
+
+	public static final Option HELP_OPTION = new GnuLongOption.Builder(
+		"help")
+		.doc("display this help and exit")
+		.special(true)
+		.build();
+
+	public static final Option VERSION_OPTION = new GnuLongOption.Builder(
+		"version")
+		.doc("display version information and exit")
+		.optionHelpTextProvider(new OptionHelpTextProvider() {
+		
+			@Override
+			public String getOptionHelpText(
+					final OptionHelpTextParams params) {
+				StringBuilder sb = new StringBuilder();
+				OptionHelpTextProvider provider =
+						new DefaultOptionHelpTextProvider();
+				sb.append(provider.getOptionHelpText(params));
+				sb.append(System.getProperty("line.separator"));
+				return sb.toString();
+			}
+			
+		})
+		.special(true)
+		.build();
+
 	private final String[] args = { 
 			"-diw1", "-d", "-i", "-w21", "-w", "321", "-diw", "4321", 
 			"-decode", "-ignore-garbage", "-wrap", "54321",
@@ -111,15 +102,20 @@ public class Base64OptionsTest {
 			"--decode", "--ignore-garbage", "--wrap", "654321", "--wrap=7654321",
 			"--", "--help", "--version", "file3.txt"
 	};
-	
-	private final Options options = new Base64Options();
+
+	private final Options options = Options.newInstance(
+			Base64OptionsTest.DECODE_OPTION, 
+			Base64OptionsTest.IGNORE_GARBAGE_OPTION, 
+			Base64OptionsTest.WRAP_OPTION, 
+			Base64OptionsTest.HELP_OPTION, 
+			Base64OptionsTest.VERSION_OPTION);
 	
 	@Test
 	public void testArgs() {
 		
-		Option decodeOption = Base64Options.DECODE_OPTION;
-		Option ignoreGarbageOption = Base64Options.IGNORE_GARBAGE_OPTION;
-		Option wrapOption = Base64Options.WRAP_OPTION;
+		Option decodeOption = Base64OptionsTest.DECODE_OPTION;
+		Option ignoreGarbageOption = Base64OptionsTest.IGNORE_GARBAGE_OPTION;
+		Option wrapOption = Base64OptionsTest.WRAP_OPTION;
 		Option decodeLongOption = decodeOption.getOtherOptions().get(0);
 		Option ignoreGarbageLongOption = 
 				ignoreGarbageOption.getOtherOptions().get(0);

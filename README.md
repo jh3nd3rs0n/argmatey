@@ -42,7 +42,7 @@ The following are some examples of projects using ArgMatey:
 
 - Apache Maven&#8482; 3.3.9 or higher (for installing and building)
  
-- Java&#8482; SDK 1.6 or higher
+- Java&#8482; SDK 1.8 or higher
 
 ## Installing
 
