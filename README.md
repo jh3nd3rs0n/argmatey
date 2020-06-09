@@ -2,9 +2,9 @@
 
 ArgMatey is a comprehensive Java command line argument parsing library that has the following features:
 
-**API terminology and option syntax and behavior based on the [POSIX Utility Conventions](http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap12.html), GNU's function [getopt_long](http://www.gnu.org/software/libc/manual/html_node/Getopt-Long-Options.html#Getopt-Long-Options), and GNU's [Argp](http://www.gnu.org/software/libc/manual/html_node/Argp.html#Argp) interface.**
+**Option syntax and behavior based on the [POSIX Utility Conventions](http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap12.html), GNU's function [getopt_long](http://www.gnu.org/software/libc/manual/html_node/Getopt-Long-Options.html#Getopt-Long-Options), and GNU's [Argp](http://www.gnu.org/software/libc/manual/html_node/Argp.html#Argp) interface.** The types of options you can define and use are familiar and readily understood by many.
  
-**Option types**:
+**Option types:**
  
 - POSIX options (examples: `-h` `-v` `-o file.txt`)
 
@@ -12,17 +12,19 @@ ArgMatey is a comprehensive Java command line argument parsing library that has 
 
 - GNU long options (examples: `--help` `--version` `--output-file=file.txt`)
      
-**Iterative command line argument parsing (similar to getopt, getopt_long, and Argp).** This is useful for interpreting the following:
+**Iterative command line argument parsing (similar to getopt, getopt_long, and Argp).** This style of command line argument parsing has the following advantages:
 
-- Multiple instances of the same option
+- Interpretation of multiple instances of the same option
 
-- Multiple instances of options from the same group
+- Interpretation of multiple instances of options from the same group
 
-- The order of the provided options and arguments 
+- Interpretation of options and arguments based on the ordering provided
+
+- Intentional interruption at any point in the parsing of the command line arguments  
  
-**Complete customization of usage and help text for the options.** This is useful for retaining the format of the usage and help text generated from an earlier command line argument parsing library.
+**Complete customization of usage and help text for the options.** Any element of the usage and help text for the options can be customized.
 
-**Single source code file.** This is useful for importing ArgMatey to a project as a source code file instead of importing ArgMatey as a Maven dependency or a jar file.
+**Single source code file.** As an alternative to importing ArgMatey as a Maven dependency or a jar file, ArgMatey can be imported to a project as a source code file.
 
 The following are some examples of projects using ArgMatey:
 
