@@ -50,7 +50,7 @@ The following are some examples of projects using ArgMatey:
 
 To install, run the following commands:
 
-```bash
+```
 
     cd argmatey
     mvn install
@@ -73,7 +73,7 @@ To add a dependency on ArgMatey using Maven, use the following:
 
 To build and package ArgMatey as a jar file, run the following command:
 
-```bash
+```
 
     mvn package
 
