@@ -20,8 +20,8 @@ ArgMatey is a comprehensive Java command line argument parsing library that has 
 
 -   Interpretation of options and arguments based on the ordering provided
 
-- Intentional interruption at any point in the parsing of the command line arguments  
- 
+-   Intentional interruption at any point in the parsing of the command line arguments  
+
 **Complete customization of usage and help text for the options.** Any element of the usage and help text for the options can be customized.
 
 **Single source code file.** As an alternative to importing ArgMatey as a Maven dependency or a jar file, ArgMatey can be imported to a project as a source code file.
@@ -73,7 +73,7 @@ To add a dependency on ArgMatey using Maven, use the following:
 
 To build and package ArgMatey as a jar file, run the following command:
 
-```
+```bash
 
     mvn package
 
