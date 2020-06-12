@@ -6,19 +6,19 @@ ArgMatey is a comprehensive Java command line argument parsing library that has 
  
 **Option types:**
  
-- POSIX options (examples: `-h` `-v` `-o file.txt`)
+-   POSIX options (examples: `-h` `-v` `-o file.txt`)
 
-- Long options (examples: `-help` `-version` `-output-file file.txt`)
+-   Long options (examples: `-help` `-version` `-output-file file.txt`)
 
-- GNU long options (examples: `--help` `--version` `--output-file=file.txt`)
+-   GNU long options (examples: `--help` `--version` `--output-file=file.txt`)
      
 **Iterative command line argument parsing (similar to getopt, getopt_long, and Argp).** This style of command line argument parsing has the following advantages:
 
-- Interpretation of multiple instances of the same option
+-   Interpretation of multiple instances of the same option
 
-- Interpretation of multiple instances of options from the same group
+-   Interpretation of multiple instances of options from the same group
 
-- Interpretation of options and arguments based on the ordering provided
+-   Interpretation of options and arguments based on the ordering provided
 
 - Intentional interruption at any point in the parsing of the command line arguments  
  
@@ -28,29 +28,29 @@ ArgMatey is a comprehensive Java command line argument parsing library that has 
 
 The following are some examples of projects using ArgMatey:
 
-- [Jargyle](https://github.com/jh3nd3rs0n/jargyle)
+-   [Jargyle](https://github.com/jh3nd3rs0n/jargyle)
 
-- [JBase64Transformer](https://github.com/jh3nd3rs0n/jbase64transformer)
+-   [JBase64Transformer](https://github.com/jh3nd3rs0n/jbase64transformer)
 
 ## Contents
 
-- [Requirements](#requirements)
+-   [Requirements](#requirements)
 
-- [Installing](#installing)
+-   [Installing](#installing)
 
-- [Building](#building)
+-   [Building](#building)
 
 ## Requirements
 
-- Apache Maven&#8482; 3.3.9 or higher (for installing and building)
+-   Apache Maven&#8482; 3.3.9 or higher (for installing and building)
  
-- Java&#8482; SDK 1.8 or higher
+-   Java&#8482; SDK 1.8 or higher
 
 ## Installing
 
 To install, run the following commands:
 
-```
+```bash
 
     cd argmatey
     mvn install
