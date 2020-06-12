@@ -7,7 +7,9 @@ ArgMatey is a comprehensive Java command line argument parsing library that has 
 **Option types:**
  
 -   POSIX options (examples: `-h` `-v` `-o file.txt`)
+
 -   Long options (examples: `-help` `-version` `-output-file file.txt`)
+
 -   GNU long options (examples: `--help` `--version` `--output-file=file.txt`)
      
 **Iterative command line argument parsing (similar to getopt, getopt_long, and Argp).** This style of command line argument parsing has the following advantages:
