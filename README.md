@@ -57,9 +57,9 @@ ArgMatey is a comprehensive Java command line argument parsing library that has 
             ),
             otherOptionBuilders = {
                 /*
-                 * Unless specified, anything that is defined in the 
-                 * first OptionBuilder gets defined in the other 
-                 * OptionBuilders.
+                 * No need to specify an OptionArgSpecBuilder here. 
+                 * When not specified, an OptionArgSpecBuilder is 
+                 * provided from the above OptionBuilder.  
                  */
                 @OptionBuilder(
                     name = "wrap", 
