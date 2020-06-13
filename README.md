@@ -4,24 +4,237 @@
 
 ArgMatey is a comprehensive Java command line argument parsing library that has the following features:
 
-**Option syntax and behavior based on the [POSIX Utility Conventions](http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap12.html), GNU's function [getopt_long](http://www.gnu.org/software/libc/manual/html_node/Getopt-Long-Options.html#Getopt-Long-Options), and GNU's [Argp](http://www.gnu.org/software/libc/manual/html_node/Argp.html#Argp) interface.** The types of options you can define and use are familiar and readily understood by many.
- 
-**Option types:**
- 
--   POSIX options (examples: `-h` `-v` `-o file.txt`)
+**Annotations for fields and methods to define and receive results from parsing.** The following is a sufficient example:
 
--   Long options (examples: `-help` `-version` `-output-file file.txt`)
+```java
+    
+    public static class Base64Cli {
+    
+        // instance fields, constructor(s), etc...
+        
+        @OptionSink(
+            optionBuilder = @OptionBuilder(
+                doc = "display this help and exit",
+                name = "h",
+                type = PosixOption.class
+            ),
+            otherOptionBuilders = {
+                @OptionBuilder(
+                    name = "help", 
+                    type = GnuLongOption.class
+                )
+            }
+        )
+        public void displayHelp() {
+            // display help and exit the program
+        }
+        
+        @OptionSink(
+            optionBuilder = @OptionBuilder(
+                doc = "display version information and exit",
+                name = "v",
+                type = PosixOption.class
+            ),
+            otherOptionBuilders = {
+                @OptionBuilder(
+                    name = "version", 
+                    type = GnuLongOption.class
+                )
+            }
+        )
+        public void displayVersion() {
+            // display version information and exit the program
+        }
+        
+        @OptionSink(
+            optionBuilder = @OptionBuilder(
+                doc = "wrap encoded lines after COLS character",
+                name = "w",
+                optionArgSpecBuilder = @OptionArgSpecBuilder(
+                    name = "COLS"
+                ),
+                type = PosixOption.class
+            ),
+            otherOptionBuilders = {
+                /*
+                 * Unless specified, anything that is defined in the 
+                 * first OptionBuilder gets defined in the other 
+                 * OptionBuilders.
+                 */
+                @OptionBuilder(
+                    name = "wrap", 
+                    type = GnuLongOption.class
+                )
+            }
+        )        
+        public void setColumnLimit(Integer i) {
+            /*
+             * Field type or method parameter type has to be a type or 
+             * a java.util.List of a type that has a static String 
+             * conversion method or a constructor with one String 
+             * parameter.
+             *
+             * If not, an extended StringConverter class can be supplied
+             * to OptionArgSpecBuilder.stringConverter(). 
+             */
+            // ...
+        }
+        
+        @OptionSink(
+            optionBuilder = @OptionBuilder(
+                doc = "decode data",
+                name = "d",
+                type = PosixOption.class
+            ),
+            otherOptionBuilders = {
+                @OptionBuilder(
+                    name = "decode", 
+                    type = GnuLongOption.class
+                )
+            }
+        )        
+        public void setDecodingMode(boolean b) {
+            // ...
+        }
+        
+        // This method accepts non-parsed command line arguments
+        @NonparsedArgSink
+        public void setFile(String f) {
+            // ...
+        }
+        
+        @OptionSink(
+            optionBuilder = @OptionBuilder(
+                doc = "when decoding, ignore non-alphabet characters",
+                name = "i",
+                type = PosixOption.class
+            ),
+            otherOptionBuilders = {
+                @OptionBuilder(
+                    name = "ignore-garbage", 
+                    type = GnuLongOption.class
+                )
+            }
+        )        
+        public void setGarbageIgnored(boolean b) {
+            // ...
+        }
+        
+    }
+    
+    public static void main(String[] args) {
+        Options options = Options.newInstanceFrom(Base64Cli.class);
+        ArgsParser argsParser = ArgsParser.newInstance(args, options, false);
+        Base64Cli base64Cli = new Base64Cli();
+        argsParser.parseRemainingTo(base64Cli);
+        // do post parsing stuff        
+    }
+    
+```
+
+**Option syntax and behavior based on the [POSIX Utility Conventions](http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap12.html), GNU's function [getopt_long](http://www.gnu.org/software/libc/manual/html_node/Getopt-Long-Options.html#Getopt-Long-Options), and GNU's [Argp](http://www.gnu.org/software/libc/manual/html_node/Argp.html#Argp) interface.** The types of options you can use are familiar and readily understood by many.
+
+**Option types:**
 
 -   GNU long options (examples: `--help` `--version` `--output-file=file.txt`)
+
+-   Long options (examples: `-help` `-version` `-output-file file.txt`)
+ 
+-   POSIX options (examples: `-h` `-v` `-o file.txt`)
      
 **Iterative command line argument parsing (similar to getopt, getopt_long, and Argp).** This style of command line argument parsing has the following advantages:
 
 -   Interpretation of multiple instances of the same option
--   Interpretation of multiple instances of options from the same group
--   Interpretation of options and arguments based on the ordering provided
--   Intentional interruption at any point in the parsing of the command line arguments  
+    
+```text
+    
+    -o file1.txt -o file2.txt -o file3.txt
+    
+    # Which to accept: the first option, the last option, or all of them?
+    # Some command line argument parsing libraries may make that decision for you.
+    # With ArgMatey, you can determine what is best for your command line interface.
+    
+```
 
-**Complete customization of usage and help text for the options.** Any element of the usage and help text for the options can be customized.
+-   Interpretation of multiple instances of options from the same group
+
+```text
+    
+    -o file1.txt -output-file file2.txt --output-file=file3.txt
+    
+    # Which to accept: the first option, the last option, or all of them?
+    # Some command line argument parsing libraries may make that decision for you.
+    # With ArgMatey, you can determine what is best for your command line interface.
+    
+```
+
+-   Interpretation of options and arguments based on the ordering provided
+
+```text
+    
+    --version --help
+    
+    # Each of the above options are known to cause the program to display particular information and then exit the program.
+    # Which to accept: the first option, the last option, or both of them?
+    # Some command line argument parsing libraries may make that decision for you.
+    # With ArgMatey, you can determine what is best for your command line interface.
+    
+```
+
+**Complete customization of usage and help text for the options.** The customization of the usage and help text for a option can be applied to particular options or to all options. The following is a sufficient example:
+
+```java
+    
+    public static class CustomOptionHelpTextProvider extends OptionHelpTextProvider {
+    
+        public String getOptionHelpText(OptionHelpTextParams params) {
+            /* 
+             * show help information for an option and its other options 
+             * on one line
+             */
+            StringBuilder sb = new StringBuilder();
+            Iterator<OptionHelpTextParams> iterator = params.getAllOptionHelpTextParams().iterator();
+            while (iterator.hasNext()) {
+                OptionHelpTextParams p = iterator.next();
+                sb.append(p.getUsage());
+                if (iterator.hasNext()) {
+                    sb.append(", ");
+                }
+            }
+            return String.format("  %s\t\t\t\t%s", sb.toString(), params.getDoc());
+        }
+        
+    }
+    
+    public static class Base64Cli {
+    
+        // ...
+        
+        @OptionSink(
+            optionBuilder = @OptionBuilder(
+                // ...
+                // you can apply it to a particular option... 
+                optionHelpTextProvider = CustomOptionHelpTextProvider.class
+                // ...
+            )
+            // ...
+        )        
+        public void setColumnLimit(Integer i) {
+            // ...
+        }
+        
+        // ...
+        
+    }
+    
+    public static void main(String[] args) {
+        // ...or you can apply it to all options.
+        OptionHelpTextProvider optionHelpTextProvider = new CustomOptionHelpTextProvider();
+        OptionHelpTextProvider.setDefault(optionHelpTextProvider);
+        // ...        
+    }
+    
+```
 
 **Single source code file.** As an alternative to importing ArgMatey as a Maven dependency or a jar file, ArgMatey can be imported to a project as a source code file.
 
@@ -35,6 +248,8 @@ The following are some examples of projects using ArgMatey:
 -   [Requirements](#requirements)
 -   [Installing](#installing)
 -   [Building](#building)
+-   [TODO](#todo)
+-   [Contact](#contact)
 
 ## Requirements
 
@@ -73,3 +288,12 @@ To build and package ArgMatey as a jar file, run the following command:
     mvn package
 
 ```
+
+## TODO
+
+-   [ ] Javadoc documentation on all types
+-   [ ] Unit testing on other types
+  
+## Contact
+
+If you have any questions or comments, you can e-mail me at `j0n4th4n.h3nd3rs0n@gmail.com`
