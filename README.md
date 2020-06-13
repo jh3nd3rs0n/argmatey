@@ -4,48 +4,46 @@
 
 ArgMatey is a comprehensive Java command line argument parsing library that has the following features:
 
-**Annotations for fields and methods to define and receive results from parsing.** The following is a sufficient example:
+**Annotations for fields and methods to define and receive results from parsing.** The following is an example:
 
 ```java
     
+    /*
+     * handles command line options and arguments for this Java 
+     * implementation of GNU's utility base64
+     */
     public static class Base64Cli {
     
         // instance fields, constructor(s), etc...
         
+        // invoked when the option "--help" is encountered
         @OptionSink(
             optionBuilder = @OptionBuilder(
                 doc = "display this help and exit",
-                name = "h",
-                type = PosixOption.class
-            ),
-            otherOptionBuilders = {
-                @OptionBuilder(
-                    name = "help", 
-                    type = GnuLongOption.class
-                )
-            }
+                name = "help",
+                type = GnuLongOption.class
+            )
         )
         public void displayHelp() {
             // display help and exit the program
         }
         
+        // invoked when the option "--version" is encountered
         @OptionSink(
             optionBuilder = @OptionBuilder(
                 doc = "display version information and exit",
-                name = "v",
-                type = PosixOption.class
-            ),
-            otherOptionBuilders = {
-                @OptionBuilder(
-                    name = "version", 
-                    type = GnuLongOption.class
-                )
-            }
+                name = "version",
+                type = GnuLongOption.class
+            )
         )
         public void displayVersion() {
             // display version information and exit the program
         }
         
+        /*
+         * invoked when either of the options "-w" and "--wrap" is 
+         * encountered
+         */
         @OptionSink(
             optionBuilder = @OptionBuilder(
                 doc = "wrap encoded lines after COLS character",
@@ -69,17 +67,22 @@ ArgMatey is a comprehensive Java command line argument parsing library that has 
         )        
         public void setColumnLimit(Integer i) {
             /*
-             * Field type or method parameter type has to be a type or 
+             * Field type or method parameter type must be a type or 
              * a java.util.List of a type that has a static String 
              * conversion method or a constructor with one String 
              * parameter.
              *
-             * If not, an extended StringConverter class can be supplied
-             * to OptionArgSpecBuilder.stringConverter(). 
+             * For any type, a class that extends StringConverter 
+             * can be used to convert the option argument to that type. 
+             * It can be supplied to OptionArgSpecBuilder.stringConverter(). 
              */
             // ...
         }
         
+        /*
+         * invoked when either of the options "-d" and "--decode" is 
+         * encountered
+         */        
         @OptionSink(
             optionBuilder = @OptionBuilder(
                 doc = "decode data",
@@ -97,12 +100,20 @@ ArgMatey is a comprehensive Java command line argument parsing library that has 
             // ...
         }
         
-        // This method accepts non-parsed command line arguments
+        /*
+         * invoked when a non-parsed argument is encountered. In this 
+         * implementation, the non-parsed argument is the FILE argument.
+         */
         @NonparsedArgSink
         public void setFile(String f) {
+            // field type or method parameter type must be of type String
             // ...
         }
         
+        /*
+         * invoked when either of the options "-i" and "--ignore-garbage" 
+         * is encountered
+         */
         @OptionSink(
             optionBuilder = @OptionBuilder(
                 doc = "when decoding, ignore non-alphabet characters",
@@ -145,7 +156,7 @@ ArgMatey is a comprehensive Java command line argument parsing library that has 
 **Iterative command line argument parsing (similar to getopt, getopt_long, and Argp).** This style of command line argument parsing has the following advantages:
 
 -   Interpretation of multiple instances of the same option
-    
+
 ```text
     
     -o file1.txt -o file2.txt -o file3.txt
@@ -181,17 +192,17 @@ ArgMatey is a comprehensive Java command line argument parsing library that has 
     
 ```
 
-**Complete customization of usage and help text for the options.** The customization of the usage and help text for a option can be applied to particular options or to all options. The following is a sufficient example:
+**Complete customization of usage and help text for the options.** The customization of the usage and help text for a option can be applied to particular options or to all options. The following is an example based off the earlier example:
 
 ```java
     
+    /*
+     * provides the help text for an option and its other options on a 
+     * single line instead of multiple lines
+     */
     public static class CustomOptionHelpTextProvider extends OptionHelpTextProvider {
     
         public String getOptionHelpText(OptionHelpTextParams params) {
-            /* 
-             * show help information for an option and its other options 
-             * on one line
-             */
             StringBuilder sb = new StringBuilder();
             Iterator<OptionHelpTextParams> iterator = params.getAllOptionHelpTextParams().iterator();
             while (iterator.hasNext()) {
@@ -212,14 +223,17 @@ ArgMatey is a comprehensive Java command line argument parsing library that has 
         
         @OptionSink(
             optionBuilder = @OptionBuilder(
-                // ...
-                // you can apply it to a particular option... 
-                optionHelpTextProvider = CustomOptionHelpTextProvider.class
-                // ...
+                doc = "display version information and exit",
+                name = "version",
+                /*
+                 * You can apply the OptionHelpTextProvider to a 
+                 * particular option...
+                 */ 
+                optionHelpTextProvider = CustomOptionHelpTextProvider.class,
+                type = GnuLongOption.class
             )
-            // ...
         )        
-        public void setColumnLimit(Integer i) {
+        public void displayVersion() {
             // ...
         }
         
@@ -228,7 +242,7 @@ ArgMatey is a comprehensive Java command line argument parsing library that has 
     }
     
     public static void main(String[] args) {
-        // ...or you can apply it to all options.
+        // ...or you can apply the OptionHelpTextProvider to all options.
         OptionHelpTextProvider optionHelpTextProvider = new CustomOptionHelpTextProvider();
         OptionHelpTextProvider.setDefault(optionHelpTextProvider);
         // ...        
