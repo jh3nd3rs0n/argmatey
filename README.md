@@ -67,10 +67,9 @@ ArgMatey is a comprehensive Java command line argument parsing library that has 
         )        
         public void setColumnLimit(Integer i) {
             /*
-             * Field type or method parameter type must be a type or 
-             * a java.util.List of a type that has a static String 
-             * conversion method or a constructor with one String 
-             * parameter.
+             * Method parameter type must be a type or a java.util.List 
+             * of a type that has a static String conversion method or 
+             * a constructor with one String parameter.
              *
              * For any type, a class that extends StringConverter 
              * can be used to convert the option argument to that type. 
@@ -106,7 +105,7 @@ ArgMatey is a comprehensive Java command line argument parsing library that has 
          */
         @NonparsedArgSink
         public void setFile(String f) {
-            // field type or method parameter type must be of type String
+            // method parameter type must be of type String
             // ...
         }
         
