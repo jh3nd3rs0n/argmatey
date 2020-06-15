@@ -65,17 +65,24 @@ ArgMatey is a comprehensive Java command line argument parsing library that has 
                 )
             }
         )        
-        public void setColumnLimit(Integer i) {
+        public void setColumnLimit(Integer i) { 
             /*
+             * Option argument for either of the options "-w" and 
+             * "--wrap" is received as an argument from the above 
+             * method parameter.
+             *
              * Method parameter type must be a type or a java.util.List 
              * of a type that has a static String conversion method or 
              * a constructor with one String parameter.
              *
-             * For any type, a class that extends StringConverter 
-             * can be used to convert the option argument to that type. 
-             * It can be supplied to OptionArgSpecBuilder.stringConverter(). 
+             * Alternatively, for any method parameter type, a class 
+             * that extends StringConverter can be used to convert the 
+             * option argument to that type. It can be supplied to 
+             * OptionArgSpecBuilder.stringConverter(). 
+             *
+             * IllegalArgumentExceptions for the invalid option 
+             * argument can be thrown here.
              */
-            // ...
         }
         
         /*
@@ -105,8 +112,15 @@ ArgMatey is a comprehensive Java command line argument parsing library that has 
          */
         @NonparsedArgSink
         public void setFile(String f) {
-            // method parameter type must be of type String
-            // ...
+            /*
+             * The non-parsed argument is received as an argument from 
+             * the above method parameter.
+             *
+             * Method parameter type must be of type String.
+             *
+             * IllegalArgumentExceptions for the invalid non-parsed 
+             * argument can be thrown here.
+             */
         }
         
         /*
@@ -136,7 +150,7 @@ ArgMatey is a comprehensive Java command line argument parsing library that has 
         Options options = Options.newInstanceFrom(Base64Cli.class);
         ArgsParser argsParser = ArgsParser.newInstance(args, options, false);
         Base64Cli base64Cli = new Base64Cli();
-        argsParser.parseRemainingTo(base64Cli);
+        argsParser.parseRemainingInto(base64Cli);
         // do post parsing stuff        
     }
     
@@ -152,46 +166,13 @@ ArgMatey is a comprehensive Java command line argument parsing library that has 
 
 -   POSIX options (examples: `-h` `-v` `-o file.txt`)
      
-**Iterative command line argument parsing (similar to getopt, getopt_long, and Argp).** This style of command line argument parsing has the following advantages:
+**Command line argument parsing results on a per command line argument basis (similar to getopt, getopt_long, and Argp).** This style of command line argument parsing has the following advantages:
 
 -   Interpretation of multiple instances of the same option
-
-```text
-    
-    -o file1.txt -o file2.txt -o file3.txt
-    
-    # Which to accept: the first option, the last option, or all of them?
-    # Some command line argument parsing libraries may make that decision for you.
-    # With ArgMatey, you can determine what is best for your command line interface.
-    
-```
-
 -   Interpretation of multiple instances of options from the same group
-
-```text
-    
-    -o file1.txt -output-file file2.txt --output-file=file3.txt
-    
-    # Which to accept: the first option, the last option, or all of them?
-    # Some command line argument parsing libraries may make that decision for you.
-    # With ArgMatey, you can determine what is best for your command line interface.
-    
-```
-
 -   Interpretation of options and arguments based on the ordering provided
 
-```text
-    
-    --version --help
-    
-    # Each of the above options are known to cause the program to display particular information and then exit the program.
-    # Which to accept: the first option, the last option, or both of them?
-    # Some command line argument parsing libraries may make that decision for you.
-    # With ArgMatey, you can determine what is best for your command line interface.
-    
-```
-
-**Complete customization of usage and help text for the options.** The customization of the usage and help text for a option can be applied to particular options or to all options. The following is an example based off the earlier example:
+**Complete customization of usage and help text for the options.** The customization of the usage and help text for a option can be applied to a particular option, to some options, or to all options. The following is an example based off the earlier example:
 
 ```java
     
@@ -253,8 +234,9 @@ ArgMatey is a comprehensive Java command line argument parsing library that has 
 
 The following are some examples of projects using ArgMatey:
 
--   [Jargyle](https://github.com/jh3nd3rs0n/jargyle)
--   [JBase64Transformer](https://github.com/jh3nd3rs0n/jbase64transformer)
+-   [Jargyle](https://github.com/jh3nd3rs0n/jargyle) (specific examples: [SocksServerCli.java](https://github.com/jh3nd3rs0n/jargyle/blob/master/src/main/java/jargyle/server/SocksServerCli.java), [UsersCli.java](https://github.com/jh3nd3rs0n/jargyle/blob/master/src/main/java/jargyle/server/socks5/UsersCli.java))
+
+-   [JBase64Transformer](https://github.com/jh3nd3rs0n/jbase64transformer) ([Base64Transformer.java](https://github.com/jh3nd3rs0n/jbase64transformer/blob/master/src/main/java/jbase64transformer/Base64Transformer.java))
 
 ## Contents
 
