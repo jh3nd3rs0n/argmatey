@@ -4,7 +4,7 @@
 
 ArgMatey is a Java command line argument parsing library that has the following features:
 
-**Annotations for fields and methods to define and receive results from parsing.** The following is an example:
+**Annotations for methods to define and receive results from parsing.** The following is an example:
 
 ```java
     
