@@ -41,6 +41,48 @@ ArgMatey is a Java command line argument parsing library that has the following 
         }
         
         /*
+         * invoked when either of the options "-d" and "--decode" is 
+         * encountered
+         */        
+        @OptionSink(
+            optionBuilder = @OptionBuilder(
+                doc = "decode data",
+                name = "d",
+                type = PosixOption.class
+            ),
+            otherOptionBuilders = {
+                @OptionBuilder(
+                    name = "decode", 
+                    type = GnuLongOption.class
+                )
+            }
+        )        
+        public void setDecodingMode(boolean b) {
+            // ...
+        }
+        
+        /*
+         * invoked when either of the options "-i" and "--ignore-garbage" 
+         * is encountered
+         */
+        @OptionSink(
+            optionBuilder = @OptionBuilder(
+                doc = "when decoding, ignore non-alphabet characters",
+                name = "i",
+                type = PosixOption.class
+            ),
+            otherOptionBuilders = {
+                @OptionBuilder(
+                    name = "ignore-garbage", 
+                    type = GnuLongOption.class
+                )
+            }
+        )        
+        public void setGarbageIgnored(boolean b) {
+            // ...
+        }
+        
+        /*
          * invoked when either of the options "-w" and "--wrap" is 
          * encountered
          */
@@ -86,27 +128,6 @@ ArgMatey is a Java command line argument parsing library that has the following 
         }
         
         /*
-         * invoked when either of the options "-d" and "--decode" is 
-         * encountered
-         */        
-        @OptionSink(
-            optionBuilder = @OptionBuilder(
-                doc = "decode data",
-                name = "d",
-                type = PosixOption.class
-            ),
-            otherOptionBuilders = {
-                @OptionBuilder(
-                    name = "decode", 
-                    type = GnuLongOption.class
-                )
-            }
-        )        
-        public void setDecodingMode(boolean b) {
-            // ...
-        }
-        
-        /*
          * invoked when a non-parsed argument is encountered. In this 
          * implementation, the non-parsed argument is the FILE argument.
          */
@@ -123,34 +144,15 @@ ArgMatey is a Java command line argument parsing library that has the following 
              */
         }
         
-        /*
-         * invoked when either of the options "-i" and "--ignore-garbage" 
-         * is encountered
-         */
-        @OptionSink(
-            optionBuilder = @OptionBuilder(
-                doc = "when decoding, ignore non-alphabet characters",
-                name = "i",
-                type = PosixOption.class
-            ),
-            otherOptionBuilders = {
-                @OptionBuilder(
-                    name = "ignore-garbage", 
-                    type = GnuLongOption.class
-                )
-            }
-        )        
-        public void setGarbageIgnored(boolean b) {
-            // ...
-        }
-        
     }
     
     public static void main(String[] args) {
         Options options = Options.newInstanceFrom(Base64Cli.class);
         ArgsParser argsParser = ArgsParser.newInstance(args, options, false);
         Base64Cli base64Cli = new Base64Cli();
-        argsParser.parseRemainingTo(base64Cli);
+        while (argsParser.hasNext()) {
+            argsParser.parseNextTo(base64Cli);
+        }
         // do post parsing stuff        
     }
     
@@ -235,7 +237,7 @@ ArgMatey is a Java command line argument parsing library that has the following 
 The following are some examples of projects using ArgMatey:
 
 -   [Jargyle](https://github.com/jh3nd3rs0n/jargyle) (specific examples: [SocksServerCli.java](https://github.com/jh3nd3rs0n/jargyle/blob/master/src/main/java/jargyle/server/SocksServerCli.java), [UsersCli.java](https://github.com/jh3nd3rs0n/jargyle/blob/master/src/main/java/jargyle/server/socks5/UsersCli.java))
--   [JBase64Transformer](https://github.com/jh3nd3rs0n/jbase64transformer) ([Base64Transformer.java](https://github.com/jh3nd3rs0n/jbase64transformer/blob/master/src/main/java/jbase64transformer/Base64Transformer.java))
+-   [JBase64Transformer](https://github.com/jh3nd3rs0n/jbase64transformer) (specific example: [Base64Transformer.java](https://github.com/jh3nd3rs0n/jbase64transformer/blob/master/src/main/java/jbase64transformer/Base64Transformer.java))
 
 ## Contents
 
