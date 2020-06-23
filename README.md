@@ -25,7 +25,7 @@ ArgMatey is a Java command line argument parsing library that has the following 
             )
         )
         public void displayHelp() {
-            // display help and exit the program
+            // ...
         }
         
         // invoked when the option "--version" is encountered
@@ -37,7 +37,7 @@ ArgMatey is a Java command line argument parsing library that has the following 
             )
         )
         public void displayVersion() {
-            // display version information and exit the program
+            // ...
         }
         
         /*
