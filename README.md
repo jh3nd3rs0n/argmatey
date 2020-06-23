@@ -125,6 +125,7 @@ ArgMatey is a Java command line argument parsing library that has the following 
              * IllegalArgumentExceptions for the invalid option 
              * argument can be thrown here.
              */
+            // ...
         }
         
         /*
@@ -142,6 +143,7 @@ ArgMatey is a Java command line argument parsing library that has the following 
              * IllegalArgumentExceptions for the invalid non-parsed 
              * argument can be thrown here.
              */
+            // ...
         }
         
     }
