@@ -153,7 +153,8 @@ ArgMatey is a Java command line argument parsing library that has the following 
         ArgsParser argsParser = ArgsParser.newInstance(args, options, false);
         Base64Cli base64Cli = new Base64Cli();
         while (argsParser.hasNext()) {
-            argsParser.parseNext().sendTo(base64Cli);
+            ParseResultHolder parseResultHolder = argsParser.parseNext();
+            parseResultHolder.sendTo(base64Cli);
         }
         // do post parsing stuff        
     }
