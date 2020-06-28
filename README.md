@@ -202,7 +202,7 @@ ArgMatey is a Java command line argument parsing library that has the following 
         
     }
     
-    public static class Base64Cli {
+    public static class Base64Cli extends ParseResultSink {
     
         // ...
         
