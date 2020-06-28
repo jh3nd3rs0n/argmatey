@@ -12,7 +12,7 @@ ArgMatey is a Java command line argument parsing library that has the following 
      * handles command line options and arguments for this Java 
      * implementation of GNU's utility base64
      */
-    public static class Base64Cli {
+    public static class Base64Cli extends ParseResultSink {
     
         // instance fields, constructor(s), etc...
         
@@ -149,12 +149,12 @@ ArgMatey is a Java command line argument parsing library that has the following 
     }
     
     public static void main(String[] args) {
-        Options options = Options.newInstanceFrom(Base64Cli.class);
-        ArgsParser argsParser = ArgsParser.newInstance(args, options, false);
         Base64Cli base64Cli = new Base64Cli();
+        Options options = base64Cli.getOptions();
+        ArgsParser argsParser = ArgsParser.newInstance(args, options, false);
         while (argsParser.hasNext()) {
             ParseResultHolder parseResultHolder = argsParser.parseNext();
-            parseResultHolder.sendTo(base64Cli);
+            base64Cli.receive(parseResultHolder);
         }
         // do post parsing stuff        
     }
