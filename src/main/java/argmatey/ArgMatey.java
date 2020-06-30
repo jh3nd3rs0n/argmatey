@@ -2452,11 +2452,11 @@ public final class ArgMatey {
 	@Retention(RetentionPolicy.RUNTIME)
 	public static @interface OptionArgSpecBuilder {
 		
-		boolean ignored() default false;
-		
 		String name() default OptionArgSpec.DEFAULT_NAME;
 		
 		boolean optional() default false;
+		
+		boolean recognized() default true;
 		
 		String separator() default OptionArgSpec.DEFAULT_SEPARATOR;
 		
@@ -2475,7 +2475,7 @@ public final class ArgMatey {
 		String name();
 		
 		OptionArgSpecBuilder optionArgSpecBuilder() 
-			default @OptionArgSpecBuilder(ignored = true);
+			default @OptionArgSpecBuilder(recognized = false);
 		
 		Class<? extends OptionHelpTextProvider> optionHelpTextProvider()
 			default DefaultOptionHelpTextProvider.class;
@@ -3049,7 +3049,7 @@ public final class ArgMatey {
 			builder.hidden(optionBuilder.hidden());
 			OptionArgSpecBuilder optionArgSpecBuilder = 
 					optionBuilder.optionArgSpecBuilder();
-			if (!optionArgSpecBuilder.ignored()) {
+			if (optionArgSpecBuilder.recognized()) {
 				builder.optionArgSpec(this.newOptionArgSpecBuilder(
 						optionArgSpecBuilder).build());
 			}
