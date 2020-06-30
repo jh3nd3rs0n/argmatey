@@ -17,7 +17,7 @@ ArgMatey is a Java command line argument parsing library that has the following 
         // instance fields, constructor(s), etc...
         
         // invoked when the option "--help" is encountered
-        @OptionSink(
+        @OptionOccurrenceSink(
             optionBuilder = @OptionBuilder(
                 doc = "display this help and exit",
                 name = "help",
@@ -29,7 +29,7 @@ ArgMatey is a Java command line argument parsing library that has the following 
         }
         
         // invoked when the option "--version" is encountered
-        @OptionSink(
+        @OptionOccurrenceSink(
             optionBuilder = @OptionBuilder(
                 doc = "display version information and exit",
                 name = "version",
@@ -44,7 +44,7 @@ ArgMatey is a Java command line argument parsing library that has the following 
          * invoked when either of the options "-d" and "--decode" is 
          * encountered
          */        
-        @OptionSink(
+        @OptionOccurrenceSink(
             optionBuilder = @OptionBuilder(
                 doc = "decode data",
                 name = "d",
@@ -65,7 +65,7 @@ ArgMatey is a Java command line argument parsing library that has the following 
          * invoked when either of the options "-i" and "--ignore-garbage" 
          * is encountered
          */
-        @OptionSink(
+        @OptionOccurrenceSink(
             optionBuilder = @OptionBuilder(
                 doc = "when decoding, ignore non-alphabet characters",
                 name = "i",
@@ -86,7 +86,7 @@ ArgMatey is a Java command line argument parsing library that has the following 
          * invoked when either of the options "-w" and "--wrap" is 
          * encountered
          */
-        @OptionSink(
+        @OptionOccurrenceSink(
             optionBuilder = @OptionBuilder(
                 doc = "wrap encoded lines after COLS character",
                 name = "w",
@@ -175,8 +175,8 @@ ArgMatey is a Java command line argument parsing library that has the following 
      
 **Command line argument parsing results on a per command line argument basis (similar to getopt, getopt_long, and Argp).** This style of command line argument parsing has the following advantages:
 
--   Interpretation of multiple instances of the same option
--   Interpretation of multiple instances of options from the same group
+-   Interpretation of multiple occurrences of the same option
+-   Interpretation of multiple occurrences of options from the same group
 -   Interpretation of options and arguments based on the ordering provided
 
 **Complete customization of usage and help text for the options.** The customization of the usage and help text for a option can be applied to a particular option, to some options, or to all options. The following is an example based off the earlier example:
@@ -208,7 +208,7 @@ ArgMatey is a Java command line argument parsing library that has the following 
     
         // ...
         
-        @OptionSink(
+        @OptionOccurrenceSink(
             optionBuilder = @OptionBuilder(
                 doc = "display version information and exit",
                 name = "version",
