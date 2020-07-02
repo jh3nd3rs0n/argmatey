@@ -176,7 +176,7 @@ ArgMatey is a Java command line argument parsing library that has the following 
 -   Interpretation of multiple occurrences of options from the same group
 -   Interpretation of options and arguments based on the ordering provided
 
-**Complete customization of usage for options and of help text for option groups.** The following is an example based off of the earlier example:
+**Complete customization of the usage and help text for the options.** The following is an example based off of the earlier example:
 
 ```java
     
@@ -194,11 +194,11 @@ ArgMatey is a Java command line argument parsing library that has the following 
             while (iterator.hasNext()) {
                 ArgMatey.Option option = iterator.next();
                 sb.append(option.getUsage());
-                if (doc == null) {
-                    doc = option.getDoc();
-                }
                 if (iterator.hasNext()) {
                     sb.append(", ");
+                }
+                if (doc == null) {
+                    doc = option.getDoc();
                 }
             }
             return String.format("  %s\t\t\t\t%s", sb.toString(), doc);

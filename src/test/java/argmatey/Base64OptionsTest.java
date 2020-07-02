@@ -117,18 +117,15 @@ public class Base64OptionsTest {
 		OptionGroup ignoreGarbageOptionGroup = 
 				Base64OptionsTest.IGNORE_GARBAGE_OPTION_GROUP;
 		OptionGroup wrapOptionGroup = Base64OptionsTest.WRAP_OPTION_GROUP;
-		Option decodePosixOption = decodeOptionGroup.toList().get(0);
-		Option decodeLongOption = decodeOptionGroup.toList().get(1);
-		Option decodeGnuLongOption = decodeOptionGroup.toList().get(2);
-		Option ignoreGarbagePosixOption = 
-				ignoreGarbageOptionGroup.toList().get(0);
-		Option ignoreGarbageLongOption = 
-				ignoreGarbageOptionGroup.toList().get(1);
-		Option ignoreGarbageGnuLongOption =
-				ignoreGarbageOptionGroup.toList().get(2);
-		Option wrapPosixOption = wrapOptionGroup.toList().get(0);
-		Option wrapLongOption = wrapOptionGroup.toList().get(1);
-		Option wrapGnuLongOption = wrapOptionGroup.toList().get(2);
+		Option decodePosixOption = decodeOptionGroup.get(0);
+		Option decodeLongOption = decodeOptionGroup.get(1);
+		Option decodeGnuLongOption = decodeOptionGroup.get(2);
+		Option ignoreGarbagePosixOption = ignoreGarbageOptionGroup.get(0);
+		Option ignoreGarbageLongOption = ignoreGarbageOptionGroup.get(1);
+		Option ignoreGarbageGnuLongOption =	ignoreGarbageOptionGroup.get(2);
+		Option wrapPosixOption = wrapOptionGroup.get(0);
+		Option wrapLongOption = wrapOptionGroup.get(1);
+		Option wrapGnuLongOption = wrapOptionGroup.get(2);
 		
 		List<Object> expected = new ArrayList<Object>();
 		expected.add(new OptionOccurrence(decodePosixOption, null));
