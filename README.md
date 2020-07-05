@@ -4,17 +4,31 @@
 
 ArgMatey is a Java command line argument parsing library that has the following features:
 
-**Annotations for methods to define and receive results from parsing.** The following is an example:
+**Class with annotated methods to define and receive results from parsing.** The following is an example:
 
 ```java
     
     /*
-     * handles command line options and arguments for this Java 
-     * implementation of GNU's utility base64
+     * extends ArgMatey.CLI to handle command line options and 
+     * arguments for this Java implementation of GNU's utility base64
      */
-    public static class Base64Cli {
+    public static class Base64CLI extends CLI {
     
-        // instance fields, constructor(s), etc...
+        // instance fields, etc...
+        
+        /*
+         * posixlyCorrect indicates that if the first command line 
+         * argument encountered is not a command line option then 
+         * further command line option handling is disabled throughout 
+         * the rest of the command line arguments. Any remaining 
+         * command line argument that looks like a command line option 
+         * will not be treated as a command line option but treated 
+         * instead as a command line argument.
+         */        
+        public Base64CLI(String[] args, boolean posixlyCorrect) {
+            super(args, posixlyCorrect);
+            // ...
+        }
         
         /*
          * invoked when either of the options "-d" and "--decode" is 
@@ -22,7 +36,7 @@ ArgMatey is a Java command line argument parsing library that has the following 
          */        
         @OptionGroup(
             option = @Option(
-                doc = "decode data",
+                doc = "Decode data",
                 name = "d",
                 type = PosixOption.class
             ),
@@ -43,7 +57,7 @@ ArgMatey is a Java command line argument parsing library that has the following 
          */
         @OptionGroup(
             option = @Option(
-                doc = "when decoding, ignore non-alphabet characters",
+                doc = "When decoding, ignore non-alphabet characters",
                 name = "i",
                 type = PosixOption.class
             ),
@@ -64,7 +78,7 @@ ArgMatey is a Java command line argument parsing library that has the following 
          */
         @OptionGroup(
             option = @Option(
-                doc = "wrap encoded lines after COLS character",
+                doc = "Wrap encoded lines after COLS character",
                 name = "w",
                 optionArgSpec = @OptionArgSpec(
                     name = "COLS"
@@ -104,30 +118,6 @@ ArgMatey is a Java command line argument parsing library that has the following 
             // ...
         }
         
-        // invoked when the option "--help" is encountered
-        @OptionGroup(
-            option = @Option(
-                doc = "display this help and exit",
-                name = "help",
-                type = GnuLongOption.class
-            ) 
-        )
-        public void requestHelp() {
-            // ...
-        }
-        
-        // invoked when the option "--version" is encountered
-        @OptionGroup(
-            option = @Option(
-                doc = "display version information and exit",
-                name = "version",
-                type = GnuLongOption.class
-            ) 
-        )
-        public void requestVersion() {
-            // ...
-        }
-        
         /*
          * invoked when a non-parsed argument is encountered. In this 
          * implementation, the non-parsed argument is the FILE argument.
@@ -146,17 +136,62 @@ ArgMatey is a Java command line argument parsing library that has the following 
             // ...
         }
         
+        /*
+         * The options "--help" and "--version" are each defined in 
+         * OptionGroup annotations of the inherited methods 
+         * CLI.displayProgramHelp() and CLI.displayProgramVersion() 
+         * respectively. The method CLI.displayProgramHelp() is invoked 
+         * when the option "--help" is encountered. The method 
+         * CLI.displayProgramVersion() is invoked when the option 
+         * "--version" is encountered. These methods can be overridden 
+         * and re-annotated.
+         */
+        
     }
     
     public static void main(String[] args) {
-        Base64Cli base64Cli = new Base64Cli();
-        ArgsHandler argsHandler = ArgsHandler.newInstance(
-            args, base64Cli, false);
-        while (argsHandler.hasNext()) {
-            argsHandler.handleNext();
+        Base64CLI base64CLI = new Base64CLI(args, false);
+        base64CLI.setProgramName("base64");
+        base64CLI.setProgramVersion("base64 1.0");
+        base64CLI.setProgramArgsUsage(" [FILE]");
+        base64CLI.setProgramDoc(
+            "Base64 encode or decode FILE, or standard input, to standard output.");
+        while (base64CLI.hasNext()) {
+            base64CLI.handleNext();
+            if (base64CLI.isProgramHelpDisplayed()
+                || base64CLI.isProgramVersionDisplayed()) {
+                return;
+            }
         }
         // ...        
     }
+    
+    /*
+     * Output when using the option "--help" :
+     *
+     * Usage: base64 [OPTION]... [FILE]
+     * Base64 encode or decode FILE, or standard input, to standard output.
+     *
+     * OPTIONS:
+     *   -d, --decode
+     *       Decode data
+     *   --help
+     *       Display this help and exit
+     *   -i, --ignore-garbage
+     *       When decoding, ignore non-alphabet characters
+     *   --version
+     *       Display version information and exit
+     *   -w COLS, --wrap=COLS
+     *       Wrap encoded lines after COLS character
+     *
+     */
+     
+    /*
+     * Output when using the option "--version" :
+     *
+     * base64 1.0
+     *
+     */
     
 ```
 
@@ -191,6 +226,7 @@ ArgMatey is a Java command line argument parsing library that has the following 
             Iterator<ArgMatey.Option> iterator = params.getOptions().iterator();
             StringBuilder sb = new StringBuilder();
             String doc = null;
+            sb.append("  ");
             while (iterator.hasNext()) {
                 ArgMatey.Option option = iterator.next();
                 sb.append(option.getUsage());
@@ -201,28 +237,40 @@ ArgMatey is a Java command line argument parsing library that has the following 
                     doc = option.getDoc();
                 }
             }
-            return String.format("  %s\t\t\t\t%s", sb.toString(), doc);
+            final int docStart = 24;
+            int length = sb.length();
+            for (int i = 0; i < docStart - length; i++) {
+                sb.append(' ');
+            }
+            sb.append(doc);
+            return sb.toString();
         }
         
     }
     
-    public static class Base64Cli {
+    public static class Base64CLI extends CLI {
     
         // ...
         
         @OptionGroup(
             option = @Option(
-                doc = "display version information and exit",
-                name = "version",
-                type = GnuLongOption.class
+                doc = "Decode data",
+                name = "d",
+                type = PosixOption.class
             ),
             /*
              * You can apply the OptionGroupHelpTextProvider to a 
              * particular option group...
              */ 
-            optionGroupHelpTextProvider = CustomOptionGroupHelpTextProvider.class 
-        )        
-        public void requestVersion() {
+            optionGroupHelpTextProvider = CustomOptionGroupHelpTextProvider.class,
+            otherOptions = {
+                @Option(
+                    name = "decode", 
+                    type = GnuLongOption.class
+                )
+            }
+        )
+        public void setDecodingMode(boolean b) {
             // ...
         }
         
@@ -236,6 +284,21 @@ ArgMatey is a Java command line argument parsing library that has the following 
         OptionGroupHelpTextProvider.setDefault(provider);
         // ...        
     }
+    
+    /*
+     * Output when using the option "--help" :
+     *
+     * Usage: base64 [OPTION]... [FILE]
+     * Base64 encode or decode FILE, or standard input, to standard output.
+     *
+     * OPTIONS:
+     *   -d, --decode          Decode data
+     *   --help                Display this help and exit
+     *   -i, --ignore-garbage  When decoding, ignore non-alphabet characters
+     *   --version             Display version information and exit
+     *   -w COLS, --wrap=COLS  Wrap encoded lines after COLS character
+     *
+     */
     
 ```
 

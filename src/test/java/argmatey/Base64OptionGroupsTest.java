@@ -25,7 +25,7 @@ import argmatey.ArgMatey.OptionOccurrence;
 import argmatey.ArgMatey.ParseResultHolder;
 import argmatey.ArgMatey.PosixOption;
 
-public class Base64OptionsTest {
+public class Base64OptionGroupsTest {
 	
 	public static final OptionGroup DECODE_OPTION_GROUP = new OptionGroup.Builder(
 			new PosixOption.Builder('d')
@@ -104,19 +104,19 @@ public class Base64OptionsTest {
 	};
 
 	private final OptionGroups optionGroups = OptionGroups.newInstance(
-			Base64OptionsTest.DECODE_OPTION_GROUP, 
-			Base64OptionsTest.IGNORE_GARBAGE_OPTION_GROUP, 
-			Base64OptionsTest.WRAP_OPTION_GROUP, 
-			Base64OptionsTest.HELP_OPTION_GROUP, 
-			Base64OptionsTest.VERSION_OPTION_GROUP);
+			Base64OptionGroupsTest.DECODE_OPTION_GROUP, 
+			Base64OptionGroupsTest.IGNORE_GARBAGE_OPTION_GROUP, 
+			Base64OptionGroupsTest.WRAP_OPTION_GROUP, 
+			Base64OptionGroupsTest.HELP_OPTION_GROUP, 
+			Base64OptionGroupsTest.VERSION_OPTION_GROUP);
 	
 	@Test
 	public void testArgs() {
 		
-		OptionGroup decodeOptionGroup = Base64OptionsTest.DECODE_OPTION_GROUP;
+		OptionGroup decodeOptionGroup = Base64OptionGroupsTest.DECODE_OPTION_GROUP;
 		OptionGroup ignoreGarbageOptionGroup = 
-				Base64OptionsTest.IGNORE_GARBAGE_OPTION_GROUP;
-		OptionGroup wrapOptionGroup = Base64OptionsTest.WRAP_OPTION_GROUP;
+				Base64OptionGroupsTest.IGNORE_GARBAGE_OPTION_GROUP;
+		OptionGroup wrapOptionGroup = Base64OptionGroupsTest.WRAP_OPTION_GROUP;
 		Option decodePosixOption = decodeOptionGroup.get(0);
 		Option decodeLongOption = decodeOptionGroup.get(1);
 		Option decodeGnuLongOption = decodeOptionGroup.get(2);
@@ -199,6 +199,22 @@ public class Base64OptionsTest {
 	}
 	
 	@Test
+	public void testOptionGroupsAbbreviatedUsage() {
+		
+		StringWriter sw1 = new StringWriter();
+		sw1.write(" [OPTION]...");
+		sw1.flush();
+		
+		StringWriter sw2 = new StringWriter();
+		PrintWriter pw = new PrintWriter(sw2);
+		this.optionGroups.printAbbreviatedUsage(pw);
+		pw.flush();
+		sw2.flush();
+		
+		assertEquals(sw1.toString(), sw2.toString());		
+	}
+	
+	@Test
 	public void testOptionGroupsHelpText() {
 
 		String lineSeparator = System.getProperty("line.separator");
@@ -228,6 +244,7 @@ public class Base64OptionsTest {
 		sw1.write(lineSeparator);
 		sw1.write("      display version information and exit");
 		sw1.write(lineSeparator);
+		sw1.write(lineSeparator);
 		sw1.flush();
 		
 		StringWriter sw2 = new StringWriter();
@@ -243,7 +260,7 @@ public class Base64OptionsTest {
 	public void testOptionGroupsUsage() {
 		
 		StringWriter sw1 = new StringWriter();
-		sw1.write("[-d] [-i] [-w COLS]");
+		sw1.write(" [-d] [-i] [-w COLS]");
 		sw1.flush();
 		
 		StringWriter sw2 = new StringWriter();
