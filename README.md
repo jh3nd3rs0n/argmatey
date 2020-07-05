@@ -17,13 +17,8 @@ ArgMatey is a Java command line argument parsing library that has the following 
         // instance fields, etc...
         
         /*
-         * posixlyCorrect indicates that if the first command line 
-         * argument encountered is not a command line option then 
-         * further command line option handling is disabled throughout 
-         * the rest of the command line arguments. Any remaining 
-         * command line argument that looks like a command line option 
-         * will not be treated as a command line option but treated 
-         * instead as a command line argument.
+         * posixlyCorrect indicates that the first command line 
+         * arguments are command line options if any.
          */        
         public Base64CLI(String[] args, boolean posixlyCorrect) {
             super(args, posixlyCorrect);
@@ -151,15 +146,25 @@ ArgMatey is a Java command line argument parsing library that has the following 
     
     public static void main(String[] args) {
         Base64CLI base64CLI = new Base64CLI(args, false);
+        // for the program help and version information
         base64CLI.setProgramName("base64");
         base64CLI.setProgramVersion("base64 1.0");
         base64CLI.setProgramArgsUsage(" [FILE]");
-        base64CLI.setProgramDoc(
-            "Base64 encode or decode FILE, or standard input, to standard output.");
+        StringBuilder sb = new StringBuilder();
+        sb.append("Base64 encode or decode FILE, or standard input, to standard output.");
+        sb.append(String.format("%n%n"));
+        sb.append("With no FILE, or when FILE is -, read standard input.");
+        base64CLI.setProgramDoc(sb.toString());
+        // parse (and handle) the command line arguments
         while (base64CLI.hasNext()) {
             base64CLI.handleNext();
             if (base64CLI.isProgramHelpDisplayed()
                 || base64CLI.isProgramVersionDisplayed()) {
+                /*
+                 * If the option "--help" or the option "--version" is
+                 * encountered and handled, exit the program regardless 
+                 * of the remaining command line arguments.
+                 */
                 return;
             }
         }
@@ -171,6 +176,8 @@ ArgMatey is a Java command line argument parsing library that has the following 
      *
      * Usage: base64 [OPTION]... [FILE]
      * Base64 encode or decode FILE, or standard input, to standard output.
+     *
+     * With no FILE, or when FILE is -, read standard input.
      *
      * OPTIONS:
      *   -d, --decode
@@ -223,7 +230,8 @@ ArgMatey is a Java command line argument parsing library that has the following 
         extends OptionGroupHelpTextProvider {
     
         public String getOptionGroupHelpText(OptionGroupHelpTextParams params) {
-            Iterator<ArgMatey.Option> iterator = params.getOptions().iterator();
+            Iterator<ArgMatey.Option> iterator = 
+                params.getDisplayableOptions().iterator();
             StringBuilder sb = new StringBuilder();
             String doc = null;
             sb.append("  ");
@@ -291,6 +299,8 @@ ArgMatey is a Java command line argument parsing library that has the following 
      * Usage: base64 [OPTION]... [FILE]
      * Base64 encode or decode FILE, or standard input, to standard output.
      *
+     * With no FILE, or when FILE is -, read standard input.
+     *
      * OPTIONS:
      *   -d, --decode          Decode data
      *   --help                Display this help and exit
@@ -306,7 +316,7 @@ ArgMatey is a Java command line argument parsing library that has the following 
 
 The following are some examples of projects using ArgMatey:
 
--   [Jargyle](https://github.com/jh3nd3rs0n/jargyle) (specific examples: [SocksServerCli.java](https://github.com/jh3nd3rs0n/jargyle/blob/master/src/main/java/jargyle/server/SocksServerCli.java), [UsersCli.java](https://github.com/jh3nd3rs0n/jargyle/blob/master/src/main/java/jargyle/server/socks5/UsersCli.java))
+-   [Jargyle](https://github.com/jh3nd3rs0n/jargyle) (specific examples: [SocksServerCLI.java](https://github.com/jh3nd3rs0n/jargyle/blob/master/src/main/java/jargyle/server/SocksServerCLI.java), [UsersCLI.java](https://github.com/jh3nd3rs0n/jargyle/blob/master/src/main/java/jargyle/server/socks5/UsersCLI.java))
 -   [JBase64Transformer](https://github.com/jh3nd3rs0n/jbase64transformer) (specific example: [Base64Transformer.java](https://github.com/jh3nd3rs0n/jbase64transformer/blob/master/src/main/java/jbase64transformer/Base64Transformer.java))
 
 ## Contents

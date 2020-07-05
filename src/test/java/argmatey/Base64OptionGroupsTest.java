@@ -199,22 +199,6 @@ public class Base64OptionGroupsTest {
 	}
 	
 	@Test
-	public void testOptionGroupsAbbreviatedUsage() {
-		
-		StringWriter sw1 = new StringWriter();
-		sw1.write(" [OPTION]...");
-		sw1.flush();
-		
-		StringWriter sw2 = new StringWriter();
-		PrintWriter pw = new PrintWriter(sw2);
-		this.optionGroups.printAbbreviatedUsage(pw);
-		pw.flush();
-		sw2.flush();
-		
-		assertEquals(sw1.toString(), sw2.toString());		
-	}
-	
-	@Test
 	public void testOptionGroupsHelpText() {
 
 		String lineSeparator = System.getProperty("line.separator");
@@ -254,22 +238,6 @@ public class Base64OptionGroupsTest {
 		sw2.flush();
 		
 		assertEquals(sw1.toString(), sw2.toString());
-	}
-	
-	@Test
-	public void testOptionGroupsUsage() {
-		
-		StringWriter sw1 = new StringWriter();
-		sw1.write(" [-d] [-i] [-w COLS]");
-		sw1.flush();
-		
-		StringWriter sw2 = new StringWriter();
-		PrintWriter pw = new PrintWriter(sw2);
-		this.optionGroups.printUsage(pw);
-		pw.flush();
-		sw2.flush();
-		
-		assertEquals(sw1.toString(), sw2.toString());		
 	}
 
 }

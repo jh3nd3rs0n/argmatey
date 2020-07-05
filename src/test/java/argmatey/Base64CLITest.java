@@ -91,7 +91,8 @@ public class Base64CLITest {
 	    extends OptionGroupHelpTextProvider {
 	
 	    public String getOptionGroupHelpText(OptionGroupHelpTextParams params) {
-	        Iterator<ArgMatey.Option> iterator = params.getOptions().iterator();
+	        Iterator<ArgMatey.Option> iterator = 
+	        		params.getDisplayableOptions().iterator();
 	        StringBuilder sb = new StringBuilder();
 	        String doc = null;
 	        sb.append("  ");
@@ -127,6 +128,8 @@ public class Base64CLITest {
 		sb1.append(String.format("Usage: base64 [OPTION]... [FILE]%n"));
 		sb1.append(String.format("Base64 encode or decode FILE, or standard input, to standard output.%n"));
 		sb1.append(String.format("%n"));
+		sb1.append(String.format("With no FILE, or when FILE is -, read standard input.%n"));
+		sb1.append(String.format("%n"));
 		sb1.append(String.format("OPTIONS:%n"));
 		sb1.append(String.format("  -d, --decode          Decode data%n"));
 		sb1.append(String.format("  --help                Display this help and exit%n"));
@@ -138,6 +141,8 @@ public class Base64CLITest {
 		StringBuilder sb2 = new StringBuilder();
 		sb2.append(String.format("Usage: base64 [OPTION]... [FILE]%n"));
 		sb2.append(String.format("Base64 encode or decode FILE, or standard input, to standard output.%n"));
+		sb2.append(String.format("%n"));
+		sb2.append(String.format("With no FILE, or when FILE is -, read standard input.%n"));
 		sb2.append(String.format("%n"));
 		sb2.append(String.format("OPTIONS:%n"));
 		sb2.append(String.format("  -d, --decode%n"));
@@ -155,7 +160,7 @@ public class Base64CLITest {
 		PROGRAM_VERSION = String.format("base64 1.0%n");
 	}
 	
-	private static void execute(
+	private static void handle(
 			final String[] args, 
 			final PrintStream err, 
 			final InputStream in,
@@ -180,8 +185,11 @@ public class Base64CLITest {
         base64CLI.setProgramName("base64");
         base64CLI.setProgramVersion("base64 1.0");
         base64CLI.setProgramArgsUsage(" [FILE]");
-        base64CLI.setProgramDoc(
-            "Base64 encode or decode FILE, or standard input, to standard output.");
+        StringBuilder sb = new StringBuilder();
+        sb.append("Base64 encode or decode FILE, or standard input, to standard output.");
+        sb.append(String.format("%n%n"));
+        sb.append("With no FILE, or when FILE is -, read standard input.");
+        base64CLI.setProgramDoc(sb.toString());
         while (base64CLI.hasNext()) {
             base64CLI.handleNext();
             if (base64CLI.isProgramHelpDisplayed()
@@ -199,7 +207,7 @@ public class Base64CLITest {
         	String expectedString = CUSTOM_PROGRAM_HELP;
     		ByteArrayOutputStream bytesOut = new ByteArrayOutputStream();
     		PrintStream out = new PrintStream(bytesOut);
-    		execute(new String[] { "--help" }, null, null, out);
+    		handle(new String[] { "--help" }, null, null, out);
     		String actualString = new String(bytesOut.toByteArray());
     		assertEquals(expectedString, actualString);
         } finally {
@@ -212,7 +220,7 @@ public class Base64CLITest {
 		String expectedString = PROGRAM_HELP;
 		ByteArrayOutputStream bytesOut = new ByteArrayOutputStream();
 		PrintStream out = new PrintStream(bytesOut);
-		execute(new String[] { "--help" }, null, null, out);
+		handle(new String[] { "--help" }, null, null, out);
 		String actualString = new String(bytesOut.toByteArray());
 		assertEquals(expectedString, actualString);
 	}
@@ -222,7 +230,7 @@ public class Base64CLITest {
 		String expectedString = PROGRAM_HELP;
 		ByteArrayOutputStream bytesOut = new ByteArrayOutputStream();
 		PrintStream out = new PrintStream(bytesOut);
-		execute(new String[] { "--help", "--version" }, null, null, out);
+		handle(new String[] { "--help", "--version" }, null, null, out);
 		String actualString = new String(bytesOut.toByteArray());
 		assertEquals(expectedString, actualString);
 	}
@@ -232,7 +240,7 @@ public class Base64CLITest {
 		String expectedString = PROGRAM_VERSION;
 		ByteArrayOutputStream bytesOut = new ByteArrayOutputStream();
 		PrintStream out = new PrintStream(bytesOut);
-		execute(new String[] { "--version" }, null, null, out);
+		handle(new String[] { "--version" }, null, null, out);
 		String actualString = new String(bytesOut.toByteArray());
 		assertEquals(expectedString, actualString);
 	}
@@ -242,7 +250,7 @@ public class Base64CLITest {
 		String expectedString = PROGRAM_VERSION;
 		ByteArrayOutputStream bytesOut = new ByteArrayOutputStream();
 		PrintStream out = new PrintStream(bytesOut);
-		execute(new String[] { "--version", "--help" }, null, null, out);
+		handle(new String[] { "--version", "--help" }, null, null, out);
 		String actualString = new String(bytesOut.toByteArray());
 		assertEquals(expectedString, actualString);
 	}
