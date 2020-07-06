@@ -49,29 +49,9 @@ ArgMatey is a Java command line argument parsing library that has the following 
         
         /*
          * Invoked when either of the options "-w" and "--wrap" is 
-         * encountered.
-         */
-        @OptionGroup(
-            option = @Option(
-                doc = "Wrap encoded lines after COLS character (default is 76)",
-                name = "w",
-                optionArgSpec = @OptionArgSpec(
-                    name = "COLS"
-                ),
-                type = PosixOption.class
-            ),
-            otherOptions = {
-                @Option(
-                    name = "wrap", 
-                    type = GnuLongOption.class
-                    // optionArgSpec is provided from the above @Option.  
-                )
-            } 
-        )
-        /*
-         * Option argument for either of the options "-w" and 
-         * "--wrap" is provided as an argument to the method parameter 
-         * below.
+         * encountered. Option argument for either of the options "-w" 
+         * and "--wrap" is provided as an argument to the method 
+         * parameter below.
          *
          * Methods that are annotated with @OptionGroup that have an 
          * @OptionArgSpec must have only one method parameter. The 
@@ -85,6 +65,23 @@ ArgMatey is a Java command line argument parsing library that has the following 
          * option argument to that type. It can be supplied to 
          * @OptionArgSpec.stringConverter.
          */
+        @OptionGroup(
+            option = @Option(
+                doc = "Wrap encoded lines after COLS character (default is 76)",
+                name = "w",
+                optionArgSpec = @OptionArgSpec(
+                    name = "COLS"
+                ),
+                type = PosixOption.class
+            ),
+            otherOptions = {
+                @Option(
+                    name = "wrap",
+                    // optionArgSpec is provided from the above @Option.                    
+                    type = GnuLongOption.class
+                )
+            } 
+        )
         public void setColumnLimit(Integer i) { 
             int intValue = i.intValue();
             if (intValue < 0) {
