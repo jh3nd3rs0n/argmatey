@@ -9,25 +9,102 @@ ArgMatey is a Java command line argument parsing library that has the following 
 ```java
     
     /*
-     * extends ArgMatey.CLI to handle command line options and 
-     * arguments for this Java implementation of GNU's utility base64
+     * Extends CLI to handle command line options and arguments for 
+     * this Java implementation of GNU's utility base64.
      */
     public static class Base64CLI extends CLI {
     
-        // instance fields, etc...
+        private int columnLimit;
+        private boolean decodingMode;
+        private String file;
+        private boolean garbageIgnored;
+    
+        public Base64CLI(String[] args) {
+            super(args, false);
+            this.columnLimit = 76; // default            
+            this.decodingMode = false;
+            this.file = null;            
+            this.garbageIgnored = false;
+        }
+        
+        // getter methods
+        
+        public int getColumnLimit() {
+            return this.columnLimit;
+        }
+        
+        public String getFile() {
+            return this.file;
+        }
+        
+        public boolean isDecodingMode() {
+            return this.decodingMode;
+        }
+        
+        public boolean isGarbageIgnored() {
+            return this.garbageIgnored;
+        }
+        
+        // setter methods
         
         /*
-         * posixlyCorrect indicates that the first command line 
-         * arguments are command line options if any.
-         */        
-        public Base64CLI(String[] args, boolean posixlyCorrect) {
-            super(args, posixlyCorrect);
-            // ...
+         * Invoked when either of the options "-w" and "--wrap" is 
+         * encountered.
+         */
+        @OptionGroup(
+            option = @Option(
+                doc = "Wrap encoded lines after COLS character (default is 76)",
+                name = "w",
+                optionArgSpec = @OptionArgSpec(
+                    name = "COLS"
+                ),
+                type = PosixOption.class
+            ),
+            otherOptions = {
+                @Option(
+                    name = "wrap", 
+                    type = GnuLongOption.class
+                    // optionArgSpec is provided from the above @Option.  
+                )
+            } 
+        )
+        /*
+         * Option argument for either of the options "-w" and 
+         * "--wrap" is provided as an argument to the method parameter 
+         * below.
+         *
+         * Methods that are annotated with @OptionGroup that have an 
+         * @OptionArgSpec must have only one method parameter. The 
+         * method parameter's type must be a type or a java.util.List 
+         * of a type that has either a static String conversion method 
+         * or a constructor that has only one constructor parameter of 
+         * type String.
+         *
+         * Alternatively, for any method parameter type, a class 
+         * that extends StringConverter can be used to convert the 
+         * option argument to that type. It can be supplied to 
+         * @OptionArgSpec.stringConverter.
+         */
+        public void setColumnLimit(Integer i) { 
+            int intValue = i.intValue();
+            if (intValue < 0) {
+                /*
+                 * IllegalArgumentExceptions for invalid option arguments
+                 * can be thrown.
+                 */
+                throw new IllegalArgumentException(
+                    "must be a non-negative integer");
+            }
+            this.columnLimit = intValue;
         }
         
         /*
-         * invoked when either of the options "-d" and "--decode" is 
-         * encountered
+         * Invoked when either of the options "-d" and "--decode" is 
+         * encountered.
+         *
+         * Methods that are annotated with @OptionGroup without an 
+         * @OptionArgSpec can have no method parameters or only one 
+         * method parameter of type boolean.
          */        
         @OptionGroup(
             option = @Option(
@@ -43,12 +120,39 @@ ArgMatey is a Java command line argument parsing library that has the following 
             }
         )
         public void setDecodingMode(boolean b) {
-            // ...
+            this.decodingMode = b; // always received as true
         }
         
         /*
-         * invoked when either of the options "-i" and "--ignore-garbage" 
-         * is encountered
+         * Invoked when a non-parsed argument is encountered. In this 
+         * implementation, the non-parsed argument is the FILE argument. 
+         * The non-parsed argument is provided as an argument to the 
+         * method parameter below. 
+         *
+         * Only one method in a class can be annotated with 
+         * @NonparsedArg. Methods that are annotated with @NonparsedArg 
+         * must have only one method parameter of type String.
+         */
+        @NonparsedArg
+        public void setFile(String s) {
+            if (this.file != null) {
+                /*
+                 * IllegalArgumentExceptions for invalid non-parsed
+                 * arguments can be thrown.
+                 */
+                throw new IllegalArgumentException(String.format(
+                    "extra operand: `%s'", s));
+            }
+            this.file = s;
+        }
+        
+        /*
+         * Invoked when either of the options "-i" and "--ignore-garbage" 
+         * is encountered.
+         *
+         * Methods that are annotated with @OptionGroup without an 
+         * @OptionArgSpec can have no method parameters or only one 
+         * method parameter of type boolean.
          */
         @OptionGroup(
             option = @Option(
@@ -64,88 +168,13 @@ ArgMatey is a Java command line argument parsing library that has the following 
             } 
         )
         public void setGarbageIgnored(boolean b) {
-            // ...
+            this.garbageIgnored = b; // always received as true
         }
-        
-        /*
-         * invoked when either of the options "-w" and "--wrap" is 
-         * encountered
-         */
-        @OptionGroup(
-            option = @Option(
-                doc = "Wrap encoded lines after COLS character",
-                name = "w",
-                optionArgSpec = @OptionArgSpec(
-                    name = "COLS"
-                ),
-                type = PosixOption.class
-            ),
-            otherOptions = {
-                /*
-                 * No need to specify another OptionArgSpec below. 
-                 * When not specified, an OptionArgSpec is provided 
-                 * from the above Option.  
-                 */
-                @Option(
-                    name = "wrap", 
-                    type = GnuLongOption.class
-                )
-            } 
-        )
-        public void setColumnLimit(Integer i) { 
-            /*
-             * Option argument for either of the options "-w" and 
-             * "--wrap" is received as an argument from the above 
-             * method parameter.
-             *
-             * Method parameter type must be a type or a java.util.List 
-             * of a type that has a static String conversion method or 
-             * a constructor with one String parameter.
-             *
-             * Alternatively, for any method parameter type, a class 
-             * that extends StringConverter can be used to convert the 
-             * option argument to that type. It can be supplied to 
-             * OptionArgSpec.stringConverter. 
-             *
-             * IllegalArgumentExceptions for the invalid option 
-             * argument can be thrown here.
-             */
-            // ...
-        }
-        
-        /*
-         * invoked when a non-parsed argument is encountered. In this 
-         * implementation, the non-parsed argument is the FILE argument.
-         */
-        @NonparsedArg
-        public void setFile(String s) {
-            /*
-             * The non-parsed argument is received as an argument from 
-             * the above method parameter.
-             *
-             * Method parameter type must be of type String.
-             *
-             * IllegalArgumentExceptions for the invalid non-parsed 
-             * argument can be thrown here.
-             */
-            // ...
-        }
-        
-        /*
-         * The options "--help" and "--version" are each defined in 
-         * OptionGroup annotations of the inherited methods 
-         * CLI.displayProgramHelp() and CLI.displayProgramVersion() 
-         * respectively. The method CLI.displayProgramHelp() is invoked 
-         * when the option "--help" is encountered. The method 
-         * CLI.displayProgramVersion() is invoked when the option 
-         * "--version" is encountered. These methods can be overridden 
-         * and re-annotated.
-         */
         
     }
     
     public static void main(String[] args) {
-        Base64CLI base64CLI = new Base64CLI(args, false);
+        Base64CLI base64CLI = new Base64CLI(args);
         // for the program help and version information
         base64CLI.setProgramName("base64");
         base64CLI.setProgramVersion("base64 1.0");
@@ -158,13 +187,13 @@ ArgMatey is a Java command line argument parsing library that has the following 
         // parse (and handle) the command line arguments
         while (base64CLI.hasNext()) {
             base64CLI.handleNext();
+            /*
+             * If the option "--help" or the option "--version" is
+             * encountered and handled, exit the program regardless of 
+             * the remaining command line arguments.
+             */            
             if (base64CLI.isProgramHelpDisplayed()
                 || base64CLI.isProgramVersionDisplayed()) {
-                /*
-                 * If the option "--help" or the option "--version" is
-                 * encountered and handled, exit the program regardless 
-                 * of the remaining command line arguments.
-                 */
                 return;
             }
         }
@@ -189,7 +218,7 @@ ArgMatey is a Java command line argument parsing library that has the following 
      *   --version
      *       Display version information and exit
      *   -w COLS, --wrap=COLS
-     *       Wrap encoded lines after COLS character
+     *       Wrap encoded lines after COLS character (default is 76)
      *
      */
      
@@ -223,8 +252,8 @@ ArgMatey is a Java command line argument parsing library that has the following 
 ```java
     
     /*
-     * provides the help text for an option group on a single line 
-     * instead of multiple lines
+     * Provides the help text for an option group on a single line 
+     * instead of multiple lines.
      */
     public static class CustomOptionGroupHelpTextProvider 
         extends OptionGroupHelpTextProvider {
@@ -262,8 +291,11 @@ ArgMatey is a Java command line argument parsing library that has the following 
         
         @OptionGroup(
             option = @Option(
-                doc = "Decode data",
-                name = "d",
+                doc = "Wrap encoded lines after COLS character (default is 76)",
+                name = "w",
+                optionArgSpec = @OptionArgSpec(
+                    name = "COLS"
+                ),
                 type = PosixOption.class
             ),
             /*
@@ -273,13 +305,13 @@ ArgMatey is a Java command line argument parsing library that has the following 
             optionGroupHelpTextProvider = CustomOptionGroupHelpTextProvider.class,
             otherOptions = {
                 @Option(
-                    name = "decode", 
+                    name = "wrap", 
                     type = GnuLongOption.class
                 )
-            }
+            } 
         )
-        public void setDecodingMode(boolean b) {
-            // ...
+        public void setColumnLimit(Integer i) {
+            // ... 
         }
         
         // ...
@@ -306,7 +338,7 @@ ArgMatey is a Java command line argument parsing library that has the following 
      *   --help                Display this help and exit
      *   -i, --ignore-garbage  When decoding, ignore non-alphabet characters
      *   --version             Display version information and exit
-     *   -w COLS, --wrap=COLS  Wrap encoded lines after COLS character
+     *   -w COLS, --wrap=COLS  Wrap encoded lines after COLS character (default is 76)
      *
      */
     

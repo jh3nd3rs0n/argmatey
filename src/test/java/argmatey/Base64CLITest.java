@@ -15,7 +15,6 @@ import argmatey.ArgMatey.Annotations.Option;
 import argmatey.ArgMatey.Annotations.OptionArgSpec;
 import argmatey.ArgMatey.Annotations.OptionGroup;
 import argmatey.ArgMatey.CLI;
-import argmatey.ArgMatey.DefaultOptionGroupHelpTextProvider;
 import argmatey.ArgMatey.GnuLongOption;
 import argmatey.ArgMatey.OptionGroupHelpTextParams;
 import argmatey.ArgMatey.OptionGroupHelpTextProvider;
@@ -25,13 +24,38 @@ public class Base64CLITest {
     
     public static class Base64CLI extends CLI {
         
-        public Base64CLI(String[] args, boolean posixlyCorrect) {
-            super(args, posixlyCorrect);
+    	private int columnLimit;
+        private boolean decodingMode;
+        private String file;
+        private boolean garbageIgnored;
+    	
+        public Base64CLI(String[] args) {
+            super(args, false);
+            this.columnLimit = 76;            
+            this.decodingMode = false;
+            this.file = null;            
+            this.garbageIgnored = false;
+        }
+        
+        public int getColumnLimit() {
+            return this.columnLimit;
+        }
+        
+        public String getFile() {
+            return this.file;
+        }
+        
+        public boolean isDecodingMode() {
+            return this.decodingMode;
+        }
+        
+        public boolean isGarbageIgnored() {
+            return this.garbageIgnored;
         }
         
         @OptionGroup(
             option = @Option(
-                doc = "Wrap encoded lines after COLS character",
+                doc = "Wrap encoded lines after COLS character (default is 76)",
                 name = "w",
                 optionArgSpec = @OptionArgSpec(
                     name = "COLS"
@@ -45,7 +69,13 @@ public class Base64CLITest {
                 )
             } 
         )
-        public void setColumnLimit(Integer i) { 
+        public void setColumnLimit(Integer i) {
+            int intValue = i.intValue();
+            if (intValue < 0) {
+                throw new IllegalArgumentException(
+                		"must be a non-negative integer");
+            }
+            this.columnLimit = intValue;        	
         }
         
         @OptionGroup(
@@ -62,10 +92,16 @@ public class Base64CLITest {
             }
         )
         public void setDecodingMode(boolean b) {
+        	this.decodingMode = b;
         }
         
         @NonparsedArg
         public void setFile(String s) {
+            if (this.file != null) {
+                throw new IllegalArgumentException(String.format(
+                		"extra operand: `%s'", s));
+            }
+            this.file = s;        	
         }
         
         @OptionGroup(
@@ -82,6 +118,7 @@ public class Base64CLITest {
             } 
         )
         public void setGarbageIgnored(boolean b) {
+        	this.garbageIgnored = b;
         }
         
     }
@@ -135,7 +172,7 @@ public class Base64CLITest {
 		sb1.append(String.format("  --help                Display this help and exit%n"));
 		sb1.append(String.format("  -i, --ignore-garbage  When decoding, ignore non-alphabet characters%n"));
 		sb1.append(String.format("  --version             Display version information and exit%n"));
-		sb1.append(String.format("  -w COLS, --wrap=COLS  Wrap encoded lines after COLS character%n"));
+		sb1.append(String.format("  -w COLS, --wrap=COLS  Wrap encoded lines after COLS character (default is 76)%n"));
 		sb1.append(String.format("%n"));
 		CUSTOM_PROGRAM_HELP = sb1.toString();
 		StringBuilder sb2 = new StringBuilder();
@@ -154,7 +191,7 @@ public class Base64CLITest {
 		sb2.append(String.format("  --version%n"));
 		sb2.append(String.format("      Display version information and exit%n"));
 		sb2.append(String.format("  -w COLS, --wrap=COLS%n"));
-		sb2.append(String.format("      Wrap encoded lines after COLS character%n"));
+		sb2.append(String.format("      Wrap encoded lines after COLS character (default is 76)%n"));
 		sb2.append(String.format("%n"));		
 		PROGRAM_HELP = sb2.toString();
 		PROGRAM_VERSION = String.format("base64 1.0%n");
@@ -181,7 +218,7 @@ public class Base64CLITest {
 	}
 	
 	private static void main(String[] args) {
-        Base64CLI base64CLI = new Base64CLI(args, false);
+        Base64CLI base64CLI = new Base64CLI(args);
         base64CLI.setProgramName("base64");
         base64CLI.setProgramVersion("base64 1.0");
         base64CLI.setProgramArgsUsage(" [FILE]");
@@ -201,8 +238,9 @@ public class Base64CLITest {
 
 	@Test
 	public void testCustomProgramHelp() throws IOException {
-		OptionGroupHelpTextProvider provider = new CustomOptionGroupHelpTextProvider();
-        OptionGroupHelpTextProvider.setDefault(provider);
+		OptionGroupHelpTextProvider provider1 = OptionGroupHelpTextProvider.getDefault(); 
+		OptionGroupHelpTextProvider provider2 = new CustomOptionGroupHelpTextProvider();
+        OptionGroupHelpTextProvider.setDefault(provider2);
         try {
         	String expectedString = CUSTOM_PROGRAM_HELP;
     		ByteArrayOutputStream bytesOut = new ByteArrayOutputStream();
@@ -211,7 +249,7 @@ public class Base64CLITest {
     		String actualString = new String(bytesOut.toByteArray());
     		assertEquals(expectedString, actualString);
         } finally {
-        	OptionGroupHelpTextProvider.setDefault(new DefaultOptionGroupHelpTextProvider());
+        	OptionGroupHelpTextProvider.setDefault(provider1);
         }
 	}
 	
