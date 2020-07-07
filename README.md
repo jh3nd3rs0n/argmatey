@@ -2,7 +2,7 @@
 
 [![Total alerts](https://img.shields.io/lgtm/alerts/g/jh3nd3rs0n/argmatey.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/jh3nd3rs0n/argmatey/alerts/) [![Language grade: Java](https://img.shields.io/lgtm/grade/java/g/jh3nd3rs0n/argmatey.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/jh3nd3rs0n/argmatey/context:java) [![Codacy Badge](https://app.codacy.com/project/badge/Grade/715ef579e39647b4ab3d4c9dc9c12a7b)](https://www.codacy.com/manual/jh3nd3rs0n/argmatey?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=jh3nd3rs0n/argmatey&amp;utm_campaign=Badge_Grade)
 
-ArgMatey is a Java annotation-based iterator-style command line argument parser with a completely customizable auto-generated program usage and help.
+ArgMatey is a Java annotation-based iterator-style command line arguments parser with completely customizable provided program usage and help.
 
 ## Contents
 
@@ -257,7 +257,7 @@ ArgMatey is a Java annotation-based iterator-style command line argument parser 
 -   Interpretation of options and arguments based on the ordering provided
 -   Adaptability of the program based on the option or argument encountered
 
-**Complete customization of the auto-generated program usage and help.** Every level of the program usage and help can be customized. A provided customized `OptionUsageProvider` can be used to provide the usage of one, a few, or all options of a particular type in a different format. A provided customized `OptionGroupHelpTextProvider` can be used to provide the help text of one, a few, or all option groups in a different format. Methods `CLI.displayProgramUsage()` and `CLI.displayProgramHelp()` can be overridden to display the entire program usage and help in a completely different format. The following is the earlier example using a customized `OptionGroupHelpTextProvider`:
+**Complete customization of the provided program usage and help.** Every level of the provided program usage and help can be customized. A customized `OptionUsageProvider` can be used to provide the usage of one, a few, or all options of a particular type in a different format. A customized `OptionGroupHelpTextProvider` can be used to provide the help text of one, a few, or all option groups in a different format. Methods `CLI.displayProgramUsage()` and `CLI.displayProgramHelp()` can be overridden to display the entire program usage and help in a completely different format. The following is the earlier example using a customized `OptionGroupHelpTextProvider`:
 
 ```java
     
