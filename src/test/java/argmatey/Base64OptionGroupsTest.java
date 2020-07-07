@@ -71,14 +71,12 @@ public class Base64OptionGroupsTest {
 
 	public static final OptionGroup HELP_OPTION_GROUP = new OptionGroup.Builder(
 			new GnuLongOption.Builder("help")
-				.doc("display this help and exit")
-				.special(true))
+				.doc("display this help and exit"))
 			.build();
 
 	public static final OptionGroup VERSION_OPTION_GROUP = new OptionGroup.Builder(
 			new GnuLongOption.Builder("version")
-				.doc("display version information and exit")
-				.special(true))
+				.doc("display version information and exit"))
 			.optionGroupHelpTextProvider(new OptionGroupHelpTextProvider() {
 
 				@Override
