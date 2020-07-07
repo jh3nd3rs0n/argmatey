@@ -2,9 +2,21 @@
 
 [![Total alerts](https://img.shields.io/lgtm/alerts/g/jh3nd3rs0n/argmatey.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/jh3nd3rs0n/argmatey/alerts/) [![Language grade: Java](https://img.shields.io/lgtm/grade/java/g/jh3nd3rs0n/argmatey.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/jh3nd3rs0n/argmatey/context:java) [![Codacy Badge](https://app.codacy.com/project/badge/Grade/715ef579e39647b4ab3d4c9dc9c12a7b)](https://www.codacy.com/manual/jh3nd3rs0n/argmatey?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=jh3nd3rs0n/argmatey&amp;utm_campaign=Badge_Grade)
 
-ArgMatey is a Java command line argument parsing library that has the following features:
+ArgMatey is a Java annotation-based iterator-style command line argument parser with a completely customizable auto-generated program usage and help.
 
-**Class with annotated methods to define and receive results from parsing.** The following is an example:
+## Contents
+
+-   [Features](#features)
+-   [Examples](#examples)
+-   [Requirements](#requirements)
+-   [Installing](#installing)
+-   [Building](#building)
+-   [TODO](#todo)
+-   [Contact](#contact)
+
+## Features
+
+**Extended class with annotated methods to define and receive results from parsing.** The following is an example:
 
 ```java
     
@@ -238,13 +250,14 @@ ArgMatey is a Java command line argument parsing library that has the following 
 
 -   POSIX options (examples: `-h` `-v` `-o file.txt`)
      
-**Command line argument parsing results on a per command line argument basis (similar to getopt, getopt_long, and Argp).** This style of command line argument parsing has the following advantages:
+**Iterator-style command line argument parsing.** This style of command line argument parsing has the following advantages:
 
 -   Interpretation of multiple occurrences of the same option
 -   Interpretation of multiple occurrences of options from the same group
 -   Interpretation of options and arguments based on the ordering provided
+-   Adaptability of the program based on the option or argument encountered
 
-**Complete customization of the usage and help text for the options.** The following is an example based off of the earlier example:
+**Complete customization of the auto-generated program usage and help.** Every level of the program usage and help can be customized. A provided customized `OptionUsageProvider` can be used to provide the usage of one, a few, or all options of a particular type in a different format. A provided customized `OptionGroupHelpTextProvider` can be used to provide the help text of one, a few, or all option groups in a different format. Methods `CLI.displayProgramUsage()` and `CLI.displayProgramHelp()` can be overridden to display the entire program usage and help in a completely different format. The following is the earlier example using a customized `OptionGroupHelpTextProvider`:
 
 ```java
     
@@ -343,18 +356,12 @@ ArgMatey is a Java command line argument parsing library that has the following 
 
 **Single source code file.** As an alternative to importing ArgMatey as a Maven dependency or a jar file, ArgMatey can be imported to a project as a source code file.
 
+## Examples
+
 The following are some examples of projects using ArgMatey:
 
 -   [Jargyle](https://github.com/jh3nd3rs0n/jargyle) (specific examples: [SocksServerCLI.java](https://github.com/jh3nd3rs0n/jargyle/blob/master/src/main/java/jargyle/server/SocksServerCLI.java), [UsersCLI.java](https://github.com/jh3nd3rs0n/jargyle/blob/master/src/main/java/jargyle/server/socks5/UsersCLI.java))
 -   [JBase64Transformer](https://github.com/jh3nd3rs0n/jbase64transformer) (specific example: [Base64Transformer.java](https://github.com/jh3nd3rs0n/jbase64transformer/blob/master/src/main/java/jbase64transformer/Base64Transformer.java))
-
-## Contents
-
--   [Requirements](#requirements)
--   [Installing](#installing)
--   [Building](#building)
--   [TODO](#todo)
--   [Contact](#contact)
 
 ## Requirements
 
