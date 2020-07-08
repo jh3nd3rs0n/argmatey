@@ -29,9 +29,7 @@ public class Base64OptionGroupsTest {
 	
 	public static final OptionGroup DECODE_OPTION_GROUP = new OptionGroup.Builder(
 			new PosixOption.Builder('d')
-				.doc("decode data"), 
-			new LongOption.Builder("decode"),
-			new GnuLongOption.Builder("decode"))
+				.doc("decode data"))
 			.optionGroupHelpTextProvider(new OptionGroupHelpTextProvider() {
 				
 				@Override
@@ -47,13 +45,17 @@ public class Base64OptionGroupsTest {
 				}
 				
 			})
+			.otherOptionBuilders(
+					new LongOption.Builder("decode"),
+					new GnuLongOption.Builder("decode"))
 			.build();
 	
 	public static final OptionGroup IGNORE_GARBAGE_OPTION_GROUP = new OptionGroup.Builder(
 			new PosixOption.Builder('i')
-				.doc("when decoding, ignore non-alphabet characters"),
-			new LongOption.Builder("ignore-garbage"),
-			new GnuLongOption.Builder("ignore-garbage"))
+				.doc("when decoding, ignore non-alphabet characters"))
+			.otherOptionBuilders(
+					new LongOption.Builder("ignore-garbage"),
+					new GnuLongOption.Builder("ignore-garbage"))
 			.build();
 
 	public static final OptionGroup WRAP_OPTION_GROUP = new OptionGroup.Builder(
@@ -64,9 +66,10 @@ public class Base64OptionGroupsTest {
 				.optionArgSpec(new OptionArgSpec.Builder()
 						.name("COLS")
 						.type(Integer.class)
-						.build()), 
-			new LongOption.Builder("wrap"),
-			new GnuLongOption.Builder("wrap"))
+						.build()))
+			.otherOptionBuilders(
+					new LongOption.Builder("wrap"),
+					new GnuLongOption.Builder("wrap"))
 			.build();
 
 	public static final OptionGroup HELP_OPTION_GROUP = new OptionGroup.Builder(
