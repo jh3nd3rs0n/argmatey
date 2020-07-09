@@ -37,6 +37,17 @@ ArgMatey is a Java annotation-based iterator-style command line arguments parser
             this.decodingMode = false;
             this.file = null;            
             this.garbageIgnored = false;
+            // for the program help and version information
+            this.programArgsUsage = " [FILE]";
+            this.programDoc = new StringBuilder()
+                .append("Base64 encode or decode FILE, ")
+                .append("or standard input, to standard output.")
+                .append(String.format("%n%n"))
+                .append("With no FILE, or when FILE is -, ")
+                .append("read standard input.")
+                .toString();
+            this.programName = "base64";
+            this.programVersion = "base64 1.0";
         }
         
         // getter methods
@@ -184,15 +195,6 @@ ArgMatey is a Java annotation-based iterator-style command line arguments parser
     
     public static void main(String[] args) {
         Base64CLI base64CLI = new Base64CLI(args);
-        // for the program help and version information
-        base64CLI.setProgramName("base64");
-        base64CLI.setProgramVersion("base64 1.0");
-        base64CLI.setProgramArgsUsage(" [FILE]");
-        StringBuilder sb = new StringBuilder();
-        sb.append("Base64 encode or decode FILE, or standard input, to standard output.");
-        sb.append(String.format("%n%n"));
-        sb.append("With no FILE, or when FILE is -, read standard input.");
-        base64CLI.setProgramDoc(sb.toString());
         // parse (and handle) the command line arguments
         while (base64CLI.hasNext()) {
             base64CLI.handleNext();

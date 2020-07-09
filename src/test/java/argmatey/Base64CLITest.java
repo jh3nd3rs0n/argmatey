@@ -35,6 +35,16 @@ public class Base64CLITest {
             this.decodingMode = false;
             this.file = null;            
             this.garbageIgnored = false;
+            this.programArgsUsage = " [FILE]";
+            this.programDoc = new StringBuilder()
+            		.append("Base64 encode or decode FILE, ")
+            		.append("or standard input, to standard output.")
+            		.append(String.format("%n%n"))
+            		.append("With no FILE, or when FILE is -, ")
+            		.append("read standard input.")
+            		.toString();
+            this.programName = "base64";
+            this.programVersion = "base64 1.0";
         }
         
         public int getColumnLimit() {
@@ -219,14 +229,6 @@ public class Base64CLITest {
 	
 	private static void main(String[] args) {
         Base64CLI base64CLI = new Base64CLI(args);
-        base64CLI.setProgramName("base64");
-        base64CLI.setProgramVersion("base64 1.0");
-        base64CLI.setProgramArgsUsage(" [FILE]");
-        StringBuilder sb = new StringBuilder();
-        sb.append("Base64 encode or decode FILE, or standard input, to standard output.");
-        sb.append(String.format("%n%n"));
-        sb.append("With no FILE, or when FILE is -, read standard input.");
-        base64CLI.setProgramDoc(sb.toString());
         while (base64CLI.hasNext()) {
             base64CLI.handleNext();
             if (base64CLI.isProgramHelpDisplayed()
