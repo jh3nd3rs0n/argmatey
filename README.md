@@ -38,7 +38,7 @@ ArgMatey is a Java annotation-based iterator-style command line arguments parser
             this.file = null;            
             this.garbageIgnored = false;
             // for the program help and version information
-            this.programArgsUsage = " [FILE]";
+            this.programArgsUsage = "[FILE]";
             this.programDoc = new StringBuilder()
                 .append("Base64 encode or decode FILE, ")
                 .append("or standard input, to standard output.")

@@ -35,7 +35,7 @@ public class Base64CLITest {
             this.decodingMode = false;
             this.file = null;            
             this.garbageIgnored = false;
-            this.programArgsUsage = " [FILE]";
+            this.programArgsUsage = "[FILE]";
             this.programDoc = new StringBuilder()
             		.append("Base64 encode or decode FILE, ")
             		.append("or standard input, to standard output.")
