@@ -271,28 +271,33 @@ ArgMatey is a Java annotation-based iterator-style command line arguments parser
         extends OptionGroupHelpTextProvider {
     
         public String getOptionGroupHelpText(OptionGroupHelpTextParams params) {
-            Iterator<ArgMatey.Option> iterator = 
-                params.getDisplayableOptions().iterator();
-            StringBuilder sb = new StringBuilder();
+            String optionGroupHelpText = null;
+            StringBuilder sb = null;
             String doc = null;
-            sb.append("  ");
-            while (iterator.hasNext()) {
-                ArgMatey.Option option = iterator.next();
-                sb.append(option.getUsage());
-                if (iterator.hasNext()) {
+            for (ArgMatey.Option option : params.getDisplayableOptions()) {
+                if (sb == null) {
+                    sb = new StringBuilder();
+                    sb.append("  ");
+                } else {
                     sb.append(", ");
                 }
+                sb.append(option.getUsage());
                 if (doc == null) {
                     doc = option.getDoc();
                 }
             }
-            final int docStart = 24;
-            int length = sb.length();
-            for (int i = 0; i < docStart - length; i++) {
-                sb.append(' ');
+            if (sb != null) {
+                if (doc != null) {
+                    final int docStart = 24;
+                    int length = sb.length();
+                    for (int i = 0; i < docStart - length; i++) {
+                        sb.append(' ');
+                    }
+                    sb.append(doc);
+                }
+                optionGroupHelpText = sb.toString();
             }
-            sb.append(doc);
-            return sb.toString();
+            return optionGroupHelpText;
         }
         
     }
