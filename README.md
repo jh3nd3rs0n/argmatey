@@ -78,7 +78,7 @@ ArgMatey is a Java annotation-based iterator-style command line arguments parser
          * and "--wrap" is provided as an argument to the method 
          * parameter below.
          *
-         * Methods that are annotated with @OptionGroup that have an 
+         * Methods that are annotated with @Option that have an 
          * @OptionArgSpec must have only one method parameter. The 
          * method parameter's type must be a type or a java.util.List 
          * of a type that has either a static String conversion method 
@@ -118,7 +118,7 @@ ArgMatey is a Java annotation-based iterator-style command line arguments parser
          * Invoked when either of the options "-d" and "--decode" is 
          * encountered.
          *
-         * Methods that are annotated with @OptionGroup without an 
+         * Methods that are annotated with @Option without an 
          * @OptionArgSpec can have no method parameters or only one 
          * method parameter of type boolean.
          */        
@@ -162,7 +162,7 @@ ArgMatey is a Java annotation-based iterator-style command line arguments parser
          * Invoked when either of the options "-i" and "--ignore-garbage" 
          * is encountered.
          *
-         * Methods that are annotated with @OptionGroup without an 
+         * Methods that are annotated with @Option without an 
          * @OptionArgSpec can have no method parameters or only one 
          * method parameter of type boolean.
          */
@@ -255,7 +255,7 @@ ArgMatey is a Java annotation-based iterator-style command line arguments parser
      * Provides the help text for an option group on a single line 
      * instead of multiple lines.
      */
-    public static class CustomOptionGroupHelpTextProvider 
+    public static class SingleLineOptionGroupHelpTextProvider 
         extends ArgMatey.OptionGroupHelpTextProvider {
     
         public String getOptionGroupHelpText(OptionGroupHelpTextParams params) {
@@ -308,7 +308,7 @@ ArgMatey is a Java annotation-based iterator-style command line arguments parser
          * You can apply the OptionGroupHelpTextProvider to a 
          * particular option group...
          */ 
-        @OptionGroupHelpTextProvider(CustomOptionGroupHelpTextProvider.class)
+        @OptionGroupHelpTextProvider(SingleLineOptionGroupHelpTextProvider.class)
         public void setColumnLimit(Integer i) {
             // ... 
         }
@@ -319,7 +319,7 @@ ArgMatey is a Java annotation-based iterator-style command line arguments parser
     
     public static void main(String[] args) {
         // ...or you can apply the OptionGroupHelpTextProvider to all option groups.
-        ArgMatey.OptionGroupHelpTextProvider provider = new CustomOptionGroupHelpTextProvider();
+        ArgMatey.OptionGroupHelpTextProvider provider = new SingleLineOptionGroupHelpTextProvider();
         ArgMatey.OptionGroupHelpTextProvider.setDefault(provider);
         // ...        
     }

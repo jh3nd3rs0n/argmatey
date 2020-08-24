@@ -120,7 +120,7 @@ public class Base64CLITest {
     }
 	
 	
-    public static class CustomOptionGroupHelpTextProvider 
+    public static class SingleLineOptionGroupHelpTextProvider 
 	    extends OptionGroupHelpTextProvider {
 	
 	    public String getOptionGroupHelpText(OptionGroupHelpTextParams params) {
@@ -232,7 +232,7 @@ public class Base64CLITest {
 	@Test
 	public void testCustomProgramHelp() throws IOException {
 		OptionGroupHelpTextProvider provider1 = OptionGroupHelpTextProvider.getDefault(); 
-		OptionGroupHelpTextProvider provider2 = new CustomOptionGroupHelpTextProvider();
+		OptionGroupHelpTextProvider provider2 = new SingleLineOptionGroupHelpTextProvider();
         OptionGroupHelpTextProvider.setDefault(provider2);
         try {
         	String expectedString = CUSTOM_PROGRAM_HELP;
