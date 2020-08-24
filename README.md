@@ -4,6 +4,8 @@
 
 ArgMatey is a Java annotation-based iterator-style command line arguments parser with completely customizable provided program usage and help.
 
+**Disclaimer:** ArgMatey is a hobby project and is currently subject to breaking changes. ArgMatey is currently not production ready but it aims to be.
+
 ## Contents
 
 -   [Features](#features)
@@ -88,22 +90,16 @@ ArgMatey is a Java annotation-based iterator-style command line arguments parser
          * option argument to that type. It can be supplied to 
          * @OptionArgSpec.stringConverter.
          */
-        @OptionGroup(
-            option = @Option(
-                doc = "Wrap encoded lines after COLS character (default is 76)",
-                name = "w",
-                optionArgSpec = @OptionArgSpec(
-                    name = "COLS"
-                ),
-                type = PosixOption.class
-            ),
-            otherOptions = {
-                @Option(
-                    name = "wrap",
-                    // optionArgSpec is provided from the above @Option.                    
-                    type = GnuLongOption.class
-                )
-            } 
+        @Option(
+            doc = "Wrap encoded lines after COLS character (default is 76)",
+            name = "w",
+            optionArgSpec = @OptionArgSpec(name = "COLS"),
+            type = PosixOption.class
+        )
+        @Option(
+            name = "wrap",
+            // optionArgSpec is provided from the above @Option.                    
+            type = GnuLongOption.class
         )
         public void setColumnLimit(Integer i) { 
             int intValue = i.intValue();
@@ -126,18 +122,14 @@ ArgMatey is a Java annotation-based iterator-style command line arguments parser
          * @OptionArgSpec can have no method parameters or only one 
          * method parameter of type boolean.
          */        
-        @OptionGroup(
-            option = @Option(
-                doc = "Decode data",
-                name = "d",
-                type = PosixOption.class
-            ),
-            otherOptions = {
-                @Option(
-                    name = "decode", 
-                    type = GnuLongOption.class
-                )
-            }
+        @Option(
+            doc = "Decode data",
+            name = "d",
+            type = PosixOption.class
+        )
+        @Option(
+            name = "decode", 
+            type = GnuLongOption.class
         )
         public void setDecodingMode(boolean b) {
             this.decodingMode = b; // always received as true
@@ -174,18 +166,14 @@ ArgMatey is a Java annotation-based iterator-style command line arguments parser
          * @OptionArgSpec can have no method parameters or only one 
          * method parameter of type boolean.
          */
-        @OptionGroup(
-            option = @Option(
-                doc = "When decoding, ignore non-alphabet characters",
-                name = "i",
-                type = PosixOption.class
-            ),
-            otherOptions = {
-                @Option(
-                    name = "ignore-garbage", 
-                    type = GnuLongOption.class
-                )
-            } 
+        @Option(
+            doc = "When decoding, ignore non-alphabet characters",
+            name = "i",
+            type = PosixOption.class
+        )
+        @Option(
+            name = "ignore-garbage", 
+            type = GnuLongOption.class
         )
         public void setGarbageIgnored(boolean b) {
             this.garbageIgnored = b; // always received as true
@@ -268,7 +256,7 @@ ArgMatey is a Java annotation-based iterator-style command line arguments parser
      * instead of multiple lines.
      */
     public static class CustomOptionGroupHelpTextProvider 
-        extends OptionGroupHelpTextProvider {
+        extends ArgMatey.OptionGroupHelpTextProvider {
     
         public String getOptionGroupHelpText(OptionGroupHelpTextParams params) {
             String optionGroupHelpText = null;
@@ -306,27 +294,21 @@ ArgMatey is a Java annotation-based iterator-style command line arguments parser
     
         // ...
         
-        @OptionGroup(
-            option = @Option(
-                doc = "Wrap encoded lines after COLS character (default is 76)",
-                name = "w",
-                optionArgSpec = @OptionArgSpec(
-                    name = "COLS"
-                ),
-                type = PosixOption.class
-            ),
-            /*
-             * You can apply the OptionGroupHelpTextProvider to a 
-             * particular option group...
-             */ 
-            optionGroupHelpTextProvider = CustomOptionGroupHelpTextProvider.class,
-            otherOptions = {
-                @Option(
-                    name = "wrap", 
-                    type = GnuLongOption.class
-                )
-            } 
+        @Option(
+            doc = "Wrap encoded lines after COLS character (default is 76)",
+            name = "w",
+            optionArgSpec = @OptionArgSpec(name = "COLS"),
+            type = PosixOption.class
         )
+        @Option(
+            name = "wrap",
+            type = GnuLongOption.class
+        )
+        /*
+         * You can apply the OptionGroupHelpTextProvider to a 
+         * particular option group...
+         */ 
+        @OptionGroupHelpTextProvider(CustomOptionGroupHelpTextProvider.class)
         public void setColumnLimit(Integer i) {
             // ... 
         }
@@ -337,8 +319,8 @@ ArgMatey is a Java annotation-based iterator-style command line arguments parser
     
     public static void main(String[] args) {
         // ...or you can apply the OptionGroupHelpTextProvider to all option groups.
-        OptionGroupHelpTextProvider provider = new CustomOptionGroupHelpTextProvider();
-        OptionGroupHelpTextProvider.setDefault(provider);
+        ArgMatey.OptionGroupHelpTextProvider provider = new CustomOptionGroupHelpTextProvider();
+        ArgMatey.OptionGroupHelpTextProvider.setDefault(provider);
         // ...        
     }
     

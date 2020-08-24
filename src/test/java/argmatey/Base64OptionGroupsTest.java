@@ -27,9 +27,12 @@ import argmatey.ArgMatey.PosixOption;
 
 public class Base64OptionGroupsTest {
 	
-	public static final OptionGroup DECODE_OPTION_GROUP = new OptionGroup.Builder(
-			new PosixOption.Builder('d')
-				.doc("decode data"))
+	public static final OptionGroup DECODE_OPTION_GROUP = new OptionGroup.Builder()
+			.optionBuilders(
+					new PosixOption.Builder('d')
+						.doc("decode data"),
+					new LongOption.Builder("decode"),
+					new GnuLongOption.Builder("decode"))
 			.optionGroupHelpTextProvider(new OptionGroupHelpTextProvider() {
 				
 				@Override
@@ -45,41 +48,40 @@ public class Base64OptionGroupsTest {
 				}
 				
 			})
-			.otherOptionBuilders(
-					new LongOption.Builder("decode"),
-					new GnuLongOption.Builder("decode"))
 			.build();
 	
-	public static final OptionGroup IGNORE_GARBAGE_OPTION_GROUP = new OptionGroup.Builder(
-			new PosixOption.Builder('i')
-				.doc("when decoding, ignore non-alphabet characters"))
-			.otherOptionBuilders(
+	public static final OptionGroup IGNORE_GARBAGE_OPTION_GROUP = new OptionGroup.Builder()
+			.optionBuilders(
+					new PosixOption.Builder('i')
+						.doc("when decoding, ignore non-alphabet characters"),
 					new LongOption.Builder("ignore-garbage"),
 					new GnuLongOption.Builder("ignore-garbage"))
 			.build();
 
-	public static final OptionGroup WRAP_OPTION_GROUP = new OptionGroup.Builder(
-			new PosixOption.Builder('w')
-				.doc(String.format(
-						"wrap encoded lines after COLS character (default 76)."
-						+ "%n      Use 0 to disable line wrapping"))
-				.optionArgSpec(new OptionArgSpec.Builder()
-						.name("COLS")
-						.type(Integer.class)
-						.build()))
-			.otherOptionBuilders(
+	public static final OptionGroup WRAP_OPTION_GROUP = new OptionGroup.Builder()
+			.optionBuilders(
+					new PosixOption.Builder('w')
+						.doc(String.format(
+							"wrap encoded lines after COLS character (default 76)."
+							+ "%n      Use 0 to disable line wrapping"))
+						.optionArgSpec(new OptionArgSpec.Builder()
+							.name("COLS")
+							.type(Integer.class)
+							.build()),
 					new LongOption.Builder("wrap"),
 					new GnuLongOption.Builder("wrap"))
 			.build();
 
-	public static final OptionGroup HELP_OPTION_GROUP = new OptionGroup.Builder(
-			new GnuLongOption.Builder("help")
-				.doc("display this help and exit"))
+	public static final OptionGroup HELP_OPTION_GROUP = new OptionGroup.Builder()
+			.optionBuilders(
+					new GnuLongOption.Builder("help")
+						.doc("display this help and exit"))
 			.build();
 
-	public static final OptionGroup VERSION_OPTION_GROUP = new OptionGroup.Builder(
-			new GnuLongOption.Builder("version")
-				.doc("display version information and exit"))
+	public static final OptionGroup VERSION_OPTION_GROUP = new OptionGroup.Builder()
+			.optionBuilders(
+					new GnuLongOption.Builder("version")
+						.doc("display version information and exit"))
 			.optionGroupHelpTextProvider(new OptionGroupHelpTextProvider() {
 
 				@Override

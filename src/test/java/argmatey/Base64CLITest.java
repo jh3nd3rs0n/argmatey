@@ -12,7 +12,6 @@ import org.junit.Test;
 import argmatey.ArgMatey.Annotations.NonparsedArg;
 import argmatey.ArgMatey.Annotations.Option;
 import argmatey.ArgMatey.Annotations.OptionArgSpec;
-import argmatey.ArgMatey.Annotations.OptionGroup;
 import argmatey.ArgMatey.CLI;
 import argmatey.ArgMatey.GnuLongOption;
 import argmatey.ArgMatey.OptionGroupHelpTextParams;
@@ -62,21 +61,17 @@ public class Base64CLITest {
             return this.garbageIgnored;
         }
         
-        @OptionGroup(
-            option = @Option(
+        @Option(
                 doc = "Wrap encoded lines after COLS character (default is 76)",
                 name = "w",
                 optionArgSpec = @OptionArgSpec(
                     name = "COLS"
                 ),
                 type = PosixOption.class
-            ),
-            otherOptions = {
-                @Option(
-                    name = "wrap", 
-                    type = GnuLongOption.class
-                )
-            } 
+        )
+        @Option(
+                name = "wrap", 
+                type = GnuLongOption.class
         )
         public void setColumnLimit(Integer i) {
             int intValue = i.intValue();
@@ -87,18 +82,14 @@ public class Base64CLITest {
             this.columnLimit = intValue;        	
         }
         
-        @OptionGroup(
-            option = @Option(
+        @Option(
                 doc = "Decode data",
                 name = "d",
                 type = PosixOption.class
-            ),
-            otherOptions = {
-                @Option(
-                    name = "decode", 
-                    type = GnuLongOption.class
-                )
-            }
+        )
+        @Option(
+                name = "decode", 
+                type = GnuLongOption.class
         )
         public void setDecodingMode(boolean b) {
         	this.decodingMode = b;
@@ -113,18 +104,14 @@ public class Base64CLITest {
             this.file = s;        	
         }
         
-        @OptionGroup(
-            option = @Option(
+        @Option(
                 doc = "When decoding, ignore non-alphabet characters",
                 name = "i",
                 type = PosixOption.class
-            ),
-            otherOptions = {
-                @Option(
-                    name = "ignore-garbage", 
-                    type = GnuLongOption.class
-                )
-            } 
+        )
+        @Option(
+                name = "ignore-garbage", 
+                type = GnuLongOption.class
         )
         public void setGarbageIgnored(boolean b) {
         	this.garbageIgnored = b;
