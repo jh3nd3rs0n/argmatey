@@ -79,23 +79,10 @@ public class Base64OptionGroupsTest {
 			.build();
 
 	public static final OptionGroup VERSION_OPTION_GROUP = new OptionGroup.Builder()
+			.helpText("  ${option0.usage}${line.separator}      ${option0.doc}${line.separator}")
 			.optionBuilders(
 					new GnuLongOption.Builder("version")
 						.doc("display version information and exit"))
-			.optionGroupHelpTextProvider(new OptionGroupHelpTextProvider() {
-
-				@Override
-				public String getOptionGroupHelpText(
-						final OptionGroupHelpTextParams params) {
-					StringBuilder sb = new StringBuilder();
-					OptionGroupHelpTextProvider provider =
-							new DefaultOptionGroupHelpTextProvider();
-					sb.append(provider.getOptionGroupHelpText(params));
-					sb.append(System.getProperty("line.separator"));
-					return sb.toString();
-				}
-					
-			})
 			.build();
 
 	private final String[] args = { 

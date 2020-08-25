@@ -258,6 +258,7 @@ ArgMatey is a Java annotation-based iterator-style command line arguments parser
     public static class SingleLineOptionGroupHelpTextProvider 
         extends ArgMatey.OptionGroupHelpTextProvider {
     
+        @Override
         public String getOptionGroupHelpText(OptionGroupHelpTextParams params) {
             String optionGroupHelpText = null;
             StringBuilder sb = null;

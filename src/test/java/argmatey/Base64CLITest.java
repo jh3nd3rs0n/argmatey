@@ -118,11 +118,11 @@ public class Base64CLITest {
         }
         
     }
-	
-	
+		
     public static class SingleLineOptionGroupHelpTextProvider 
 	    extends OptionGroupHelpTextProvider {
 	
+    	@Override
 	    public String getOptionGroupHelpText(OptionGroupHelpTextParams params) {
 	    	String optionGroupHelpText = null;
 	        StringBuilder sb = null;
