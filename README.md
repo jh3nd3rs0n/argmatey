@@ -94,12 +94,12 @@ ArgMatey is a Java annotation-based iterator-style command line arguments parser
             doc = "Wrap encoded lines after COLS character (default is 76)",
             name = "w",
             optionArgSpec = @OptionArgSpec(name = "COLS"),
-            type = PosixOption.class
+            type = OptionType.POSIX
         )
         @Option(
             name = "wrap",
             // optionArgSpec is provided from the above @Option.                    
-            type = GnuLongOption.class
+            type = OptionType.GNU_LONG
         )
         public void setColumnLimit(Integer i) { 
             int intValue = i.intValue();
@@ -125,11 +125,11 @@ ArgMatey is a Java annotation-based iterator-style command line arguments parser
         @Option(
             doc = "Decode data",
             name = "d",
-            type = PosixOption.class
+            type = OptionType.POSIX
         )
         @Option(
             name = "decode", 
-            type = GnuLongOption.class
+            type = OptionType.GNU_LONG
         )
         public void setDecodingMode(boolean b) {
             this.decodingMode = b; // always received as true
@@ -169,11 +169,11 @@ ArgMatey is a Java annotation-based iterator-style command line arguments parser
         @Option(
             doc = "When decoding, ignore non-alphabet characters",
             name = "i",
-            type = PosixOption.class
+            type = OptionType.POSIX
         )
         @Option(
             name = "ignore-garbage", 
-            type = GnuLongOption.class
+            type = OptionType.GNU_LONG
         )
         public void setGarbageIgnored(boolean b) {
             this.garbageIgnored = b; // always received as true
@@ -299,11 +299,11 @@ ArgMatey is a Java annotation-based iterator-style command line arguments parser
             doc = "Wrap encoded lines after COLS character (default is 76)",
             name = "w",
             optionArgSpec = @OptionArgSpec(name = "COLS"),
-            type = PosixOption.class
+            type = OptionType.POSIX
         )
         @Option(
             name = "wrap",
-            type = GnuLongOption.class
+            type = OptionType.GNU_LONG
         )
         /*
          * You can apply the OptionGroupHelpTextProvider to a 

@@ -92,7 +92,7 @@ public final class ArgMatey {
 			Class<? extends ArgMatey.OptionUsageProvider> optionUsageProvider()
 				default ArgMatey.OptionUsageProvider.class;
 					
-			Class<? extends ArgMatey.Option> type();
+			ArgMatey.OptionType type();
 			
 			String usage() default "";
 			
@@ -957,7 +957,7 @@ public final class ArgMatey {
 		@Annotations.Option(
 				doc = "Display this help and exit",
 				name = "help",
-				type = GnuLongOption.class
+				type = OptionType.GNU_LONG
 		)
 		public void displayProgramHelp() {
 			this.displayProgramUsage();
@@ -1003,7 +1003,7 @@ public final class ArgMatey {
 		@Annotations.Option(
 				doc = "Display version information and exit",
 				name = "version",
-				type = GnuLongOption.class
+				type = OptionType.GNU_LONG
 		)
 		public void displayProgramVersion() {
 			String progVersion = this.programVersion;
@@ -3275,34 +3275,9 @@ public final class ArgMatey {
 		
 		private Option.Builder newOptionBuilder(
 				final Annotations.Option option, final boolean first) {
-			Option.Builder builder = null;
-			Class<?> type = option.type();
+			OptionType type = option.type();
 			String name = option.name();
-			if (type.equals(GnuLongOption.class)) {
-				builder = new GnuLongOption.Builder(name);
-			} else if (type.equals(LongOption.class)) {
-				builder = new LongOption.Builder(name);
-			} else if (type.equals(PosixOption.class)) {
-				if (name.length() != 1) {
-					throw new IllegalArgumentException(String.format(
-							"expected option name for %s to be only one "
-							+ "alphanumeric character. actual option name is "
-							+ "'%s'", 
-							Annotations.Option.class.getName(),
-							name));
-				}
-				builder = new PosixOption.Builder(name.charAt(0));
-			} else if (type.equals(Option.class)) {
-				throw new IllegalArgumentException(String.format(
-						"expected class must extend %s. actual class is %s", 
-						Option.class.getName(),
-						type.getName())); 
-			} else {
-				throw new AssertionError(String.format(
-						"unhandled %s: %s", 
-						Option.class.getName(), 
-						type.getName()));
-			}
+			Option.Builder builder = type.newOptionBuilder(name);
 			OptionalBoolean displayable = option.displayable();
 			if (!displayable.equals(OptionalBoolean.UNSPECIFIED)) {
 				builder.displayable(displayable.booleanValue().booleanValue());
@@ -3632,6 +3607,39 @@ public final class ArgMatey {
 				.append("]");
 			return sb.toString();
 		}
+		
+	}
+	
+	public static enum OptionType {
+		
+		GNU_LONG {
+			@Override
+			public Option.Builder newOptionBuilder(final String name) {
+				return new GnuLongOption.Builder(name);
+			}
+		},
+		
+		LONG {
+			@Override
+			public Option.Builder newOptionBuilder(final String name) {
+				return new LongOption.Builder(name);
+			}
+		},
+		
+		POSIX {
+			@Override
+			public Option.Builder newOptionBuilder(final String name) {
+				if (name.length() != 1) {
+					throw new IllegalArgumentException(String.format(
+							"expected option name to be only one alphanumeric "
+							+ "character. actual option name is '%s'", 
+							name));
+				}
+				return new PosixOption.Builder(name.charAt(0));
+			}
+		};
+		
+		public abstract Option.Builder newOptionBuilder(final String name);
 		
 	}
 	

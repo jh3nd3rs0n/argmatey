@@ -13,10 +13,9 @@ import argmatey.ArgMatey.Annotations.NonparsedArg;
 import argmatey.ArgMatey.Annotations.Option;
 import argmatey.ArgMatey.Annotations.OptionArgSpec;
 import argmatey.ArgMatey.CLI;
-import argmatey.ArgMatey.GnuLongOption;
 import argmatey.ArgMatey.OptionGroupHelpTextParams;
 import argmatey.ArgMatey.OptionGroupHelpTextProvider;
-import argmatey.ArgMatey.PosixOption;
+import argmatey.ArgMatey.OptionType;
 
 public class Base64CLITest {
     
@@ -67,11 +66,11 @@ public class Base64CLITest {
                 optionArgSpec = @OptionArgSpec(
                     name = "COLS"
                 ),
-                type = PosixOption.class
+                type = OptionType.POSIX
         )
         @Option(
                 name = "wrap", 
-                type = GnuLongOption.class
+                type = OptionType.GNU_LONG
         )
         public void setColumnLimit(Integer i) {
             int intValue = i.intValue();
@@ -85,11 +84,11 @@ public class Base64CLITest {
         @Option(
                 doc = "Decode data",
                 name = "d",
-                type = PosixOption.class
+                type = OptionType.POSIX
         )
         @Option(
                 name = "decode", 
-                type = GnuLongOption.class
+                type = OptionType.GNU_LONG
         )
         public void setDecodingMode(boolean b) {
         	this.decodingMode = b;
@@ -107,11 +106,11 @@ public class Base64CLITest {
         @Option(
                 doc = "When decoding, ignore non-alphabet characters",
                 name = "i",
-                type = PosixOption.class
+                type = OptionType.POSIX
         )
         @Option(
                 name = "ignore-garbage", 
-                type = GnuLongOption.class
+                type = OptionType.GNU_LONG
         )
         public void setGarbageIgnored(boolean b) {
         	this.garbageIgnored = b;
