@@ -103,7 +103,7 @@ public final class ArgMatey {
 			
 			OptionalBoolean allowed() default OptionalBoolean.TRUE;
 			
-			String name() default ArgMatey.OptionArgSpec.DEFAULT_NAME;
+			String name() default "";
 			
 			OptionalBoolean required() default OptionalBoolean.UNSPECIFIED;
 			
@@ -2622,7 +2622,6 @@ public final class ArgMatey {
 			
 		}
 		
-		public static final String DEFAULT_NAME = "option_argument";
 		public static final String DEFAULT_SEPARATOR = "[^\\w\\W]";
 		public static final Class<?> DEFAULT_TYPE = String.class;
 			
@@ -2638,9 +2637,9 @@ public final class ArgMatey {
 			String s = builder.separator();
 			StringConverter sc = builder.stringConverter();
 			Class<?> t = builder.type();
-			if (n == null) { n = DEFAULT_NAME; }
 			if (s == null) { s = DEFAULT_SEPARATOR;	}
 			if (t == null) { t = DEFAULT_TYPE; }
+			if (n == null) { n = t.getName(); }
 			if (sc == null) { sc = new DefaultStringConverter(t); }
 			this.name = n;
 			this.required = r;
@@ -3244,28 +3243,38 @@ public final class ArgMatey {
 					obj, this.method, optionOccurrence);
 		}
 		
-		private OptionArgSpec.Builder newOptionArgSpecBuilder(
+		private OptionArgSpec newOptionArgSpec(
 				final Annotations.OptionArgSpec optionArgSpec) {
 			OptionArgSpec.Builder builder = new OptionArgSpec.Builder();
-			builder.name(optionArgSpec.name());
+			String name = optionArgSpec.name();
+			if (!name.isEmpty()) {
+				builder.name(optionArgSpec.name());
+			}
 			OptionalBoolean required = optionArgSpec.required();
 			if (!required.equals(OptionalBoolean.UNSPECIFIED)) {
 				builder.required(required.booleanValue().booleanValue());
 			}
-			builder.separator(optionArgSpec.separator());
+			String separator = optionArgSpec.separator();
+			if (!separator.equals(OptionArgSpec.DEFAULT_SEPARATOR)) {
+				builder.separator(optionArgSpec.separator());
+			}
 			Class<?> stringConverterClass =	optionArgSpec.stringConverter();
 			if (!stringConverterClass.equals(StringConverter.class)) {
 				StringConverter stringConverter = this.newStringConverter(
 						stringConverterClass);
 				builder.stringConverter(stringConverter);
 			}
-			builder.type(this.targetMethodParameterTypesType.getTargetClass(
-					this.method));
-			return builder;
+			Class<?> targetClass = 
+					this.targetMethodParameterTypesType.getTargetClass(
+							this.method);
+			if (targetClass != null) {
+				builder.type(targetClass);
+			}
+			return builder.build();
 		}
 		
 		private Option.Builder newOptionBuilder(
-				final Annotations.Option option) {
+				final Annotations.Option option, final boolean first) {
 			Option.Builder builder = null;
 			Class<?> type = option.type();
 			String name = option.name();
@@ -3304,13 +3313,20 @@ public final class ArgMatey {
 			}
 			Annotations.OptionArgSpec optionArgSpec = option.optionArgSpec();
 			OptionalBoolean optionArgAllowed = optionArgSpec.allowed();
-			if (!optionArgAllowed.equals(OptionalBoolean.UNSPECIFIED)) {
-				if (optionArgAllowed.booleanValue().booleanValue()) {
-					builder.optionArgSpec(this.newOptionArgSpecBuilder(
-							optionArgSpec).build());
-				} else {
-					builder.optionArgSpec(null);
+			if (optionArgAllowed.equals(OptionalBoolean.UNSPECIFIED)) {
+				if (first) {
+					Class<?> targetClass = 
+							this.targetMethodParameterTypesType.getTargetClass(
+									this.method);
+					if (targetClass != null) {
+						builder.optionArgSpec(this.newOptionArgSpec(
+								optionArgSpec));
+					}
 				}
+			} else if (optionArgAllowed.booleanValue().booleanValue()) {
+				builder.optionArgSpec(this.newOptionArgSpec(optionArgSpec));
+			} else {
+				builder.optionArgSpec(null);
 			}
 			Class<?> optionUsageProviderClass = option.optionUsageProvider();
 			if (!optionUsageProviderClass.equals(OptionUsageProvider.class)) {
@@ -3330,11 +3346,17 @@ public final class ArgMatey {
 			if (this.helpText != null) {
 				builder.helpText(this.helpText);
 			}
-			List<Option.Builder> optionBuilders = new ArrayList<Option.Builder>();
-			for (Annotations.Option optionAnnotation : this.optionAnnotations) {
-				optionBuilders.add(this.newOptionBuilder(optionAnnotation));
+			if (this.optionAnnotations.length > 0) {
+				boolean first = true;
+				List<Option.Builder> optionBuilders = new ArrayList<Option.Builder>();
+				for (Annotations.Option optionAnnotation : this.optionAnnotations) {
+					Option.Builder optionBuilder = this.newOptionBuilder(
+							optionAnnotation, first);
+					optionBuilders.add(optionBuilder);
+					if (first) { first = false; }
+				}
+				builder.optionBuilders(optionBuilders);
 			}
-			builder.optionBuilders(optionBuilders);
 			if (!this.optionGroupHelpTextProviderClass.equals(
 					OptionGroupHelpTextProvider.class)) {
 				OptionGroupHelpTextProvider optionGroupHelpTextProvider = 

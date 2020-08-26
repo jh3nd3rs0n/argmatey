@@ -78,8 +78,8 @@ ArgMatey is a Java annotation-based iterator-style command line arguments parser
          * and "--wrap" is provided as an argument to the method 
          * parameter below.
          *
-         * Methods that are annotated with @Option that have an 
-         * @OptionArgSpec must have only one method parameter. The 
+         * Methods that are annotated with @Option that allow for an 
+         * option argument must have only one method parameter. The 
          * method parameter's type must be a type or a java.util.List 
          * of a type that has either a static String conversion method 
          * or a constructor that has only one constructor parameter of 
@@ -118,9 +118,9 @@ ArgMatey is a Java annotation-based iterator-style command line arguments parser
          * Invoked when either of the options "-d" and "--decode" is 
          * encountered.
          *
-         * Methods that are annotated with @Option without an 
-         * @OptionArgSpec can have no method parameters or only one 
-         * method parameter of type boolean.
+         * Methods that are annotated with @Option that does not allow 
+         * for an option argument can have no method parameters or only 
+         * one method parameter of type boolean.
          */        
         @Option(
             doc = "Decode data",
@@ -162,9 +162,9 @@ ArgMatey is a Java annotation-based iterator-style command line arguments parser
          * Invoked when either of the options "-i" and "--ignore-garbage" 
          * is encountered.
          *
-         * Methods that are annotated with @Option without an 
-         * @OptionArgSpec can have no method parameters or only one 
-         * method parameter of type boolean.
+         * Methods that are annotated with @Option that does not allow 
+         * for an option argument can have no method parameters or only 
+         * one method parameter of type boolean.
          */
         @Option(
             doc = "When decoding, ignore non-alphabet characters",
