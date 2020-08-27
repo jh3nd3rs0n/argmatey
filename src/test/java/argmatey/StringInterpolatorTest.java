@@ -81,4 +81,14 @@ public class StringInterpolatorTest {
 		assertEquals(expected, sb.toString());
 	}
 
+	@Test
+	public void testInterpolate08() {
+		Properties properties = new Properties();
+		properties.setProperty("empty", "");
+		String expected = "An empty property: ''";
+		StringBuilder sb = new StringBuilder("An empty property: '${empty}'");
+		StringInterpolator.interpolate(sb, properties);
+		assertEquals(expected, sb.toString());
+	}
+
 }
