@@ -36,8 +36,8 @@ public class StringInterpolatorTest {
 	public void testInterpolate03() {
 		Properties properties = new Properties();
 		properties.setProperty("${five}", "5");
-		String expected = "The value from ${${five}} is 5.";
-		StringBuilder sb = new StringBuilder("The value from $${$${five}} is ${$${five$}}.");
+		String expected = "The value from ${${five$}} is 5.";
+		StringBuilder sb = new StringBuilder("The value from $${$${five$$}} is ${${five$}}.");
 		StringInterpolator.interpolate(sb, properties);
 		assertEquals(expected, sb.toString());
 	}
@@ -56,8 +56,8 @@ public class StringInterpolatorTest {
 		Properties properties = new Properties();
 		properties.setProperty("nestedProperty", "6");
 		properties.setProperty("property", "nestedProperty");
-		String expected = "The value from ${${property}} is 6.";
-		StringBuilder sb = new StringBuilder("The value from $${$${property}} is ${${property}}.");
+		String expected = "The value from ${${property$}} is 6.";
+		StringBuilder sb = new StringBuilder("The value from $${$${property$$}} is ${${property$}}.");
 		StringInterpolator.interpolate(sb, properties);
 		assertEquals(expected, sb.toString());
 	}
@@ -87,6 +87,38 @@ public class StringInterpolatorTest {
 		properties.setProperty("empty", "");
 		String expected = "An empty property: ''";
 		StringBuilder sb = new StringBuilder("An empty property: '${empty}'");
+		StringInterpolator.interpolate(sb, properties);
+		assertEquals(expected, sb.toString());
+	}
+
+	@Test
+	public void testInterpolate09() {
+		Properties properties = new Properties();
+		properties.setProperty("to", "2");
+		properties.setProperty("get", "3");
+		properties.setProperty("her", "4");
+		properties.setProperty("234", "5");
+		String expected = "The value from ${${to$}${get$}${her$}} is 5.";
+		StringBuilder sb = new StringBuilder(
+				"The value from $${$${to$$}$${get$$}$${her$$}} is ${${to$}${get$}${her$}}.");
+		StringInterpolator.interpolate(sb, properties);
+		assertEquals(expected, sb.toString());
+	}
+
+	@Test
+	public void testInterpolate10() {
+		Properties properties = new Properties();
+		properties.setProperty("all", "1");
+		properties.setProperty("to", "2");
+		properties.setProperty("get", "3");
+		properties.setProperty("her", "4");
+		properties.setProperty("234", "5");
+		properties.setProperty("now", "6");
+		properties.setProperty("156", "7");
+		String expected = "The value from ${${all$}${${to$$$}${get$$$}${her$$$}$}${now$}} is 7.";
+		StringBuilder sb = new StringBuilder(
+				"The value from $${$${all$$}$${$${to$$$$$$}$${get$$$$$$}$${her$$$$$$}$$}$${now$$}} "
+				+ "is ${${all$}${${to$$$}${get$$$}${her$$$}$}${now$}}.");
 		StringInterpolator.interpolate(sb, properties);
 		assertEquals(expected, sb.toString());
 	}
