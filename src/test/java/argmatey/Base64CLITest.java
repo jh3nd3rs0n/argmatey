@@ -9,7 +9,6 @@ import java.io.PrintStream;
 
 import org.junit.Test;
 
-import argmatey.ArgMatey.Annotations.NonparsedArg;
 import argmatey.ArgMatey.Annotations.Option;
 import argmatey.ArgMatey.Annotations.OptionArgSpec;
 import argmatey.ArgMatey.CLI;
@@ -52,6 +51,15 @@ public class Base64CLITest {
 			return this.file;
 		}
 
+		@Override
+		protected void handleNonparsedArg(final String nonparsedArg) {
+			if (this.file != null) {
+				throw new IllegalArgumentException(
+						String.format("extra operand: `%s'", nonparsedArg));
+			}
+			this.file = nonparsedArg;
+		}
+
 		public boolean isDecodingMode() {
 			return this.decodingMode;
 		}
@@ -90,15 +98,6 @@ public class Base64CLITest {
 		)
 		public void setDecodingMode(boolean b) {
 			this.decodingMode = b;
-		}
-
-		@NonparsedArg
-		public void setFile(String s) {
-			if (this.file != null) {
-				throw new IllegalArgumentException(
-						String.format("extra operand: `%s'", s));
-			}
-			this.file = s;
 		}
 
 		@Option(

@@ -73,6 +73,25 @@ ArgMatey is a Java annotation-based iterator-style command line arguments parser
         // setter methods
         
         /*
+         * Invoked when a non-parsed argument is encountered. In this 
+         * implementation, the non-parsed argument is the FILE argument. 
+         * The non-parsed argument is provided as an argument to the 
+         * method parameter below. 
+         */
+        @Override
+        protected void handleNonparsedArg(String nonparsedArg) {
+            if (this.file != null) {
+                /*
+                 * IllegalArgumentExceptions for invalid non-parsed
+                 * arguments can be thrown.
+                 */
+                throw new IllegalArgumentException(String.format(
+                    "extra operand: `%s'", nonparsedArg));
+            }
+            this.file = nonparsedArg;
+        }
+        
+        /*
          * Invoked when either of the options "-w" and "--wrap" is 
          * encountered. Option argument for either of the options "-w" 
          * and "--wrap" is provided as an argument to the method 
@@ -133,29 +152,6 @@ ArgMatey is a Java annotation-based iterator-style command line arguments parser
         )
         public void setDecodingMode(boolean b) {
             this.decodingMode = b; // always received as true
-        }
-        
-        /*
-         * Invoked when a non-parsed argument is encountered. In this 
-         * implementation, the non-parsed argument is the FILE argument. 
-         * The non-parsed argument is provided as an argument to the 
-         * method parameter below. 
-         *
-         * Only one method in a class can be annotated with 
-         * @NonparsedArg. Methods that are annotated with @NonparsedArg 
-         * must have only one method parameter of type String.
-         */
-        @NonparsedArg
-        public void setFile(String s) {
-            if (this.file != null) {
-                /*
-                 * IllegalArgumentExceptions for invalid non-parsed
-                 * arguments can be thrown.
-                 */
-                throw new IllegalArgumentException(String.format(
-                    "extra operand: `%s'", s));
-            }
-            this.file = s;
         }
         
         /*
