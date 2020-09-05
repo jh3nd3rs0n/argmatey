@@ -389,8 +389,7 @@ To build and package ArgMatey as a jar file, run the following command:
 
 ## TODO
 
--   [ ] Javadoc documentation on all types
--   [ ] Unit testing on other types
+See [here](https://github.com/jh3nd3rs0n/jargyle/blob/master/TODO.md)
   
 ## Contact
 
