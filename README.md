@@ -389,7 +389,7 @@ To build and package ArgMatey as a jar file, run the following command:
 
 ## TODO
 
-See [here](https://github.com/jh3nd3rs0n/jargyle/blob/master/TODO.md)
+See [here](https://github.com/jh3nd3rs0n/argmatey/blob/master/TODO.md)
   
 ## Contact
 
