@@ -1,0 +1,39 @@
+# TODO
+-   [ ] document and test OptionalBoolean
+-   [ ] document and test PropertiesHelper
+-   [ ] document String interpolation
+-   [ ] document StringInterpolator
+-   [ ] document and test OptionArgSpec.Builder and OptionArgSpec
+-   [ ] document OptionUsageParams
+-   [ ] document OptionUsageProvider
+-   [ ] document and test DefaultGnuLongOptionUsageProvider
+-   [ ] document and test DefaultLongOptionUsageProvider
+-   [ ] document and test DefaultPosixOptionUsageProvider
+-   [ ] document and test InterpolatedOptionUsageProvider
+-   [ ] test OptionUsageProvider
+-   [ ] document Option.Builder and Option
+-   [ ] document and test GnuLongOption.Builder and GnuLongOption
+-   [ ] document and test LongOption.Builder and LongOption
+-   [ ] document and test PosixOption.Builder and PosixOption
+-   [ ] document and test OptionType
+-   [ ] document and test OptionOccurrence
+-   [ ] document and test ParseResultHolder
+-   [ ] document OptionGroupHelpTextParams
+-   [ ] document OptionGroupHelpTextProvider
+-   [ ] document and test DefaultOptionGroupHelpTextProvider
+-   [ ] document and test InterpolatedOptionGroupHelpTextProvider
+-   [ ] test OptionGroupHelpTextProvider
+-   [ ] document and test OptionGroup.Builder and OptionGroup
+-   [ ] document and test OptionGroups
+-   [ ] document and test ArgsParser
+-   [ ] document Annotations
+-   [ ] document Annotations.OptionArgSpec
+-   [ ] document Annotations.Option
+-   [ ] document Annotations.Options
+-   [ ] document Annotations.HelpText
+-   [ ] document Annotations.OptionGroupHelpTextProvider
+-   [ ] document Annotations.Ordinal
+-   [ ] document and test OptionGroupMethod
+-   [ ] document and test OptionGroupMethodComparator
+-   [ ] document and test CLIClass
+-   [ ] document and test CLI
