@@ -945,6 +945,16 @@ public final class ArgMatey {
 		
 		protected void handleNonparsedArg(final String nonparsedArg) { }
 		
+		public int handleRemaining() {
+			while (this.hasNext()) {
+				if (this.programHelpDisplayed || this.programVersionDisplayed) {
+					return 0;
+				}
+				this.handleNext();
+			}
+			return 0;
+		}
+		
 		public final boolean hasNext() {
 			return this.argsParser.hasNext();
 		}

@@ -228,12 +228,10 @@ public class Base64CLITest {
 
 	private static void main(String[] args) {
 		Base64CLI base64CLI = new Base64CLI(args);
-		while (base64CLI.hasNext()) {
-			base64CLI.handleNext();
-			if (base64CLI.isProgramHelpDisplayed() 
-					|| base64CLI.isProgramVersionDisplayed()) {
-				return;
-			}
+		base64CLI.handleRemaining();
+		if (base64CLI.isProgramHelpDisplayed() 
+				|| base64CLI.isProgramVersionDisplayed()) {
+			return;
 		}
 	}
 

@@ -180,19 +180,16 @@ ArgMatey is a Java annotation-based iterator-style command line arguments parser
     public static void main(String[] args) {
         Base64CLI base64CLI = new Base64CLI(args);
         // parse (and handle) the command line arguments
-        while (base64CLI.hasNext()) {
-            base64CLI.handleNext();
-            /*
-             * If the option "--help" or the option "--version" is
-             * encountered and handled, exit the program regardless of 
-             * the remaining command line arguments.
-             */            
-            if (base64CLI.isProgramHelpDisplayed()
-                || base64CLI.isProgramVersionDisplayed()) {
-                return;
-            }
+        base64CLI.handleRemaining();
+        /*
+         * If the option "--help" or the option "--version" was
+         * encountered and handled, exit the program.
+         */            
+        if (base64CLI.isProgramHelpDisplayed()
+            || base64CLI.isProgramVersionDisplayed()) {
+            return;
         }
-        // ...        
+        // do post parsing stuff...        
     }
     
     /*
