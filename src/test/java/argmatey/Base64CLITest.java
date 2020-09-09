@@ -60,15 +60,6 @@ public class Base64CLITest {
 			this.file = nonparsedArg;
 		}
 		
-		@Override
-		public int handleRemaining() {
-			super.handleRemaining();
-			if (this.programHelpDisplayed || this.programVersionDisplayed) {
-				return 0;
-			}
-			return 0;
-		}
-		
 		public boolean isDecodingMode() {
 			return this.decodingMode;
 		}
@@ -109,6 +100,10 @@ public class Base64CLITest {
 			this.decodingMode = b;
 		}
 
+		public void setFile(String f) {
+			this.file = f;
+		}
+		
 		@Option(
 				doc = "When decoding, ignore non-alphabet characters", 
 				name = "i", 
@@ -123,7 +118,7 @@ public class Base64CLITest {
 
 	}
 
-	public static class SingleLineOptionGroupHelpTextProvider 
+	private static class SingleLineOptionGroupHelpTextProvider 
 		extends OptionGroupHelpTextProvider {
 
 		@Override
