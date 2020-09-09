@@ -52,8 +52,6 @@ ArgMatey is a Java annotation-based iterator-style command line arguments parser
             this.programVersion = "base64 1.0";
         }
         
-        // getter methods
-        
         public int getColumnLimit() {
             return this.columnLimit;
         }
@@ -61,16 +59,6 @@ ArgMatey is a Java annotation-based iterator-style command line arguments parser
         public String getFile() {
             return this.file;
         }
-        
-        public boolean isDecodingMode() {
-            return this.decodingMode;
-        }
-        
-        public boolean isGarbageIgnored() {
-            return this.garbageIgnored;
-        }
-        
-        // setter methods
         
         /*
          * Invoked when a non-parsed argument is encountered. In this 
@@ -89,6 +77,14 @@ ArgMatey is a Java annotation-based iterator-style command line arguments parser
                     "extra operand: `%s'", nonparsedArg));
             }
             this.file = nonparsedArg;
+        }
+        
+        public boolean isDecodingMode() {
+            return this.decodingMode;
+        }
+        
+        public boolean isGarbageIgnored() {
+            return this.garbageIgnored;
         }
         
         /*
@@ -132,7 +128,7 @@ ArgMatey is a Java annotation-based iterator-style command line arguments parser
             }
             this.columnLimit = intValue;
         }
-        
+                
         /*
          * Invoked when either of the options "-d" and "--decode" is 
          * encountered.
@@ -152,6 +148,10 @@ ArgMatey is a Java annotation-based iterator-style command line arguments parser
         )
         public void setDecodingMode(boolean b) {
             this.decodingMode = b; // always received as true
+        }
+        
+        public void setFile(String f) {
+            this.file = f;
         }
         
         /*
@@ -189,7 +189,7 @@ ArgMatey is a Java annotation-based iterator-style command line arguments parser
             || base64CLI.isProgramVersionDisplayed()) {
             return;
         }
-        // do post parsing stuff...        
+        // do post parsing stuff... 
     }
     
     /*

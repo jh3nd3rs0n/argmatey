@@ -46,11 +46,11 @@ public class Base64CLITest {
 		public int getColumnLimit() {
 			return this.columnLimit;
 		}
-
+		
 		public String getFile() {
 			return this.file;
 		}
-
+		
 		@Override
 		protected void handleNonparsedArg(final String nonparsedArg) {
 			if (this.file != null) {
@@ -59,11 +59,20 @@ public class Base64CLITest {
 			}
 			this.file = nonparsedArg;
 		}
-
+		
+		@Override
+		public int handleRemaining() {
+			super.handleRemaining();
+			if (this.programHelpDisplayed || this.programVersionDisplayed) {
+				return 0;
+			}
+			return 0;
+		}
+		
 		public boolean isDecodingMode() {
 			return this.decodingMode;
 		}
-
+		
 		public boolean isGarbageIgnored() {
 			return this.garbageIgnored;
 		}
