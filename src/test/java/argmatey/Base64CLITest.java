@@ -31,7 +31,6 @@ public class Base64CLITest {
 			this.decodingMode = false;
 			this.file = null;
 			this.garbageIgnored = false;
-			this.programArgsUsage = "[FILE]";
 			this.programDoc = new StringBuilder()
 					.append("Base64 encode or decode FILE, ")
 					.append("or standard input, to standard output.")
@@ -40,15 +39,23 @@ public class Base64CLITest {
 					.append("read standard input.")
 					.toString();
 			this.programName = "base64";
+			this.programOperandsUsage = "[FILE]";
 			this.programVersion = "base64 1.0";
 		}
-
-		public int getColumnLimit() {
-			return this.columnLimit;
-		}
 		
-		public String getFile() {
-			return this.file;
+		@Override
+		public int handleArgs() {
+			while (this.hasNext()) {
+				this.handleNext();
+				if (this.programHelpDisplayed || this.programVersionDisplayed) {
+					return 0;
+				}
+			}
+			System.out.printf("columnLimit: %s%n", this.columnLimit);
+			System.out.printf("decodingMode: %s%n", this.decodingMode);
+			System.out.printf("file: %s%n", this.file);
+			System.out.printf("garbageIgnored: %s%n", this.garbageIgnored);
+			return 0;
 		}
 		
 		@Override
@@ -58,14 +65,6 @@ public class Base64CLITest {
 						String.format("extra operand: `%s'", nonparsedArg));
 			}
 			this.file = nonparsedArg;
-		}
-		
-		public boolean isDecodingMode() {
-			return this.decodingMode;
-		}
-		
-		public boolean isGarbageIgnored() {
-			return this.garbageIgnored;
 		}
 
 		@Option(
@@ -78,7 +77,7 @@ public class Base64CLITest {
 				name = "wrap", 
 				type = OptionType.GNU_LONG
 		)
-		public void setColumnLimit(Integer i) {
+		private void setColumnLimit(Integer i) {
 			int intValue = i.intValue();
 			if (intValue < 0) {
 				throw new IllegalArgumentException(
@@ -96,14 +95,10 @@ public class Base64CLITest {
 				name = "decode", 
 				type = OptionType.GNU_LONG
 		)
-		public void setDecodingMode(boolean b) {
+		private void setDecodingMode(boolean b) {
 			this.decodingMode = b;
 		}
 
-		public void setFile(String f) {
-			this.file = f;
-		}
-		
 		@Option(
 				doc = "When decoding, ignore non-alphabet characters", 
 				name = "i", 
@@ -112,7 +107,7 @@ public class Base64CLITest {
 				name = "ignore-garbage", 
 				type = OptionType.GNU_LONG
 		)
-		public void setGarbageIgnored(boolean b) {
+		private void setGarbageIgnored(boolean b) {
 			this.garbageIgnored = b;
 		}
 
@@ -197,7 +192,7 @@ public class Base64CLITest {
 		PROGRAM_VERSION = String.format("base64 1.0%n");
 	}
 
-	private static void handle(
+	private static int handle(
 			final String[] args, 
 			final PrintStream err, 
 			final InputStream in, 
@@ -215,8 +210,10 @@ public class Base64CLITest {
 		if (in != null) {
 			System.setIn(in);
 		}
+		CLI cli = new Base64CLI(args);
+		int status;
 		try {
-			main(args);
+			status = cli.handleArgs();
 		} finally {
 			if (err != null) {
 				System.setErr(formerErr);
@@ -228,17 +225,114 @@ public class Base64CLITest {
 				System.setIn(formerIn);
 			}
 		}
+		return status;
 	}
 
-	private static void main(String[] args) {
-		Base64CLI base64CLI = new Base64CLI(args);
-		base64CLI.handleRemaining();
-		if (base64CLI.isProgramHelpDisplayed() 
-				|| base64CLI.isProgramVersionDisplayed()) {
-			return;
-		}
+	@Test
+	public void test01() throws IOException {
+		String expectedString = new StringBuilder()
+				.append(String.format("columnLimit: %s%n", 76))
+				.append(String.format("decodingMode: %s%n", false))
+				.append(String.format("file: %s%n", (String) null))
+				.append(String.format("garbageIgnored: %s%n", false))
+				.toString();
+		ByteArrayOutputStream bytesOut = new ByteArrayOutputStream();
+		PrintStream out = new PrintStream(bytesOut);
+		handle(new String[] { }, null, null, out);
+		String actualString = new String(bytesOut.toByteArray());
+		assertEquals(expectedString, actualString);
 	}
 
+	@Test
+	public void test02() throws IOException {
+		String expectedString = new StringBuilder()
+				.append(String.format("columnLimit: %s%n", 10))
+				.append(String.format("decodingMode: %s%n", false))
+				.append(String.format("file: %s%n", "-"))
+				.append(String.format("garbageIgnored: %s%n", false))
+				.toString();
+		ByteArrayOutputStream bytesOut = new ByteArrayOutputStream();
+		PrintStream out = new PrintStream(bytesOut);
+		handle(new String[] { "-w10", "-" }, null, null, out);
+		String actualString = new String(bytesOut.toByteArray());
+		assertEquals(expectedString, actualString);
+	}
+
+	@Test
+	public void test03() throws IOException {
+		String expectedString = new StringBuilder()
+				.append(String.format("columnLimit: %s%n", 100))
+				.append(String.format("decodingMode: %s%n", false))
+				.append(String.format("file: %s%n", "input.txt"))
+				.append(String.format("garbageIgnored: %s%n", false))
+				.toString();
+		ByteArrayOutputStream bytesOut = new ByteArrayOutputStream();
+		PrintStream out = new PrintStream(bytesOut);
+		handle(new String[] { "-w", "100", "input.txt" }, null, null, out);
+		String actualString = new String(bytesOut.toByteArray());
+		assertEquals(expectedString, actualString);
+	}
+
+	@Test
+	public void test04() throws IOException {
+		String expectedString = new StringBuilder()
+				.append(String.format("columnLimit: %s%n", 76))
+				.append(String.format("decodingMode: %s%n", true))
+				.append(String.format("file: %s%n", "text.txt"))
+				.append(String.format("garbageIgnored: %s%n", true))
+				.toString();
+		ByteArrayOutputStream bytesOut = new ByteArrayOutputStream();
+		PrintStream out = new PrintStream(bytesOut);
+		handle(new String[] { "-di", "text.txt" }, null, null, out);
+		String actualString = new String(bytesOut.toByteArray());
+		assertEquals(expectedString, actualString);
+	}
+
+	@Test
+	public void test05() throws IOException {
+		String expectedString = new StringBuilder()
+				.append(String.format("columnLimit: %s%n", 10))
+				.append(String.format("decodingMode: %s%n", false))
+				.append(String.format("file: %s%n", "-"))
+				.append(String.format("garbageIgnored: %s%n", false))
+				.toString();
+		ByteArrayOutputStream bytesOut = new ByteArrayOutputStream();
+		PrintStream out = new PrintStream(bytesOut);
+		handle(new String[] { "--wrap=10", "-" }, null, null, out);
+		String actualString = new String(bytesOut.toByteArray());
+		assertEquals(expectedString, actualString);
+	}
+
+	@Test
+	public void test06() throws IOException {
+		String expectedString = new StringBuilder()
+				.append(String.format("columnLimit: %s%n", 100))
+				.append(String.format("decodingMode: %s%n", false))
+				.append(String.format("file: %s%n", "input.txt"))
+				.append(String.format("garbageIgnored: %s%n", false))
+				.toString();
+		ByteArrayOutputStream bytesOut = new ByteArrayOutputStream();
+		PrintStream out = new PrintStream(bytesOut);
+		handle(new String[] { "--wrap", "100", "input.txt" }, null, null, out);
+		String actualString = new String(bytesOut.toByteArray());
+		assertEquals(expectedString, actualString);
+	}
+
+	@Test
+	public void test07() throws IOException {
+		String expectedString = new StringBuilder()
+				.append(String.format("columnLimit: %s%n", 76))
+				.append(String.format("decodingMode: %s%n", true))
+				.append(String.format("file: %s%n", "text.txt"))
+				.append(String.format("garbageIgnored: %s%n", true))
+				.toString();
+		ByteArrayOutputStream bytesOut = new ByteArrayOutputStream();
+		PrintStream out = new PrintStream(bytesOut);
+		handle(new String[] { "--decode", "--ignore-garbage", "text.txt" }, null, null, out);
+		String actualString = new String(bytesOut.toByteArray());
+		assertEquals(expectedString, actualString);
+	}
+	
 	@Test
 	public void testCustomProgramHelp() throws IOException {
 		OptionGroupHelpTextProvider provider1 = OptionGroupHelpTextProvider.getDefault();

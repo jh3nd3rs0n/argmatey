@@ -40,7 +40,6 @@ ArgMatey is a Java annotation-based iterator-style command line arguments parser
             this.file = null;            
             this.garbageIgnored = false;
             // for the program help and version information
-            this.programArgsUsage = "[FILE]";
             this.programDoc = new StringBuilder()
                 .append("Base64 encode or decode FILE, ")
                 .append("or standard input, to standard output.")
@@ -49,15 +48,27 @@ ArgMatey is a Java annotation-based iterator-style command line arguments parser
                 .append("read standard input.")
                 .toString();
             this.programName = "base64";
+            this.programOperandsUsage = "[FILE]";
             this.programVersion = "base64 1.0";
         }
         
-        public int getColumnLimit() {
-            return this.columnLimit;
-        }
-        
-        public String getFile() {
-            return this.file;
+        /*
+         * Parse (and handle) the command line arguments
+         */
+        @Override
+        public int handleArgs() {
+            while (this.hasNext()) {
+                this.handleNext();
+                /*
+                 * If the option "--help" or the option "--version" was
+                 * encountered and handled, exit the program.
+                 */                
+                if (this.programHelpDisplayed || this.programVersionDisplayed) {
+                    return 0;
+                }
+            }
+            // do post parsing stuff...
+            return 0;
         }
         
         /*
@@ -77,14 +88,6 @@ ArgMatey is a Java annotation-based iterator-style command line arguments parser
                     "extra operand: `%s'", nonparsedArg));
             }
             this.file = nonparsedArg;
-        }
-        
-        public boolean isDecodingMode() {
-            return this.decodingMode;
-        }
-        
-        public boolean isGarbageIgnored() {
-            return this.garbageIgnored;
         }
         
         /*
@@ -116,7 +119,7 @@ ArgMatey is a Java annotation-based iterator-style command line arguments parser
             // optionArgSpec is provided from the above @Option.                    
             type = OptionType.GNU_LONG
         )
-        public void setColumnLimit(Integer i) { 
+        private void setColumnLimit(Integer i) { 
             int intValue = i.intValue();
             if (intValue < 0) {
                 /*
@@ -146,12 +149,8 @@ ArgMatey is a Java annotation-based iterator-style command line arguments parser
             name = "decode", 
             type = OptionType.GNU_LONG
         )
-        public void setDecodingMode(boolean b) {
+        private void setDecodingMode(boolean b) {
             this.decodingMode = b; // always received as true
-        }
-        
-        public void setFile(String f) {
-            this.file = f;
         }
         
         /*
@@ -171,25 +170,16 @@ ArgMatey is a Java annotation-based iterator-style command line arguments parser
             name = "ignore-garbage", 
             type = OptionType.GNU_LONG
         )
-        public void setGarbageIgnored(boolean b) {
+        private void setGarbageIgnored(boolean b) {
             this.garbageIgnored = b; // always received as true
         }
         
     }
     
     public static void main(String[] args) {
-        Base64CLI base64CLI = new Base64CLI(args);
-        // parse (and handle) the command line arguments
-        base64CLI.handleRemaining();
-        /*
-         * If the option "--help" or the option "--version" was
-         * encountered and handled, exit the program.
-         */            
-        if (base64CLI.isProgramHelpDisplayed()
-            || base64CLI.isProgramVersionDisplayed()) {
-            return;
-        }
-        // do post parsing stuff... 
+        CLI cli = new Base64CLI(args);
+        int status = cli.handleArgs();
+        if (status != 0) { System.exit(status); }
     }
     
     /*
@@ -303,7 +293,7 @@ ArgMatey is a Java annotation-based iterator-style command line arguments parser
          * particular option group...
          */ 
         @OptionGroupHelpTextProvider(SingleLineOptionGroupHelpTextProvider.class)
-        public void setColumnLimit(Integer i) {
+        private void setColumnLimit(Integer i) {
             // ... 
         }
         
