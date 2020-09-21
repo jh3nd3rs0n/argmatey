@@ -23,8 +23,8 @@ ArgMatey is a Java annotation-based iterator-style command line arguments parser
 ```java
     
     /*
-     * Extends CLI to handle command line options and arguments for 
-     * this Java implementation of GNU's utility base64.
+     * Extends CLI to parse and handle command line options and 
+     * arguments for this Java implementation of GNU's utility base64.
      */
     public static class Base64CLI extends CLI {
     
@@ -53,11 +53,20 @@ ArgMatey is a Java annotation-based iterator-style command line arguments parser
         }
         
         /*
-         * Parse (and handle) the command line arguments
+         * Parse and handle the command line arguments
          */
         @Override
         public int handleArgs() {
+            /*
+             * Loop if this CLI has more of the current command line 
+             * argument or more command line arguments
+             */
             while (this.hasNext()) {
+                /*
+                 * Parse and handle the next part of the current
+                 * command line argument or the next command line 
+                 * argument
+                 */
                 this.handleNext();
                 /*
                  * If the option "--help" or the option "--version" was
@@ -67,7 +76,9 @@ ArgMatey is a Java annotation-based iterator-style command line arguments parser
                     return 0;
                 }
             }
-            // do post parsing stuff...
+            /*
+             * Post parsing stuff happens here...
+             */
             return 0;
         }
         
