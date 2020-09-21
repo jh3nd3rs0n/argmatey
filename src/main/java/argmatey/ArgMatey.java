@@ -3870,7 +3870,7 @@ public final class ArgMatey {
 		public static String interpolate(
 				final String string, final Properties properties) {
 			StringBuilder sb = new StringBuilder(string);
-			List<Integer> propertyVariableStartIndicies = 
+			List<Integer> propertyVariableStartIndices = 
 					new ArrayList<Integer>();
 			for (int i = 0; i < sb.length(); i++) {
 				char ch = sb.charAt(i);
@@ -3881,7 +3881,7 @@ public final class ArgMatey {
 						sb.replace(i, i + 2, "$");
 						break;
 					case '{':
-						propertyVariableStartIndicies.add(0, Integer.valueOf(i));
+						propertyVariableStartIndices.add(Integer.valueOf(i));
 						i++;
 						continue;
 					case '}':
@@ -3890,9 +3890,10 @@ public final class ArgMatey {
 					default:
 						break;
 					}
-				} else if (ch == '}' && propertyVariableStartIndicies.size() > 0) {
+				} else if (ch == '}' && propertyVariableStartIndices.size() > 0) {
+					int lastIndex = propertyVariableStartIndices.size() - 1;
 					int propertyVariableStartIndex = 
-							propertyVariableStartIndicies.get(0).intValue();
+							propertyVariableStartIndices.get(lastIndex).intValue();
 					String propertyName = sb.substring(
 							propertyVariableStartIndex + 2, i);
 					String property = properties.getProperty(propertyName);
@@ -3900,7 +3901,7 @@ public final class ArgMatey {
 						sb.replace(propertyVariableStartIndex, i + 1, property);
 						i = propertyVariableStartIndex + property.length() - 1;
 					}
-					propertyVariableStartIndicies.remove(0);
+					propertyVariableStartIndices.remove(lastIndex);
 				}
 			}
 			return sb.toString();
