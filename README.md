@@ -11,6 +11,8 @@ ArgMatey is a Java annotation-based iterator-style command line arguments parser
 -   [Features](#features)
 -   [Examples](#examples)
 -   [Requirements](#requirements)
+-   [Generating Javadocs](#generating-javadocs)
+-   [Automated Testing](#automated-testing)
 -   [Installing](#installing)
 -   [Building](#building)
 -   [TODO](#todo)
@@ -349,16 +351,36 @@ The following are some examples of projects using ArgMatey:
 
 ## Requirements
 
--   Apache Maven&#8482; 3.3.9 or higher (for installing and building) 
+-   Apache Maven&#8482; 3.3.9 or higher (for generating javadocs, automated testing, installing, and building) 
 -   Java&#8482; SDK 1.8 or higher
 
-## Installing
+## Generating Javadocs
 
-To install, run the following commands:
+To generate javadocs, run the following commands:
 
 ```bash
 
     cd argmatey
+    mvn javadoc:javadoc
+
+```
+
+## Automated Testing
+
+To run automated testing, run the following command:
+
+```bash
+
+    mvn test
+
+```
+
+## Installing
+
+To install, run the following command:
+
+```bash
+
     mvn install
 
 ```
