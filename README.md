@@ -365,6 +365,14 @@ To generate javadocs, run the following commands:
 
 ```
 
+After running the aforementioned commands, the javadocs can be found in the following path:
+
+```text
+    
+    target/site/apidocs
+    
+```
+
 ## Automated Testing
 
 To run automated testing, run the following command:
@@ -406,6 +414,16 @@ To build and package ArgMatey as a jar file, run the following command:
     mvn package
 
 ```
+
+After running the aforementioned command, the jar file can be found in the following path:
+
+```text
+    
+    target/argmatey-${VERSION}.jar
+    
+```
+
+`${VERSION}` would be replaced by the actual version shown within the name of the jar file.
 
 ## TODO
 
