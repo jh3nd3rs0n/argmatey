@@ -400,7 +400,7 @@ To add a dependency on ArgMatey using Maven, use the following:
     <dependency>
     	<groupId>argmatey</groupId>
     	<artifactId>argmatey</artifactId>
-    	<version>1.0-SNAPSHOT</version>
+    	<version>1.0.0-SNAPSHOT</version>
     </dependency>
 
 ```
