@@ -4,8 +4,6 @@
 
 ArgMatey is a Java annotation-based iterator-style command line arguments parser with completely customizable provided program usage and help.
 
-**Disclaimer:** ArgMatey is a hobby project and is currently subject to breaking changes. ArgMatey is currently not production ready but it aims to be.
-
 ## Contents
 
 -   [Features](#features)
