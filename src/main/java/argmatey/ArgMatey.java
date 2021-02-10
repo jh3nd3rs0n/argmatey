@@ -2202,20 +2202,41 @@ public final class ArgMatey {
 
 	}
 
+	/**
+	 * Enum that represents all values of {@code Boolean} including an 
+	 * unspecified value ({@code null}). It is used primarily for annotations 
+	 * in {@link ArgMatey.Annotations}.
+	 */
 	public static enum OptionalBoolean {
 		
+		/** {@code Boolean} value of {@code false}. */
 		FALSE(Boolean.FALSE),
 		
+		/** {@code Boolean} value of {@code true}. */
 		TRUE(Boolean.TRUE),
 		
+		/** Unspecified {@code Boolean} value ({@code null}). */
 		UNSPECIFIED(null);
 		
+		/** The optional {@code Boolean} value. */
 		private final Optional<Boolean> optionalBooleanValue;
 		
+		/**
+		 * Constructs an {@code OptionalBoolean} based on the provided 
+		 * {@code Boolean}.
+		 * 
+		 * @param booleanValue the provided {@code Boolean} (can be 
+		 * {@code null})
+		 */
 		private OptionalBoolean(final Boolean booleanValue) {
 			this.optionalBooleanValue = Optional.ofNullable(booleanValue);
 		}
 		
+		/**
+		 * Returns the optional {@code Boolean} value.
+		 * 
+		 * @return the optional {@code Boolean} value
+		 */
 		public Optional<Boolean> optionalBooleanValue() {
 			return this.optionalBooleanValue;
 		}

@@ -1,5 +1,5 @@
 # TODO
--   [ ] document and test OptionalBoolean
+-   [X] document and test OptionalBoolean
 -   [ ] document and test PropertiesHelper
 -   [ ] document String interpolation
 -   [ ] document StringInterpolator
