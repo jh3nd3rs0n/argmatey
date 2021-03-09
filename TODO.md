@@ -1,6 +1,6 @@
 # TODO
 -   [X] document and test OptionalBoolean
--   [ ] document and test SystemHelper
+-   [ ] document and test PropertiesHelper
 -   [ ] document String interpolation
 -   [ ] document StringInterpolator
 -   [ ] document and test OptionArgSpec.Builder and OptionArgSpec

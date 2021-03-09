@@ -1874,7 +1874,8 @@ public final class ArgMatey {
 				properties.setProperty(
 						optionPropertyName.concat(".usage"), option.getUsage());
 			}
-			Properties props = SystemHelper.newProperties(properties);
+			Properties props = new Properties(System.getProperties());
+			PropertiesHelper.copy(properties, props);
 			return StringInterpolator.interpolate(this.string, props);
 		}
 		
@@ -1902,7 +1903,8 @@ public final class ArgMatey {
 						"option.optionArgSpec.separator", 
 						optionArgSpec.getSeparator());
 			}
-			Properties props = SystemHelper.newProperties(properties);
+			Properties props = new Properties(System.getProperties());
+			PropertiesHelper.copy(properties, props);
 			return StringInterpolator.interpolate(this.string, props);
 		}
 		
@@ -3841,6 +3843,22 @@ public final class ArgMatey {
 		
 	}
 	
+	static final class PropertiesHelper {
+
+		public static void copy(
+				final Properties source, final Properties destination) {
+			Set<String> sourceStringPropertyNames = 
+					source.stringPropertyNames();
+			for (String sourceStringPropertyName : sourceStringPropertyNames) {
+				String property = source.getProperty(sourceStringPropertyName);
+				destination.setProperty(sourceStringPropertyName, property);
+			}
+		}
+
+		private PropertiesHelper() { }
+
+	}
+	
 	/**
 	 * Converts the provided {@code String} to an {@code Object}.
 	 */
@@ -3911,30 +3929,6 @@ public final class ArgMatey {
 		
 	}
 	
-	static final class SystemHelper {
-		
-		public static Properties newProperties(
-				final Properties additionalProperties) {
-			Properties systemProperties = System.getProperties();
-			Properties props = new Properties();
-			for (String propertyName : systemProperties.stringPropertyNames()) {
-				props.setProperty(
-						propertyName, 
-						systemProperties.getProperty(propertyName));
-			}
-			for (String propertyName 
-					: additionalProperties.stringPropertyNames()) {
-				props.setProperty(
-						propertyName, 
-						additionalProperties.getProperty(propertyName));
-			}
-			return props;
-		}
-		
-		private SystemHelper() { }
-		
-	}
-
 	/**
 	 * Thrown when an unknown command line option is encountered.
 	 */
