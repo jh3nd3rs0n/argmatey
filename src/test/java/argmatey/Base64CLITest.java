@@ -44,13 +44,7 @@ public class Base64CLITest {
 		}
 		
 		@Override
-		public int handleArgs() {
-			while (this.hasNext()) {
-				this.handleNext();
-				if (this.programHelpDisplayed || this.programVersionDisplayed) {
-					return 0;
-				}
-			}
+		protected int afterHandleArgs() {
 			System.out.printf("columnLimit: %s%n", this.columnLimit);
 			System.out.printf("decodingMode: %s%n", this.decodingMode);
 			System.out.printf("file: %s%n", this.file);

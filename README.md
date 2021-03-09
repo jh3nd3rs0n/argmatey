@@ -53,33 +53,14 @@ ArgMatey is a Java annotation-based iterator-style command line arguments parser
         }
         
         /*
-         * Parse and handle the command line arguments
+         * After parsing and handling the command line arguments
          */
         @Override
-        public int handleArgs() {
+        protected int afterHandleArgs() {
             /*
-             * Loop if this CLI has more of the current command line 
-             * argument or more command line arguments
+             * Post parsing stuff can happen here...
              */
-            while (this.hasNext()) {
-                /*
-                 * Parse and handle the next part of the current
-                 * command line argument or the next command line 
-                 * argument
-                 */
-                this.handleNext();
-                /*
-                 * If the option "--help" or the option "--version" was
-                 * encountered and handled, exit the program.
-                 */                
-                if (this.programHelpDisplayed || this.programVersionDisplayed) {
-                    return 0;
-                }
-            }
-            /*
-             * Post parsing stuff happens here...
-             */
-            return 0;
+            return 0;        
         }
         
         /*
@@ -239,7 +220,7 @@ ArgMatey is a Java annotation-based iterator-style command line arguments parser
 -   Interpretation of options and arguments based on the ordering provided
 -   Adaptability of the program based on the option or argument encountered
 
-**Complete customization of the provided program usage and help.** Every level of the provided program usage and help can be customized. A customized `OptionUsageProvider` can be used to provide the usage of one, a few, or all options of a particular type in a different format. A customized `OptionGroupHelpTextProvider` can be used to provide the help text of one, a few, or all option groups in a different format. Methods `CLI.displayProgramUsage()` and `CLI.displayProgramHelp()` can be overridden to display the entire program usage and help in a completely different format. The following is the earlier example using a customized `OptionGroupHelpTextProvider`:
+**Complete customization of the provided program usage and help.** Every level of the provided program usage and help can be customized. A customized `OptionUsageProvider` can be used to provide the usage of one, a few, or all options of a particular type in a different format. A customized `OptionGroupHelpTextProvider` can be used to provide the help text of one, a few, or all option groups in a different format. Methods `CLI.printProgramUsage()` and `CLI.printProgramHelp()` can be overridden to display the entire program usage and help in a completely different format. The following is the earlier example using a customized `OptionGroupHelpTextProvider`:
 
 ```java
     
