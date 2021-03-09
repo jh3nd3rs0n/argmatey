@@ -2711,7 +2711,7 @@ public final class ArgMatey {
 				return new OptionGroup(this); 
 			}
 			
-			final String helpText() {
+			public final String helpText() {
 				return this.helpText;
 			}
 			
@@ -2720,7 +2720,7 @@ public final class ArgMatey {
 				return this;
 			}
 			
-			final List<Option.Builder> optionBuilders() {
+			public final List<Option.Builder> optionBuilders() {
 				return Collections.unmodifiableList(this.optionBuilders);
 			}
 			
@@ -2758,7 +2758,7 @@ public final class ArgMatey {
 				return this.optionBuilders(list);
 			}
 			
-			final OptionGroupHelpTextProvider optionGroupHelpTextProvider() {
+			public final OptionGroupHelpTextProvider optionGroupHelpTextProvider() {
 				return this.optionGroupHelpTextProvider;
 			}
 			
@@ -2769,7 +2769,7 @@ public final class ArgMatey {
 				return this;
 			}
 			
-			final boolean optionGroupHelpTextProviderSet() {
+			public final boolean optionGroupHelpTextProviderSet() {
 				return this.optionGroupHelpTextProviderSet;
 			}
 			
