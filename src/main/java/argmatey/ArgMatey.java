@@ -2012,7 +2012,7 @@ public final class ArgMatey {
 			
 			public abstract Option build();
 			
-			final boolean displayable() {
+			public final boolean displayable() {
 				return this.displayable;
 			}
 			
@@ -2022,11 +2022,11 @@ public final class ArgMatey {
 				return this;
 			}
 			
-			final boolean displayableSet() {
+			public final boolean displayableSet() {
 				return this.displayableSet;
 			}
 			
-			final String doc() {
+			public final String doc() {
 				return this.doc;
 			}
 			
@@ -2035,11 +2035,11 @@ public final class ArgMatey {
 				return this;
 			}
 			
-			final String name() {
+			public final String name() {
 				return this.name;
 			}
 			
-			final OptionArgSpec optionArgSpec() {
+			public final OptionArgSpec optionArgSpec() {
 				return this.optionArgSpec;
 			}
 			
@@ -2049,11 +2049,11 @@ public final class ArgMatey {
 				return this;
 			}
 			
-			final boolean optionArgSpecSet() {
+			public final boolean optionArgSpecSet() {
 				return this.optionArgSpecSet;
 			}
 			
-			final OptionUsageProvider optionUsageProvider() {
+			public final OptionUsageProvider optionUsageProvider() {
 				return this.optionUsageProvider;
 			}
 			
@@ -2064,15 +2064,15 @@ public final class ArgMatey {
 				return this;
 			}
 			
-			final boolean optionUsageProviderSet() {
+			public final boolean optionUsageProviderSet() {
 				return this.optionUsageProviderSet;
 			}
 			
-			final String string() {
+			public final String string() {
 				return this.string;
 			}
 			
-			final String usage() {
+			public final String usage() {
 				return this.usage;
 			}
 			
@@ -2555,7 +2555,7 @@ public final class ArgMatey {
 				return new OptionArgSpec(this); 
 			}
 			
-			final String name() {
+			public final String name() {
 				return this.name;
 			}
 			
@@ -2564,7 +2564,7 @@ public final class ArgMatey {
 				return this;
 			}
 			
-			final boolean required() {
+			public final boolean required() {
 				return this.required;
 			}
 			
@@ -2573,7 +2573,7 @@ public final class ArgMatey {
 				return this;
 			}
 			
-			final String separator() {
+			public final String separator() {
 				return this.separator;
 			}
 			
@@ -2582,7 +2582,7 @@ public final class ArgMatey {
 				return this;
 			}
 			
-			final StringConverter stringConverter() {
+			public final StringConverter stringConverter() {
 				return this.stringConverter;
 			}
 			
@@ -2591,7 +2591,7 @@ public final class ArgMatey {
 				return this;
 			}
 			
-			final Class<?> type() {
+			public final Class<?> type() {
 				return this.type;
 			}
 			
