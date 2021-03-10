@@ -53,7 +53,8 @@ ArgMatey is a Java annotation-based iterator-style command line arguments parser
         }
         
         /*
-         * After parsing and handling the command line arguments
+         * Invoked after parsing and handling the command line 
+         * arguments.
          */
         @Override
         protected int afterHandleArgs() {
