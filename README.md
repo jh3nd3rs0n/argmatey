@@ -57,11 +57,11 @@ ArgMatey is a Java annotation-based iterator-style command line arguments parser
          * arguments.
          */
         @Override
-        protected int afterHandleArgs() {
+        protected Optional<Integer> afterHandleArgs() {
             /*
              * Post parsing stuff can happen here...
              */
-            return 0;        
+            return Optional.empty();
         }
         
         /*
@@ -171,8 +171,10 @@ ArgMatey is a Java annotation-based iterator-style command line arguments parser
     
     public static void main(String[] args) {
         CLI cli = new Base64CLI(args);
-        int status = cli.handleArgs();
-        if (status != 0) { System.exit(status); }
+        Optional<Integer> status = cli.handleArgs();
+        if (status.isPresent()) { 
+            System.exit(status.get().intValue());
+        }
     }
     
     /*

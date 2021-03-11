@@ -6,6 +6,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
+import java.util.Optional;
 
 import org.junit.Test;
 
@@ -44,12 +45,12 @@ public class Base64CLITest {
 		}
 		
 		@Override
-		protected int afterHandleArgs() {
+		protected Optional<Integer> afterHandleArgs() {
 			System.out.printf("columnLimit: %s%n", this.columnLimit);
 			System.out.printf("decodingMode: %s%n", this.decodingMode);
 			System.out.printf("file: %s%n", this.file);
 			System.out.printf("garbageIgnored: %s%n", this.garbageIgnored);
-			return 0;
+			return Optional.of(Integer.valueOf(0));
 		}
 		
 		@Override
@@ -186,7 +187,7 @@ public class Base64CLITest {
 		PROGRAM_VERSION = String.format("base64 1.0%n");
 	}
 
-	private static int handle(
+	private static void handle(
 			final String[] args, 
 			final PrintStream err, 
 			final InputStream in, 
@@ -205,9 +206,8 @@ public class Base64CLITest {
 			System.setIn(in);
 		}
 		CLI cli = new Base64CLI(args);
-		int status;
 		try {
-			status = cli.handleArgs();
+			cli.handleArgs();
 		} finally {
 			if (err != null) {
 				System.setErr(formerErr);
@@ -219,7 +219,6 @@ public class Base64CLITest {
 				System.setIn(formerIn);
 			}
 		}
-		return status;
 	}
 
 	@Test
