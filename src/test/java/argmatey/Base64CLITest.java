@@ -187,7 +187,7 @@ public class Base64CLITest {
 		PROGRAM_VERSION = String.format("base64 1.0%n");
 	}
 
-	private static void handle(
+	private static int handle(
 			final String[] args, 
 			final PrintStream err, 
 			final InputStream in, 
@@ -206,8 +206,9 @@ public class Base64CLITest {
 			System.setIn(in);
 		}
 		CLI cli = new Base64CLI(args);
+		Optional<Integer> status;
 		try {
-			cli.handleArgs();
+			status = cli.handleArgs();
 		} finally {
 			if (err != null) {
 				System.setErr(formerErr);
@@ -219,6 +220,7 @@ public class Base64CLITest {
 				System.setIn(formerIn);
 			}
 		}
+		return status.isPresent() ? status.get().intValue() : 0;
 	}
 
 	@Test
