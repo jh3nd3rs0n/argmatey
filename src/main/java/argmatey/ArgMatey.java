@@ -922,7 +922,7 @@ public final class ArgMatey {
 			return this.afterHandleArgs();
 		}
 		
-		protected final void handleNext() {
+		private final void handleNext() {
 			this.argsParser.parseNext();
 			ParseResultHolder parseResultHolder = 
 					this.argsParser.getParseResultHolder();
