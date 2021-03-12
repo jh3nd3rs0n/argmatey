@@ -172,7 +172,7 @@ ArgMatey is a Java annotation-based iterator-style command line arguments parser
     public static void main(String[] args) {
         CLI cli = new Base64CLI(args);
         Optional<Integer> status = cli.handleArgs();
-        if (status.isPresent()) { 
+        if (status.isPresent() && status.get().intValue() != 0) { 
             System.exit(status.get().intValue());
         }
     }
