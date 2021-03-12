@@ -35,10 +35,6 @@ ArgMatey is a Java annotation-based iterator-style command line arguments parser
     
         public Base64CLI(String[] args) {
             super(args, false);
-            this.columnLimit = 76; // default            
-            this.decodingMode = false;
-            this.file = null;            
-            this.garbageIgnored = false;
             // for the program help and version information
             this.programDoc = new StringBuilder()
                 .append("Base64 encode or decode FILE, ")
@@ -61,6 +57,20 @@ ArgMatey is a Java annotation-based iterator-style command line arguments parser
             /*
              * Post parsing stuff can happen here...
              */
+            return Optional.empty();
+        }
+        
+        /*
+         * Invoked before parsing and handling the command line 
+         * arguments.
+         */
+        @Override
+        protected Optional<Integer> beforeHandleArgs() {
+            // initialization
+            this.columnLimit = 76; // default            
+            this.decodingMode = false;
+            this.file = null;            
+            this.garbageIgnored = false;             
             return Optional.empty();
         }
         

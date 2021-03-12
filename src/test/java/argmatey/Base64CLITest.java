@@ -28,10 +28,6 @@ public class Base64CLITest {
 
 		public Base64CLI(String[] args) {
 			super(args, false);
-			this.columnLimit = 76;
-			this.decodingMode = false;
-			this.file = null;
-			this.garbageIgnored = false;
 			this.programDoc = new StringBuilder()
 					.append("Base64 encode or decode FILE, ")
 					.append("or standard input, to standard output.")
@@ -51,6 +47,15 @@ public class Base64CLITest {
 			System.out.printf("file: %s%n", this.file);
 			System.out.printf("garbageIgnored: %s%n", this.garbageIgnored);
 			return Optional.of(Integer.valueOf(0));
+		}
+		
+		@Override
+		protected Optional<Integer> beforeHandleArgs() {
+			this.columnLimit = 76;
+			this.decodingMode = false;
+			this.file = null;
+			this.garbageIgnored = false;
+			return Optional.empty();
 		}
 		
 		@Override
