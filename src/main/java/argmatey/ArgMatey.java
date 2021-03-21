@@ -3013,7 +3013,7 @@ public final class ArgMatey {
 				}
 
 				@Override
-				public boolean isTargetMethodParameterTypes(
+				public boolean isValueForMethodParameterTypes(
 						final Class<?>[] types) {
 					if (types.length != 1) { return false; }
 					Class<?> type = types[0];
@@ -3077,7 +3077,7 @@ public final class ArgMatey {
 				}
 
 				@Override
-				public boolean isTargetMethodParameterTypes(
+				public boolean isValueForMethodParameterTypes(
 						final Class<?>[] types) {
 					if (types.length != 1) { return false; }
 					Class<?> type = types[0];
@@ -3115,7 +3115,7 @@ public final class ArgMatey {
 				}
 
 				@Override
-				public boolean isTargetMethodParameterTypes(
+				public boolean isValueForMethodParameterTypes(
 						final Class<?>[] types) {
 					return types.length == 0;
 				}
@@ -3164,18 +3164,19 @@ public final class ArgMatey {
 				}
 
 				@Override
-				public boolean isTargetMethodParameterTypes(
+				public boolean isValueForMethodParameterTypes(
 						final Class<?>[] types) {
 					return types.length == 1;
 				}
 				
 			};
 			
-			public static TargetMethodParameterTypesType get(
+			public static TargetMethodParameterTypesType valueForMethodParameterTypes(
 					final Class<?>[] types) {
 				for (TargetMethodParameterTypesType targetMethodParameterTypesType 
 						: TargetMethodParameterTypesType.values()) {
-					if (targetMethodParameterTypesType.isTargetMethodParameterTypes(types)) {
+					if (targetMethodParameterTypesType.isValueForMethodParameterTypes(
+							types)) {
 						return targetMethodParameterTypesType;
 					}
 				}
@@ -3191,7 +3192,7 @@ public final class ArgMatey {
 					final Method method, 
 					OptionOccurrence optionOccurrence);
 			
-			public abstract boolean isTargetMethodParameterTypes(
+			public abstract boolean isValueForMethodParameterTypes(
 					final Class<?>[] types);
 			
 		}
@@ -3413,7 +3414,7 @@ public final class ArgMatey {
 						mthd));
 			}
 			TargetMethodParameterTypesType t = 
-					TargetMethodParameterTypesType.get(mthd.getParameterTypes());
+					TargetMethodParameterTypesType.valueForMethodParameterTypes(mthd.getParameterTypes());
 			if (t == null) {
 				StringBuilder sb = new StringBuilder();
 				List<TargetMethodParameterTypesType> list = Arrays.asList(
