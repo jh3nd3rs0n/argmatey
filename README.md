@@ -2,7 +2,7 @@
 
 [![Total alerts](https://img.shields.io/lgtm/alerts/g/jh3nd3rs0n/argmatey.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/jh3nd3rs0n/argmatey/alerts/) [![Language grade: Java](https://img.shields.io/lgtm/grade/java/g/jh3nd3rs0n/argmatey.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/jh3nd3rs0n/argmatey/context:java) [![Codacy Badge](https://app.codacy.com/project/badge/Grade/246e8008635747eb94e11641504d553d)](https://www.codacy.com/gh/jh3nd3rs0n/argmatey/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=jh3nd3rs0n/argmatey&amp;utm_campaign=Badge_Grade)
 
-ArgMatey is a Java annotation-based command line arguments parser with completely customizable provided program usage and help.
+ArgMatey is a Java annotation-based command line arguments parser with completely customizable program usage and help.
 
 **DISCLAIMER**: ArgMatey is not production-ready but it aims to be. It is also subject to breaking changes.
 
@@ -52,6 +52,10 @@ ArgMatey is a Java annotation-based command line arguments parser with completel
         /*
          * Invoked after parsing and handling the command line 
          * arguments.
+         * 
+         * A non-empty Optional Integer can be returned as a status 
+         * code which will terminate any further parsing and 
+         * handling of the command line arguments. 
          */
         @Override
         protected Optional<Integer> afterHandleArgs() {
@@ -62,8 +66,25 @@ ArgMatey is a Java annotation-based command line arguments parser with completel
         }
         
         /*
+         * Invoked after parsing and handling the next part of the 
+         * command line argument or the next command line argument.
+         * 
+         * A non-empty Optional Integer can be returned as a status 
+         * code which will terminate any further parsing and 
+         * handling of the command line arguments. 
+         */
+        @Override
+        protected Optional<Integer> afterHandleNext() {
+            return Optional.empty();
+        }
+        
+        /*
          * Invoked before parsing and handling the command line 
          * arguments.
+         *
+         * A non-empty Optional Integer can be returned as a status 
+         * code which will terminate any further parsing and 
+         * handling of the command line arguments.
          */
         @Override
         protected Optional<Integer> beforeHandleArgs() {
@@ -71,10 +92,23 @@ ArgMatey is a Java annotation-based command line arguments parser with completel
             this.columnLimit = 76; // default            
             this.decodingMode = false;
             this.file = null;            
-            this.garbageIgnored = false;             
+            this.garbageIgnored = false;
             return Optional.empty();
         }
         
+        /*
+         * Invoked before parsing and handling the next part of the 
+         * command line argument or the next command line argument.
+         *
+         * A non-empty Optional Integer can be returned as a status 
+         * code which will terminate any further parsing and 
+         * handling of the command line arguments.
+         */
+        @Override
+        protected Optional<Integer> beforeHandleNext() {
+            return Optional.empty();
+        }
+                
         /*
          * Invoked when a non-parsed argument is encountered. In this 
          * implementation, the non-parsed argument is the FILE argument. 
@@ -94,6 +128,24 @@ ArgMatey is a Java annotation-based command line arguments parser with completel
             this.file = nonparsedArg;
         }
         
+        /*
+         * Invoked when a Throwable is thrown when parsing and 
+         * handling the next part of the command line argument or 
+         * the next command line argument.
+         *
+         * A non-empty Optional Integer can be returned as a status 
+         * code which will terminate any further parsing and 
+         * handling of the command line arguments.
+         */
+        @Override
+        protected Optional<Integer> handleThrowable(Throwable t) {
+            /*
+             * Custom error message can be displayed here instead
+             * of using the statement below.
+             */
+            return super.handleThrowable(t);
+        }
+                
         /*
          * Invoked when either of the options "-w" and "--wrap" is 
          * encountered. Option argument for either of the options "-w" 
@@ -179,6 +231,7 @@ ArgMatey is a Java annotation-based command line arguments parser with completel
         }
             
         public static void main(String[] args) {
+            // how to use a CLI such as Base64CLI
             CLI cli = new Base64CLI(args);
             Optional<Integer> status = cli.handleArgs();
             if (status.isPresent() && status.get().intValue() != 0) { 
@@ -226,7 +279,7 @@ ArgMatey is a Java annotation-based command line arguments parser with completel
 -   Long options (examples: `-help` `-version` `-output-file file.txt`)
 -   POSIX options (examples: `-h` `-v` `-o file.txt`)
 
-**Complete customization of the provided program usage and help.** Every level of the provided program usage and help can be customized. A customized `OptionUsageProvider` can be used to provide the usage of one, a few, or all options of a particular type in a different format. A customized `OptionGroupHelpTextProvider` can be used to provide the help text of one, a few, or all option groups in a different format. Methods `CLI.displayProgramUsage()` and `CLI.displayProgramHelp()` can be overridden to display the entire program usage and help in a completely different format. The following is the earlier example using a customized `OptionGroupHelpTextProvider`:
+**Complete customization of the program usage and help.** Every level of the program usage and help can be customized. A customized `OptionUsageProvider` can be used to provide the usage of one, a few, or all options of a particular type in a different format. A customized `OptionGroupHelpTextProvider` can be used to provide the help text of one, a few, or all option groups in a different format. Methods `CLI.displayProgramUsage()` and `CLI.displayProgramHelp()` can be overridden to display the entire program usage and help in a completely different format. The following is the earlier example using a customized `OptionGroupHelpTextProvider`:
 
 ```java
     
@@ -296,7 +349,10 @@ ArgMatey is a Java annotation-based command line arguments parser with completel
         // ...
         
         public static void main(String[] args) {
-            // ... or you can apply the OptionGroupHelpTextProvider to all option groups...
+            /*
+             * ... or you can apply the OptionGroupHelpTextProvider 
+             * to all option groups.
+             */
             ArgMatey.OptionGroupHelpTextProvider provider = new SingleLineOptionGroupHelpTextProvider();
             ArgMatey.OptionGroupHelpTextProvider.setDefault(provider);
             // ...        
