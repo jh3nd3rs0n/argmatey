@@ -2,7 +2,7 @@
 
 [![Total alerts](https://img.shields.io/lgtm/alerts/g/jh3nd3rs0n/argmatey.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/jh3nd3rs0n/argmatey/alerts/) [![Language grade: Java](https://img.shields.io/lgtm/grade/java/g/jh3nd3rs0n/argmatey.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/jh3nd3rs0n/argmatey/context:java) [![Codacy Badge](https://app.codacy.com/project/badge/Grade/246e8008635747eb94e11641504d553d)](https://www.codacy.com/gh/jh3nd3rs0n/argmatey/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=jh3nd3rs0n/argmatey&amp;utm_campaign=Badge_Grade)
 
-ArgMatey is a Java annotation-based iterator-style command line arguments parser with completely customizable provided program usage and help.
+ArgMatey is a Java annotation-based command line arguments parser with completely customizable provided program usage and help.
 
 **DISCLAIMER**: ArgMatey is not production-ready but it aims to be. It is also subject to breaking changes.
 
@@ -15,7 +15,6 @@ ArgMatey is a Java annotation-based iterator-style command line arguments parser
 -   [Automated Testing](#automated-testing)
 -   [Installing](#installing)
 -   [Building](#building)
--   [TODO](#todo)
 -   [Contact](#contact)
 
 ## Features
@@ -28,7 +27,7 @@ ArgMatey is a Java annotation-based iterator-style command line arguments parser
      * Extends CLI to parse and handle command line options and 
      * arguments for this Java implementation of GNU's utility base64.
      */
-    public static class Base64CLI extends CLI {
+    public class Base64CLI extends CLI {
     
         private int columnLimit;
         private boolean decodingMode;
@@ -178,45 +177,44 @@ ArgMatey is a Java annotation-based iterator-style command line arguments parser
         private void setGarbageIgnored(boolean b) {
             this.garbageIgnored = b; // always received as true
         }
-        
-    }
-    
-    public static void main(String[] args) {
-        CLI cli = new Base64CLI(args);
-        Optional<Integer> status = cli.handleArgs();
-        if (status.isPresent() && status.get().intValue() != 0) { 
-            System.exit(status.get().intValue());
+            
+        public static void main(String[] args) {
+            CLI cli = new Base64CLI(args);
+            Optional<Integer> status = cli.handleArgs();
+            if (status.isPresent() && status.get().intValue() != 0) { 
+                System.exit(status.get().intValue());
+            }
         }
+        
+        /*
+         * Output when using the option "--help" :
+         *
+         * Usage: base64 [OPTION]... [FILE]
+         * Base64 encode or decode FILE, or standard input, to standard output.
+         *
+         * With no FILE, or when FILE is -, read standard input.
+         *
+         * OPTIONS:
+         *   -d, --decode
+         *       Decode data
+         *   --help
+         *       Display this help and exit
+         *   -i, --ignore-garbage
+         *       When decoding, ignore non-alphabet characters
+         *   --version
+         *       Display version information and exit
+         *   -w COLS, --wrap=COLS
+         *       Wrap encoded lines after COLS character (default is 76)
+         *
+         */
+         
+        /*
+         * Output when using the option "--version" :
+         *
+         * base64 1.0
+         *
+         */
     }
-    
-    /*
-     * Output when using the option "--help" :
-     *
-     * Usage: base64 [OPTION]... [FILE]
-     * Base64 encode or decode FILE, or standard input, to standard output.
-     *
-     * With no FILE, or when FILE is -, read standard input.
-     *
-     * OPTIONS:
-     *   -d, --decode
-     *       Decode data
-     *   --help
-     *       Display this help and exit
-     *   -i, --ignore-garbage
-     *       When decoding, ignore non-alphabet characters
-     *   --version
-     *       Display version information and exit
-     *   -w COLS, --wrap=COLS
-     *       Wrap encoded lines after COLS character (default is 76)
-     *
-     */
-     
-    /*
-     * Output when using the option "--version" :
-     *
-     * base64 1.0
-     *
-     */
     
 ```
 
@@ -227,60 +225,53 @@ ArgMatey is a Java annotation-based iterator-style command line arguments parser
 -   GNU long options (examples: `--help` `--version` `--output-file=file.txt`)
 -   Long options (examples: `-help` `-version` `-output-file file.txt`)
 -   POSIX options (examples: `-h` `-v` `-o file.txt`)
-     
-**Iterator-style command line argument parsing.** This style of command line argument parsing has the following advantages:
-
--   Interpretation of multiple occurrences of the same option
--   Interpretation of multiple occurrences of options from the same group
--   Interpretation of options and arguments based on the ordering provided
--   Adaptability of the program based on the option or argument encountered
 
 **Complete customization of the provided program usage and help.** Every level of the provided program usage and help can be customized. A customized `OptionUsageProvider` can be used to provide the usage of one, a few, or all options of a particular type in a different format. A customized `OptionGroupHelpTextProvider` can be used to provide the help text of one, a few, or all option groups in a different format. Methods `CLI.displayProgramUsage()` and `CLI.displayProgramHelp()` can be overridden to display the entire program usage and help in a completely different format. The following is the earlier example using a customized `OptionGroupHelpTextProvider`:
 
 ```java
     
-    /*
-     * Provides the help text for an option group on a single line 
-     * instead of multiple lines.
-     */
-    public static class SingleLineOptionGroupHelpTextProvider 
-        extends ArgMatey.OptionGroupHelpTextProvider {
-    
-        @Override
-        public String getOptionGroupHelpText(OptionGroupHelpTextParams params) {
-            String optionGroupHelpText = null;
-            StringBuilder sb = null;
-            String doc = null;
-            for (ArgMatey.Option option : params.getDisplayableOptions()) {
-                if (sb == null) {
-                    sb = new StringBuilder();
-                    sb.append("  ");
-                } else {
-                    sb.append(", ");
-                }
-                sb.append(option.getUsage());
-                if (doc == null) {
-                    doc = option.getDoc();
-                }
-            }
-            if (sb != null) {
-                if (doc != null) {
-                    final int docStart = 24;
-                    int length = sb.length();
-                    for (int i = 0; i < docStart - length; i++) {
-                        sb.append(' ');
+    public class Base64CLI extends CLI {
+        
+        /*
+         * Provides the help text for an option group on a single line 
+         * instead of multiple lines.
+         */
+        private static class SingleLineOptionGroupHelpTextProvider 
+            extends ArgMatey.OptionGroupHelpTextProvider {
+        
+            @Override
+            public String getOptionGroupHelpText(OptionGroupHelpTextParams params) {
+                String optionGroupHelpText = null;
+                StringBuilder sb = null;
+                String doc = null;
+                for (ArgMatey.Option option : params.getDisplayableOptions()) {
+                    if (sb == null) {
+                        sb = new StringBuilder();
+                        sb.append("  ");
+                    } else {
+                        sb.append(", ");
                     }
-                    sb.append(doc);
+                    sb.append(option.getUsage());
+                    if (doc == null) {
+                        doc = option.getDoc();
+                    }
                 }
-                optionGroupHelpText = sb.toString();
+                if (sb != null) {
+                    if (doc != null) {
+                        final int docStart = 24;
+                        int length = sb.length();
+                        for (int i = 0; i < docStart - length; i++) {
+                            sb.append(' ');
+                        }
+                        sb.append(doc);
+                    }
+                    optionGroupHelpText = sb.toString();
+                }
+                return optionGroupHelpText;
             }
-            return optionGroupHelpText;
+        
         }
         
-    }
-    
-    public static class Base64CLI extends CLI {
-    
         // ...
         
         @Option(
@@ -304,31 +295,31 @@ ArgMatey is a Java annotation-based iterator-style command line arguments parser
         
         // ...
         
+        public static void main(String[] args) {
+            // ... or you can apply the OptionGroupHelpTextProvider to all option groups...
+            ArgMatey.OptionGroupHelpTextProvider provider = new SingleLineOptionGroupHelpTextProvider();
+            ArgMatey.OptionGroupHelpTextProvider.setDefault(provider);
+            // ...        
+        }
+                
+        /*
+         * Output when using the option "--help" :
+         *
+         * Usage: base64 [OPTION]... [FILE]
+         * Base64 encode or decode FILE, or standard input, to standard output.
+         *
+         * With no FILE, or when FILE is -, read standard input.
+         *
+         * OPTIONS:
+         *   -d, --decode          Decode data
+         *   --help                Display this help and exit
+         *   -i, --ignore-garbage  When decoding, ignore non-alphabet characters
+         *   --version             Display version information and exit
+         *   -w COLS, --wrap=COLS  Wrap encoded lines after COLS character (default is 76)
+         *
+         */
+         
     }
-    
-    public static void main(String[] args) {
-        // ...or you can apply the OptionGroupHelpTextProvider to all option groups.
-        ArgMatey.OptionGroupHelpTextProvider provider = new SingleLineOptionGroupHelpTextProvider();
-        ArgMatey.OptionGroupHelpTextProvider.setDefault(provider);
-        // ...        
-    }
-    
-    /*
-     * Output when using the option "--help" :
-     *
-     * Usage: base64 [OPTION]... [FILE]
-     * Base64 encode or decode FILE, or standard input, to standard output.
-     *
-     * With no FILE, or when FILE is -, read standard input.
-     *
-     * OPTIONS:
-     *   -d, --decode          Decode data
-     *   --help                Display this help and exit
-     *   -i, --ignore-garbage  When decoding, ignore non-alphabet characters
-     *   --version             Display version information and exit
-     *   -w COLS, --wrap=COLS  Wrap encoded lines after COLS character (default is 76)
-     *
-     */
     
 ```
 
@@ -416,10 +407,6 @@ After running the aforementioned command, the jar file can be found in the follo
 ```
 
 `${VERSION}` is replaced by the actual version shown within the name of the jar file.
-
-## TODO
-
-See [here](https://github.com/jh3nd3rs0n/argmatey/blob/master/TODO.md)
   
 ## Contact
 
