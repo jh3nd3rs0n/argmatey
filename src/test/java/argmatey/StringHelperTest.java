@@ -6,16 +6,16 @@ import java.util.Properties;
 
 import org.junit.Test;
 
-import argmatey.ArgMatey.StringInterpolator;
+import argmatey.ArgMatey.StringHelper;
 
-public class StringInterpolatorTest {
+public class StringHelperTest {
 
 	@Test
 	public void testInterpolate01() {
 		Properties properties = new Properties();
 		properties.setProperty("name", "Jonathan");
 		String expected = "My name is Jonathan!";
-		String actual = StringInterpolator.interpolate(
+		String actual = StringHelper.interpolate(
 				"My name is ${name}!", properties);
 		assertEquals(expected, actual);
 	}
@@ -27,7 +27,7 @@ public class StringInterpolatorTest {
 		properties.setProperty("2", "two");
 		properties.setProperty("3", "three");
 		String expected = "one plus two equals three";
-		String actual = StringInterpolator.interpolate(
+		String actual = StringHelper.interpolate(
 				"${1} plus ${2} equals ${3}", properties);
 		assertEquals(expected, actual);
 	}
@@ -37,7 +37,7 @@ public class StringInterpolatorTest {
 		Properties properties = new Properties();
 		properties.setProperty("${five}", "5");
 		String expected = "The value from ${$${five$}} is 5.";
-		String actual = StringInterpolator.interpolate(
+		String actual = StringHelper.interpolate(
 				"The value from $${$$$${five$$}} is ${$${five$}}.", properties);
 		assertEquals(expected, actual);
 	}
@@ -46,7 +46,7 @@ public class StringInterpolatorTest {
 	public void testInterpolate04() {
 		Properties properties = new Properties();
 		String expected = "By themselves, these symbols '$', '{', '}' don't need interpolation.";
-		String actual = StringInterpolator.interpolate(
+		String actual = StringHelper.interpolate(
 				"By themselves, these symbols '$', '{', '}' don't need interpolation.", 
 				properties);
 		assertEquals(expected, actual);
@@ -58,7 +58,7 @@ public class StringInterpolatorTest {
 		properties.setProperty("nestedProperty", "6");
 		properties.setProperty("property", "nestedProperty");
 		String expected = "The value from ${${property}} is 6.";
-		String actual = StringInterpolator.interpolate(
+		String actual = StringHelper.interpolate(
 				"The value from $${$${property}} is ${${property}}.", 
 				properties);
 		assertEquals(expected, actual);
@@ -69,7 +69,7 @@ public class StringInterpolatorTest {
 		Properties properties = new Properties();
 		properties.setProperty("value", "7");
 		String expected = "An incomplete ${value";
-		String actual = StringInterpolator.interpolate(
+		String actual = StringHelper.interpolate(
 				"An incomplete ${value", properties);
 		assertEquals(expected, actual);
 	}
@@ -78,7 +78,7 @@ public class StringInterpolatorTest {
 	public void testInterpolate07() {
 		Properties properties = new Properties();
 		String expected = "A bogus property: ${bogus}";
-		String actual = StringInterpolator.interpolate(
+		String actual = StringHelper.interpolate(
 				"A bogus property: ${bogus}", properties);
 		assertEquals(expected, actual);
 	}
@@ -88,7 +88,7 @@ public class StringInterpolatorTest {
 		Properties properties = new Properties();
 		properties.setProperty("empty", "");
 		String expected = "An empty property: ''";
-		String actual = StringInterpolator.interpolate(
+		String actual = StringHelper.interpolate(
 				"An empty property: '${empty}'", properties);
 		assertEquals(expected, actual);
 	}
@@ -101,7 +101,7 @@ public class StringInterpolatorTest {
 		properties.setProperty("her", "4");
 		properties.setProperty("234", "5");
 		String expected = "The value from ${${to}${get}${her}} is 5.";
-		String actual = StringInterpolator.interpolate(
+		String actual = StringHelper.interpolate(
 				"The value from $${$${to}$${get}$${her}} is ${${to}${get}${her}}.", 
 				properties);
 		assertEquals(expected, actual);
@@ -118,7 +118,7 @@ public class StringInterpolatorTest {
 		properties.setProperty("now", "6");
 		properties.setProperty("156", "7");
 		String expected = "The value from ${${all}${${to}${get}${her}}${now}} is 7.";
-		String actual = StringInterpolator.interpolate(
+		String actual = StringHelper.interpolate(
 				"The value from $${$${all}$${$${to}$${get}$${her}}$${now}} "
 				+ "is ${${all}${${to}${get}${her}}${now}}.", 
 				properties);
