@@ -5,7 +5,7 @@
 	<artifactId>argmatey</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
 	<name>ArgMatey</name>
-	<description>A Java annotation-based command line arguments parser with completely customizable program usage and help</description>
+	<description>A Java command line arguments parser with triggerable events and completely customizable program usage and help</description>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>

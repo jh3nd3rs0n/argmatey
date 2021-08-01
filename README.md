@@ -2,7 +2,7 @@
 
 [![Total alerts](https://img.shields.io/lgtm/alerts/g/jh3nd3rs0n/argmatey.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/jh3nd3rs0n/argmatey/alerts/) [![Language grade: Java](https://img.shields.io/lgtm/grade/java/g/jh3nd3rs0n/argmatey.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/jh3nd3rs0n/argmatey/context:java) [![Codacy Badge](https://app.codacy.com/project/badge/Grade/246e8008635747eb94e11641504d553d)](https://www.codacy.com/gh/jh3nd3rs0n/argmatey/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=jh3nd3rs0n/argmatey&amp;utm_campaign=Badge_Grade)
 
-ArgMatey is a Java annotation-based command line arguments parser with completely customizable program usage and help.
+ArgMatey is a Java command line arguments parser with triggerable events and completely customizable program usage and help.
 
 **DISCLAIMER**: ArgMatey is not production-ready but it aims to be. It is also subject to breaking changes.
 
@@ -19,7 +19,7 @@ ArgMatey is a Java annotation-based command line arguments parser with completel
 
 ## Features
 
-**Extended class with annotated methods to define and receive results from parsing.** The following is an example:
+**Extended class with triggerable event methods before, during, and after parsing.** The following is an example:
 
 ```java
     
@@ -279,6 +279,13 @@ ArgMatey is a Java annotation-based command line arguments parser with completel
 -   Long options (examples: `-help` `-version` `-output-file file.txt`)
 -   POSIX options (examples: `-h` `-v` `-o file.txt`)
 
+**Command line argument parsing with triggerable events.** This style of command line argument parsing has the following advantages:
+
+-   Interpretation of multiple occurrences of the same option
+-   Interpretation of multiple occurrences of options from the same group
+-   Interpretation of options and arguments based on the ordering provided
+-   Adaptability of the program based on the option or argument encountered
+
 **Complete customization of the program usage and help.** Every level of the program usage and help can be customized. A customized `OptionUsageProvider` can be used to provide the usage of one, a few, or all options of a particular type in a different format. A customized `OptionGroupHelpTextProvider` can be used to provide the help text of one, a few, or all option groups in a different format. Methods `CLI.displayProgramUsage()` and `CLI.displayProgramHelp()` can be overridden to display the entire program usage and help in a completely different format. The following is the earlier example using a customized `OptionGroupHelpTextProvider`:
 
 ```java
@@ -379,7 +386,7 @@ ArgMatey is a Java annotation-based command line arguments parser with completel
     
 ```
 
-**Single source code file.** As an alternative to importing ArgMatey as a Maven dependency or a jar file, ArgMatey can be imported to a project as a source code file.
+**Single source code file.** As an alternative to importing ArgMatey as a Maven dependency or a JAR file, ArgMatey can be imported to a project as a source code file.
 
 ## Examples
 
@@ -446,7 +453,7 @@ To add a dependency on ArgMatey using Maven, use the following:
 
 ## Building
 
-To build and package ArgMatey as a jar file, run the following command:
+To build and package ArgMatey as a JAR file, run the following command:
 
 ```bash
 
@@ -454,7 +461,7 @@ To build and package ArgMatey as a jar file, run the following command:
 
 ```
 
-After running the aforementioned command, the jar file can be found in the following path:
+After running the aforementioned command, the JAR file can be found in the following path:
 
 ```text
     
@@ -462,7 +469,7 @@ After running the aforementioned command, the jar file can be found in the follo
     
 ```
 
-`${VERSION}` is replaced by the actual version shown within the name of the jar file.
+`${VERSION}` is replaced by the actual version shown within the name of the JAR file.
   
 ## Contact
 
