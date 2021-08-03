@@ -1,4 +1,4 @@
-package argmatey;
+package com.github.jh3nd3rs0n.argmatey;
 
 import static org.junit.Assert.assertEquals;
 
@@ -10,12 +10,13 @@ import java.util.Optional;
 
 import org.junit.Test;
 
-import argmatey.ArgMatey.Annotations.Option;
-import argmatey.ArgMatey.Annotations.OptionArgSpec;
-import argmatey.ArgMatey.CLI;
-import argmatey.ArgMatey.OptionGroupHelpTextParams;
-import argmatey.ArgMatey.OptionGroupHelpTextProvider;
-import argmatey.ArgMatey.OptionType;
+import com.github.jh3nd3rs0n.argmatey.ArgMatey;
+import com.github.jh3nd3rs0n.argmatey.ArgMatey.CLI;
+import com.github.jh3nd3rs0n.argmatey.ArgMatey.OptionGroupHelpTextParams;
+import com.github.jh3nd3rs0n.argmatey.ArgMatey.OptionGroupHelpTextProvider;
+import com.github.jh3nd3rs0n.argmatey.ArgMatey.OptionType;
+import com.github.jh3nd3rs0n.argmatey.ArgMatey.Annotations.Option;
+import com.github.jh3nd3rs0n.argmatey.ArgMatey.Annotations.OptionArgSpec;
 
 public class Base64CLITest {
 

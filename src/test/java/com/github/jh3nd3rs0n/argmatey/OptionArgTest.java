@@ -1,4 +1,4 @@
-package argmatey;
+package com.github.jh3nd3rs0n.argmatey;
 
 import static org.junit.Assert.assertEquals;
 
@@ -7,7 +7,7 @@ import java.util.List;
 
 import org.junit.Test;
 
-import argmatey.ArgMatey.OptionArg;
+import com.github.jh3nd3rs0n.argmatey.ArgMatey.OptionArg;
 
 public class OptionArgTest {
 

@@ -1,4 +1,4 @@
-package argmatey;
+package com.github.jh3nd3rs0n.argmatey;
 
 import static org.junit.Assert.assertEquals;
 
@@ -6,7 +6,7 @@ import java.util.Optional;
 
 import org.junit.Test;
 
-import argmatey.ArgMatey.OptionalBoolean;
+import com.github.jh3nd3rs0n.argmatey.ArgMatey.OptionalBoolean;
 
 public class OptionalBooleanTest {
 

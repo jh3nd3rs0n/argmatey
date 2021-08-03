@@ -1,10 +1,10 @@
-package argmatey;
+package com.github.jh3nd3rs0n.argmatey;
 
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import argmatey.ArgMatey.EndOfOptionsDelimiter;
+import com.github.jh3nd3rs0n.argmatey.ArgMatey.EndOfOptionsDelimiter;
 
 public class EndOfOptionsDelimiterTest {
 

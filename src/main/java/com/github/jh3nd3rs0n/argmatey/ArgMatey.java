@@ -23,7 +23,7 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE. 
 */
 
-package argmatey;
+package com.github.jh3nd3rs0n.argmatey;
 
 import java.io.PrintStream;
 import java.io.PrintWriter;

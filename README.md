@@ -444,7 +444,7 @@ To add a dependency on ArgMatey using Maven, use the following:
 ```xml
 
     <dependency>
-    	<groupId>argmatey</groupId>
+    	<groupId>com.github.jh3nd3rs0n</groupId>
     	<artifactId>argmatey</artifactId>
     	<version>1.0.0-SNAPSHOT</version>
     </dependency>
