@@ -19,7 +19,22 @@ ArgMatey is a Java command line arguments parser with triggerable events and com
 
 ## Features
 
-**Extended class with triggerable event methods before, during, and after parsing.** The following is an example:
+**Option syntax and behavior based on the [POSIX Utility Conventions](http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap12.html), GNU's function [getopt_long](http://www.gnu.org/software/libc/manual/html_node/Getopt-Long-Options.html#Getopt-Long-Options), and GNU's [Argp](http://www.gnu.org/software/libc/manual/html_node/Argp.html#Argp) interface.** The types of options you can use are familiar and readily understood by many.
+
+**Option types:**
+
+-   GNU long options (examples: `--help` `--version` `--output-file=file.txt`)
+-   Long options (examples: `-help` `-version` `-output-file file.txt`)
+-   POSIX options (examples: `-h` `-v` `-o file.txt`)
+
+**Command line argument parsing with triggerable events.** This style of command line argument parsing has the following advantages:
+
+-   Interpretation of multiple occurrences of the same option
+-   Interpretation of multiple occurrences of options from the same group
+-   Interpretation of options and arguments based on the ordering provided
+-   Adaptability of the program based on the option or argument encountered
+
+The following is an example of using ArgMatey:
 
 ```java
     
@@ -271,21 +286,6 @@ ArgMatey is a Java command line arguments parser with triggerable events and com
     
 ```
 
-**Option syntax and behavior based on the [POSIX Utility Conventions](http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap12.html), GNU's function [getopt_long](http://www.gnu.org/software/libc/manual/html_node/Getopt-Long-Options.html#Getopt-Long-Options), and GNU's [Argp](http://www.gnu.org/software/libc/manual/html_node/Argp.html#Argp) interface.** The types of options you can use are familiar and readily understood by many.
-
-**Option types:**
-
--   GNU long options (examples: `--help` `--version` `--output-file=file.txt`)
--   Long options (examples: `-help` `-version` `-output-file file.txt`)
--   POSIX options (examples: `-h` `-v` `-o file.txt`)
-
-**Command line argument parsing with triggerable events.** This style of command line argument parsing has the following advantages:
-
--   Interpretation of multiple occurrences of the same option
--   Interpretation of multiple occurrences of options from the same group
--   Interpretation of options and arguments based on the ordering provided
--   Adaptability of the program based on the option or argument encountered
-
 **Complete customization of the program usage and help.** Every level of the program usage and help can be customized. A customized `OptionUsageProvider` can be used to provide the usage of one, a few, or all options of a particular type in a different format. A customized `OptionGroupHelpTextProvider` can be used to provide the help text of one, a few, or all option groups in a different format. Methods `CLI.displayProgramUsage()` and `CLI.displayProgramHelp()` can be overridden to display the entire program usage and help in a completely different format. The following is the earlier example using a customized `OptionGroupHelpTextProvider`:
 
 ```java
@@ -392,8 +392,8 @@ ArgMatey is a Java command line arguments parser with triggerable events and com
 
 The following are some examples of projects using ArgMatey:
 
--   [Jargyle](https://github.com/jh3nd3rs0n/jargyle) (specific examples: [SocksServerCLI.java](https://github.com/jh3nd3rs0n/jargyle/blob/master/src/main/java/jargyle/net/socks/server/SocksServerCLI.java), [UsersCLI.java](https://github.com/jh3nd3rs0n/jargyle/blob/master/src/main/java/jargyle/net/socks/server/v5/userpassauth/UsersCLI.java))
--   [JBase64Transformer](https://github.com/jh3nd3rs0n/jbase64transformer) (specific example: [Base64Transformer.java](https://github.com/jh3nd3rs0n/jbase64transformer/blob/master/src/main/java/jbase64transformer/Base64Transformer.java))
+-   [Jargyle](https://github.com/jh3nd3rs0n/jargyle) (specific examples: [SocksServerCLI.java](https://github.com/jh3nd3rs0n/jargyle/blob/master/src/main/java/com/github/jh3nd3rs0n/jargyle/net/socks/server/SocksServerCLI.java), [UsersCLI.java](https://github.com/jh3nd3rs0n/jargyle/blob/master/src/main/java/com/github/jh3nd3rs0n/jargyle/net/socks/server/v5/userpassauth/UsersCLI.java))
+-   [JBase64Transformer](https://github.com/jh3nd3rs0n/jbase64transformer) (specific example: [Base64Transformer.java](https://github.com/jh3nd3rs0n/jbase64transformer/blob/master/src/main/java/com/github/jh3nd3rs0n/jbase64transformer/Base64Transformer.java))
 
 ## Requirements
 
