@@ -1,6 +1,7 @@
 package com.github.jh3nd3rs0n.argmatey;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -331,6 +332,41 @@ public class Base64CLITest {
 		handle(new String[] { "--decode", "--ignore-garbage", "text.txt" }, null, null, out);
 		String actualString = new String(bytesOut.toByteArray());
 		assertEquals(expectedString, actualString);
+	}
+
+	@Test
+	public void test08() throws IOException {
+		String expectedString = new StringBuilder()
+				.append(String.format("columnLimit: %s%n", 76))
+				.append(String.format("decodingMode: %s%n", false))
+				.append(String.format("file: %s%n", "--bogus"))
+				.append(String.format("garbageIgnored: %s%n", false))
+				.toString();
+		ByteArrayOutputStream bytesOut = new ByteArrayOutputStream();
+		PrintStream out = new PrintStream(bytesOut);
+		handle(new String[] { "--", "--bogus" }, null, null, out);
+		String actualString = new String(bytesOut.toByteArray());
+		assertEquals(expectedString, actualString);
+	}
+
+	@Test
+	public void test09() throws IOException {
+		String expectedString = "unknown option `--bogus'";
+		ByteArrayOutputStream bytesOut = new ByteArrayOutputStream();
+		PrintStream out = new PrintStream(bytesOut);
+		handle(new String[] { "--bogus" }, out, null, null);
+		String actualString = new String(bytesOut.toByteArray());
+		assertTrue(actualString.contains(expectedString));
+	}
+
+	@Test
+	public void test10() throws IOException {
+		String expectedString = "unknown option `-e'";
+		ByteArrayOutputStream bytesOut = new ByteArrayOutputStream();
+		PrintStream out = new PrintStream(bytesOut);
+		handle(new String[] { "-decode" }, out, null, null);
+		String actualString = new String(bytesOut.toByteArray());
+		assertTrue(actualString.contains(expectedString));
 	}
 	
 	@Test
