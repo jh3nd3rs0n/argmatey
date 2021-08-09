@@ -7,7 +7,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
-import java.util.Optional;
 
 import org.junit.Test;
 
@@ -42,21 +41,21 @@ public class Base64CLITest {
 		}
 		
 		@Override
-		protected Optional<Integer> afterHandleArgs() {
+		protected Integer afterHandleArgs() {
 			System.out.printf("columnLimit: %s%n", this.columnLimit);
 			System.out.printf("decodingMode: %s%n", this.decodingMode);
 			System.out.printf("file: %s%n", this.file);
 			System.out.printf("garbageIgnored: %s%n", this.garbageIgnored);
-			return Optional.of(Integer.valueOf(0));
+			return Integer.valueOf(0);
 		}
 		
 		@Override
-		protected Optional<Integer> beforeHandleArgs() {
+		protected Integer beforeHandleArgs() {
 			this.columnLimit = 76;
 			this.decodingMode = false;
 			this.file = null;
 			this.garbageIgnored = false;
-			return Optional.empty();
+			return null;
 		}
 		
 		@Override
@@ -212,7 +211,7 @@ public class Base64CLITest {
 			System.setIn(in);
 		}
 		CLI cli = new Base64CLI(args);
-		Optional<Integer> status;
+		Integer status;
 		try {
 			status = cli.handleArgs();
 		} finally {
@@ -226,7 +225,7 @@ public class Base64CLITest {
 				System.setIn(formerIn);
 			}
 		}
-		return status.isPresent() ? status.get().intValue() : 0;
+		return status != null ? status.intValue() : 0;
 	}
 
 	@Test

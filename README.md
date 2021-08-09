@@ -68,60 +68,60 @@ The following is an example of using ArgMatey:
          * Invoked after parsing and handling the command line 
          * arguments.
          * 
-         * A non-empty Optional Integer can be returned as a status 
-         * code which will terminate any further parsing and 
-         * handling of the command line arguments. 
+         * A non-null Integer can be returned as a status code 
+         * which will terminate any further parsing and handling 
+         * of the command line arguments. 
          */
         @Override
-        protected Optional<Integer> afterHandleArgs() {
+        protected Integer afterHandleArgs() {
             /*
              * Post parsing stuff can happen here...
              */
-            return Optional.empty();
+            return null;
         }
         
         /*
          * Invoked after parsing and handling the next part of the 
          * command line argument or the next command line argument.
          * 
-         * A non-empty Optional Integer can be returned as a status 
-         * code which will terminate any further parsing and 
-         * handling of the command line arguments. 
+         * A non-null Integer can be returned as a status code 
+         * which will terminate any further parsing and handling 
+         * of the command line arguments. 
          */
         @Override
-        protected Optional<Integer> afterHandleNext() {
-            return Optional.empty();
+        protected Integer afterHandleNext() {
+            return null;
         }
         
         /*
          * Invoked before parsing and handling the command line 
          * arguments.
          *
-         * A non-empty Optional Integer can be returned as a status 
-         * code which will terminate any further parsing and 
-         * handling of the command line arguments.
+         * A non-null Integer can be returned as a status code 
+         * which will terminate any further parsing and handling 
+         * of the command line arguments.
          */
         @Override
-        protected Optional<Integer> beforeHandleArgs() {
+        protected Integer beforeHandleArgs() {
             // initialization
             this.columnLimit = 76; // default            
             this.decodingMode = false;
             this.file = null;            
             this.garbageIgnored = false;
-            return Optional.empty();
+            return null;
         }
         
         /*
          * Invoked before parsing and handling the next part of the 
          * command line argument or the next command line argument.
          *
-         * A non-empty Optional Integer can be returned as a status 
-         * code which will terminate any further parsing and 
-         * handling of the command line arguments.
+         * A non-null Integer can be returned as a status code 
+         * which will terminate any further parsing and handling 
+         * of the command line arguments.
          */
         @Override
-        protected Optional<Integer> beforeHandleNext() {
-            return Optional.empty();
+        protected Integer beforeHandleNext() {
+            return null;
         }
                 
         /*
@@ -148,12 +148,12 @@ The following is an example of using ArgMatey:
          * handling the next part of the command line argument or 
          * the next command line argument.
          *
-         * A non-empty Optional Integer can be returned as a status 
-         * code which will terminate any further parsing and 
-         * handling of the command line arguments.
+         * A non-null Integer can be returned as a status code 
+         * which will terminate any further parsing and handling 
+         * of the command line arguments.
          */
         @Override
-        protected Optional<Integer> handleThrowable(Throwable t) {
+        protected Integer handleThrowable(Throwable t) {
             /*
              * Custom error message can be displayed here instead
              * of using the statement below.
@@ -248,9 +248,9 @@ The following is an example of using ArgMatey:
         public static void main(String[] args) {
             // how to use a CLI such as Base64CLI
             CLI cli = new Base64CLI(args);
-            Optional<Integer> status = cli.handleArgs();
-            if (status.isPresent() && status.get().intValue() != 0) { 
-                System.exit(status.get().intValue());
+            Integer status = cli.handleArgs();
+            if (status != null && status.intValue() != 0) { 
+                System.exit(status.intValue());
             }
         }
         
