@@ -52,76 +52,58 @@ The following is an example of using ArgMatey:
         public Base64CLI(String[] args) {
             super(args, false);
             // for the program help and version information
-            this.programDoc = new StringBuilder()
+            this.setProgramDoc(new StringBuilder()
                 .append("Base64 encode or decode FILE, ")
                 .append("or standard input, to standard output.")
                 .append(String.format("%n%n"))
                 .append("With no FILE, or when FILE is -, ")
                 .append("read standard input.")
-                .toString();
-            this.programName = "base64";
-            this.programOperandsUsage = "[FILE]";
-            this.programVersion = "base64 1.0";
+                .toString());
+            this.setProgramName("base64");
+            this.setProgramOperandsUsage("[FILE]");
+            this.setProgramVersion("base64 1.0");
         }
         
         /*
          * Invoked after parsing and handling the command line 
          * arguments.
-         * 
-         * A non-null Integer can be returned as a status code 
-         * which will terminate any further parsing and handling 
-         * of the command line arguments. 
          */
         @Override
-        protected Integer afterHandleArgs() {
-            /*
-             * Post parsing stuff can happen here...
-             */
-            return null;
+        protected void afterHandleArgs() 
+            throws TerminationRequestedException {
+            // post parsing stuff can happen here...
         }
         
         /*
          * Invoked after parsing and handling the next part of the 
          * command line argument or the next command line argument.
-         * 
-         * A non-null Integer can be returned as a status code 
-         * which will terminate any further parsing and handling 
-         * of the command line arguments. 
          */
         @Override
-        protected Integer afterHandleNext() {
-            return null;
+        protected void afterHandleNext() 
+            throws TerminationRequestedException {
         }
         
         /*
          * Invoked before parsing and handling the command line 
          * arguments.
-         *
-         * A non-null Integer can be returned as a status code 
-         * which will terminate any further parsing and handling 
-         * of the command line arguments.
          */
         @Override
-        protected Integer beforeHandleArgs() {
+        protected void beforeHandleArgs() 
+            throws TerminationRequestedException {
             // initialization
             this.columnLimit = 76; // default            
             this.decodingMode = false;
             this.file = null;            
             this.garbageIgnored = false;
-            return null;
         }
         
         /*
          * Invoked before parsing and handling the next part of the 
          * command line argument or the next command line argument.
-         *
-         * A non-null Integer can be returned as a status code 
-         * which will terminate any further parsing and handling 
-         * of the command line arguments.
          */
         @Override
-        protected Integer beforeHandleNext() {
-            return null;
+        protected void beforeHandleNext() 
+            throws TerminationRequestedException {
         }
                 
         /*
@@ -131,7 +113,8 @@ The following is an example of using ArgMatey:
          * method parameter below. 
          */
         @Override
-        protected void handleNonparsedArg(String nonparsedArg) {
+        protected void handleNonparsedArg(String nonparsedArg) 
+            throws TerminationRequestedException {
             if (this.file != null) {
                 /*
                  * IllegalArgumentExceptions for invalid non-parsed
@@ -147,18 +130,15 @@ The following is an example of using ArgMatey:
          * Invoked when a Throwable is thrown when parsing and 
          * handling the next part of the command line argument or 
          * the next command line argument.
-         *
-         * A non-null Integer can be returned as a status code 
-         * which will terminate any further parsing and handling 
-         * of the command line arguments.
          */
         @Override
-        protected Integer handleThrowable(Throwable t) {
+        protected void handleThrowable(Throwable t) 
+            throws TerminationRequestedException {
             /*
              * Custom error message can be displayed here instead
              * of using the statement below.
              */
-            return super.handleThrowable(t);
+            super.handleThrowable(t);
         }
                 
         /*
@@ -248,9 +228,10 @@ The following is an example of using ArgMatey:
         public static void main(String[] args) {
             // how to use a CLI such as Base64CLI
             CLI cli = new Base64CLI(args);
-            Integer status = cli.handleArgs();
-            if (status != null && status.intValue() != 0) { 
-                System.exit(status.intValue());
+            try {
+                cli.handleArgs();
+            } catch (TerminationRequestedException e) {
+                System.exit(e.getExitStatusCode());
             }
         }
         
@@ -393,7 +374,7 @@ The following is an example of using ArgMatey:
 The following are some examples of projects using ArgMatey:
 
 -   [Jargyle](https://github.com/jh3nd3rs0n/jargyle) (specific examples: [SocksServerCLI.java](https://github.com/jh3nd3rs0n/jargyle/blob/master/src/main/java/com/github/jh3nd3rs0n/jargyle/net/socks/server/SocksServerCLI.java), [UsersCLI.java](https://github.com/jh3nd3rs0n/jargyle/blob/master/src/main/java/com/github/jh3nd3rs0n/jargyle/net/socks/server/v5/userpassauth/UsersCLI.java))
--   [JBase64Transformer](https://github.com/jh3nd3rs0n/jbase64transformer) (specific example: [Base64Transformer.java](https://github.com/jh3nd3rs0n/jbase64transformer/blob/master/src/main/java/com/github/jh3nd3rs0n/jbase64transformer/Base64Transformer.java))
+-   [JBase64Transformer](https://github.com/jh3nd3rs0n/jbase64transformer) (specific example: [Base64TransformerCLI.java](https://github.com/jh3nd3rs0n/jbase64transformer/blob/master/src/main/java/com/github/jh3nd3rs0n/jbase64transformer/Base64TransformerCLI.java))
 
 ## Requirements
 

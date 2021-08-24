@@ -3,6 +3,7 @@ package com.github.jh3nd3rs0n.argmatey;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -16,6 +17,7 @@ import com.github.jh3nd3rs0n.argmatey.ArgMatey.CLI;
 import com.github.jh3nd3rs0n.argmatey.ArgMatey.OptionGroupHelpTextParams;
 import com.github.jh3nd3rs0n.argmatey.ArgMatey.OptionGroupHelpTextProvider;
 import com.github.jh3nd3rs0n.argmatey.ArgMatey.OptionType;
+import com.github.jh3nd3rs0n.argmatey.ArgMatey.TerminationRequestedException;
 
 public class Base64CLITest {
 
@@ -28,34 +30,33 @@ public class Base64CLITest {
 
 		public Base64CLI(String[] args) {
 			super(args, false);
-			this.programDoc = new StringBuilder()
+			this.setProgramDoc(new StringBuilder()
 					.append("Base64 encode or decode FILE, ")
 					.append("or standard input, to standard output.")
 					.append(String.format("%n%n"))
 					.append("With no FILE, or when FILE is -, ")
 					.append("read standard input.")
-					.toString();
-			this.programName = "base64";
-			this.programOperandsUsage = "[FILE]";
-			this.programVersion = "base64 1.0";
+					.toString());
+			this.setProgramName("base64");
+			this.setProgramOperandsUsage("[FILE]");
+			this.setProgramVersion("base64 1.0");
 		}
 		
 		@Override
-		protected Integer afterHandleArgs() {
+		protected void afterHandleArgs() throws TerminationRequestedException {
 			System.out.printf("columnLimit: %s%n", this.columnLimit);
 			System.out.printf("decodingMode: %s%n", this.decodingMode);
 			System.out.printf("file: %s%n", this.file);
 			System.out.printf("garbageIgnored: %s%n", this.garbageIgnored);
-			return Integer.valueOf(0);
+			throw new TerminationRequestedException(0);
 		}
 		
 		@Override
-		protected Integer beforeHandleArgs() {
+		protected void beforeHandleArgs() {
 			this.columnLimit = 76;
 			this.decodingMode = false;
 			this.file = null;
 			this.garbageIgnored = false;
-			return null;
 		}
 		
 		@Override
@@ -211,9 +212,11 @@ public class Base64CLITest {
 			System.setIn(in);
 		}
 		CLI cli = new Base64CLI(args);
-		Integer status;
+		int status = 0;
 		try {
-			status = cli.handleArgs();
+			cli.handleArgs();
+		} catch (TerminationRequestedException e) {
+			status = e.getExitStatusCode();
 		} finally {
 			if (err != null) {
 				System.setErr(formerErr);
@@ -225,7 +228,7 @@ public class Base64CLITest {
 				System.setIn(formerIn);
 			}
 		}
-		return status != null ? status.intValue() : 0;
+		return status;
 	}
 
 	@Test
@@ -369,6 +372,15 @@ public class Base64CLITest {
 	}
 	
 	@Test
+	public void testBogusOption() throws IOException {
+		PrintStream err = new PrintStream(new ByteArrayOutputStream());
+		InputStream in = new ByteArrayInputStream(new byte[] { });
+		PrintStream out = new PrintStream(new ByteArrayOutputStream());
+		int status = handle(new String[] { "--bogus" }, err, in, out);
+		assertTrue(status != 0);		
+	}
+
+	@Test
 	public void testCustomProgramHelp() throws IOException {
 		OptionGroupHelpTextProvider provider1 = OptionGroupHelpTextProvider.getDefault();
 		OptionGroupHelpTextProvider provider2 = new SingleLineOptionGroupHelpTextProvider();
@@ -414,7 +426,7 @@ public class Base64CLITest {
 		String actualString = new String(bytesOut.toByteArray());
 		assertEquals(expectedString, actualString);
 	}
-
+	
 	@Test
 	public void testProgramVersionFirst() throws IOException {
 		String expectedString = PROGRAM_VERSION;
@@ -424,5 +436,4 @@ public class Base64CLITest {
 		String actualString = new String(bytesOut.toByteArray());
 		assertEquals(expectedString, actualString);
 	}
-
 }
