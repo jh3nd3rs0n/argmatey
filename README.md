@@ -388,7 +388,7 @@ The following is the earlier example using a customized `OptionGroupHelpTextProv
         }
                 
         /*
-         * Output when using the option "--help" :
+         * Output when using the command line option "--help" :
          *
          * Usage: base64 [OPTION]... [FILE]
          * Base64 encode or decode FILE, or standard input, to standard output.
