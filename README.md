@@ -25,7 +25,7 @@ Triggerable event methods that can be overridden:
 -   `displayProgramHelp()`: invoked when the command line option(s) for the program help (`--help`) is encountered
 -   `displayProgramVersion()`: invoked when the command line option(s) for the program version (`--version`) is encountered
 -   `handleNonparsedArg(String)`: invoked when a non-parsed command line argument is encountered
--   `handleThrowable(Throwable)` invoked when a `Throwable` is thrown when parsing and handling the next part of the command line argument or the next command line argument
+-   `handleThrowable(Throwable)`: invoked when a `Throwable` is thrown when parsing and handling the next part of the command line argument or the next command line argument
 
 This style of command line argument parsing and handling has the following advantages:
 
