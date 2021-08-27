@@ -2,13 +2,46 @@
 
 [![Total alerts](https://img.shields.io/lgtm/alerts/g/jh3nd3rs0n/argmatey.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/jh3nd3rs0n/argmatey/alerts/) [![Language grade: Java](https://img.shields.io/lgtm/grade/java/g/jh3nd3rs0n/argmatey.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/jh3nd3rs0n/argmatey/context:java) [![Codacy Badge](https://app.codacy.com/project/badge/Grade/246e8008635747eb94e11641504d553d)](https://www.codacy.com/gh/jh3nd3rs0n/argmatey/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=jh3nd3rs0n/argmatey&amp;utm_campaign=Badge_Grade)
 
-ArgMatey is a Java command line arguments parser with triggerable events and completely customizable program usage and help.
+ArgMatey is an extensible Java command line interface that has the following features:
+
+**Command line option types whose syntax and behavior are based on the [POSIX Utility Conventions](http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap12.html), GNU's function [getopt_long](http://www.gnu.org/software/libc/manual/html_node/Getopt-Long-Options.html#Getopt-Long-Options), and GNU's [Argp](http://www.gnu.org/software/libc/manual/html_node/Argp.html#Argp) interface:**
+
+-   GNU long options (examples: `--help` `--version` `--output-file=file.txt`)
+-   Long options (examples: `-help` `-version` `-output-file file.txt`)
+-   POSIX options (examples: `-h` `-v` `-o file.txt`)
+
+**Command line argument parsing and handling with triggerable event methods.** The extensible command line interface has the following triggerable event methods:
+
+Triggerable event methods that can be added:
+
+-   `@Option` annotated methods: invoked when any of the command line options defined by the method's `@Option` annotations is encountered
+
+Triggerable event methods that can be overridden:
+
+-   `beforeHandleArgs()`: invoked before parsing and handling the command line arguments
+-   `afterHandleArgs()`: invoked after parsing and handling the command line arguments
+-   `beforeHandleNext()`: invoked before parsing and handling the next part of the command line argument or the next command line argument
+-   `afterHandleNext()`: invoked after parsing and handling the next part of the command line argument or the next command line argument
+-   `displayProgramHelp()`: invoked when the command line option(s) for the program help (`--help`) is encountered
+-   `displayProgramVersion()`: invoked when the command line option(s) for the program version (`--version`) is encountered
+-   `handleNonparsedArg(String)`: invoked when a non-parsed command line argument is encountered
+-   `handleThrowable(Throwable)` invoked when a `Throwable` is thrown when parsing and handling the next part of the command line argument or the next command line argument
+
+This style of command line argument parsing and handling has the following advantages:
+
+-   Custom interpretation of multiple occurrences of the same command line option
+-   Custom interpretation of multiple occurrences of command line options from the same group
+-   Custom interpretation of command line options and arguments based on the ordering provided
+-   Custom adaptability of the program based on the command line option or argument encountered
+
+**Complete customization of the program usage and help.** Every level of the program usage and help can be customized. The usage of one, a few, or all command line options of a particular type can be customized in a different format. The help text of one, a few, or all command line option groups can be customized in a different format. The entire program usage and help can be customized in a completely different format.
+ 
+**Single source code file.** As an alternative to importing ArgMatey as a Maven dependency or a JAR file, ArgMatey can be imported to a project as a source code file.
 
 **DISCLAIMER**: ArgMatey is not production-ready but it aims to be. It is also subject to breaking changes.
 
 ## Contents
 
--   [Features](#features)
 -   [Examples](#examples)
 -   [Requirements](#requirements)
 -   [Generating Javadocs](#generating-javadocs)
@@ -17,30 +50,23 @@ ArgMatey is a Java command line arguments parser with triggerable events and com
 -   [Building](#building)
 -   [Contact](#contact)
 
-## Features
-
-**Option syntax and behavior based on the [POSIX Utility Conventions](http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap12.html), GNU's function [getopt_long](http://www.gnu.org/software/libc/manual/html_node/Getopt-Long-Options.html#Getopt-Long-Options), and GNU's [Argp](http://www.gnu.org/software/libc/manual/html_node/Argp.html#Argp) interface.** The types of options you can use are familiar and readily understood by many.
-
-**Option types:**
-
--   GNU long options (examples: `--help` `--version` `--output-file=file.txt`)
--   Long options (examples: `-help` `-version` `-output-file file.txt`)
--   POSIX options (examples: `-h` `-v` `-o file.txt`)
-
-**Command line argument parsing with triggerable events.** This style of command line argument parsing has the following advantages:
-
--   Interpretation of multiple occurrences of the same option
--   Interpretation of multiple occurrences of options from the same group
--   Interpretation of options and arguments based on the ordering provided
--   Adaptability of the program based on the option or argument encountered
+## Examples
 
 The following is an example of using ArgMatey:
 
 ```java
     
+    import com.github.jh3nd3rs0n.argmatey.ArgMatey;
+    import com.github.jh3nd3rs0n.argmatey.ArgMatey.Annotations.Option;
+    import com.github.jh3nd3rs0n.argmatey.ArgMatey.Annotations.OptionArgSpec;
+    import com.github.jh3nd3rs0n.argmatey.ArgMatey.CLI;
+    import com.github.jh3nd3rs0n.argmatey.ArgMatey.OptionType;
+    import com.github.jh3nd3rs0n.argmatey.ArgMatey.TerminationRequestedException;
+    
     /*
      * Extends CLI to parse and handle command line options and 
-     * arguments for this Java implementation of GNU's utility base64.
+     * arguments for this Java implementation of GNU's utility 
+     * base64.
      */
     public class Base64CLI extends CLI {
     
@@ -107,10 +133,11 @@ The following is an example of using ArgMatey:
         }
                 
         /*
-         * Invoked when a non-parsed argument is encountered. In this 
-         * implementation, the non-parsed argument is the FILE argument. 
-         * The non-parsed argument is provided as an argument to the 
-         * method parameter below. 
+         * Invoked when a non-parsed command line argument is 
+         * encountered. In this implementation, the non-parsed 
+         * command line argument is the command line argument for 
+         * FILE. The non-parsed command line argument is provided 
+         * as an argument to the method parameter below. 
          */
         @Override
         protected void handleNonparsedArg(String nonparsedArg) 
@@ -118,7 +145,7 @@ The following is an example of using ArgMatey:
             if (this.file != null) {
                 /*
                  * IllegalArgumentExceptions for invalid non-parsed
-                 * arguments can be thrown.
+                 * command line arguments can be thrown.
                  */
                 throw new IllegalArgumentException(String.format(
                     "extra operand: `%s'", nonparsedArg));
@@ -142,22 +169,22 @@ The following is an example of using ArgMatey:
         }
                 
         /*
-         * Invoked when either of the options "-w" and "--wrap" is 
-         * encountered. Option argument for either of the options "-w" 
-         * and "--wrap" is provided as an argument to the method 
-         * parameter below.
+         * Invoked when either of the command line options "-w" and 
+         * "--wrap" is encountered. Command line option argument 
+         * for either of the command line options "-w" and "--wrap" 
+         * is provided as an argument to the method parameter below.
          *
-         * Methods that are annotated with @Option that allow for an 
-         * option argument must have only one method parameter. The 
-         * method parameter's type must be a type or a java.util.List 
-         * of a type that has either a static String conversion method 
-         * or a constructor that has only one constructor parameter of 
-         * type String.
+         * Methods that are annotated with @Option that allow for a 
+         * command line option argument must have only one method
+         * parameter. The method parameter's type must be a type or 
+         * a java.util.List of a type that has either a static 
+         * String conversion method or a constructor that has only 
+         * one constructor parameter of type String.
          *
          * Alternatively, for any method parameter type, a class 
          * that extends StringConverter can be used to convert the 
-         * option argument to that type. It can be supplied to 
-         * @OptionArgSpec.stringConverter.
+         * command line option argument to that type. It can be 
+         * supplied to @OptionArgSpec.stringConverter.
          */
         @Option(
             doc = "Wrap encoded lines after COLS character (default is 76)",
@@ -174,8 +201,8 @@ The following is an example of using ArgMatey:
             int intValue = i.intValue();
             if (intValue < 0) {
                 /*
-                 * IllegalArgumentExceptions for invalid option arguments
-                 * can be thrown.
+                 * IllegalArgumentExceptions for invalid command 
+                 * line option arguments can be thrown.
                  */
                 throw new IllegalArgumentException(
                     "must be a non-negative integer");
@@ -184,12 +211,13 @@ The following is an example of using ArgMatey:
         }
                 
         /*
-         * Invoked when either of the options "-d" and "--decode" is 
-         * encountered.
+         * Invoked when either of the command line options "-d" and 
+         * "--decode" is encountered.
          *
-         * Methods that are annotated with @Option that does not allow 
-         * for an option argument can have no method parameters or only 
-         * one method parameter of type boolean.
+         * Methods that are annotated with @Option that does not 
+         * allow for a command line option argument can have no 
+         * method parameters or only one method parameter of type 
+         * boolean.
          */        
         @Option(
             doc = "Decode data",
@@ -205,12 +233,13 @@ The following is an example of using ArgMatey:
         }
         
         /*
-         * Invoked when either of the options "-i" and "--ignore-garbage" 
-         * is encountered.
+         * Invoked when either of the command line options "-i" and 
+         * "--ignore-garbage" is encountered.
          *
-         * Methods that are annotated with @Option that does not allow 
-         * for an option argument can have no method parameters or only 
-         * one method parameter of type boolean.
+         * Methods that are annotated with @Option that does not 
+         * allow for a command line option argument can have no 
+         * method parameters or only one method parameter of type 
+         * boolean.
          */
         @Option(
             doc = "When decoding, ignore non-alphabet characters",
@@ -267,15 +296,19 @@ The following is an example of using ArgMatey:
     
 ```
 
-**Complete customization of the program usage and help.** Every level of the program usage and help can be customized. A customized `OptionUsageProvider` can be used to provide the usage of one, a few, or all options of a particular type in a different format. A customized `OptionGroupHelpTextProvider` can be used to provide the help text of one, a few, or all option groups in a different format. Methods `CLI.displayProgramUsage()` and `CLI.displayProgramHelp()` can be overridden to display the entire program usage and help in a completely different format. The following is the earlier example using a customized `OptionGroupHelpTextProvider`:
+The following is the earlier example using a customized `OptionGroupHelpTextProvider`:
 
 ```java
+    
+    // ...
+    import com.github.jh3nd3rs0n.argmatey.ArgMatey.OptionGroupHelpTextParams;
+    import com.github.jh3nd3rs0n.argmatey.ArgMatey.OptionGroupHelpTextProvider;
     
     public class Base64CLI extends CLI {
         
         /*
-         * Provides the help text for an option group on a single line 
-         * instead of multiple lines.
+         * Provides the help text for a command line option group 
+         * on a single line instead of multiple lines.
          */
         private static class SingleLineOptionGroupHelpTextProvider 
             extends ArgMatey.OptionGroupHelpTextProvider {
@@ -327,7 +360,7 @@ The following is an example of using ArgMatey:
         )
         /*
          * You can apply the OptionGroupHelpTextProvider to a 
-         * particular option group...
+         * particular command line option group...
          */ 
         @OptionGroupHelpTextProvider(SingleLineOptionGroupHelpTextProvider.class)
         private void setColumnLimit(Integer i) {
@@ -339,7 +372,7 @@ The following is an example of using ArgMatey:
         public static void main(String[] args) {
             /*
              * ... or you can apply the OptionGroupHelpTextProvider 
-             * to all option groups.
+             * to all command line option groups.
              */
             ArgMatey.OptionGroupHelpTextProvider provider = new SingleLineOptionGroupHelpTextProvider();
             ArgMatey.OptionGroupHelpTextProvider.setDefault(provider);
@@ -366,10 +399,6 @@ The following is an example of using ArgMatey:
     }
     
 ```
-
-**Single source code file.** As an alternative to importing ArgMatey as a Maven dependency or a JAR file, ArgMatey can be imported to a project as a source code file.
-
-## Examples
 
 The following are some examples of projects using ArgMatey:
 
