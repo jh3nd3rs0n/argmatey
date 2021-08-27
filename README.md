@@ -2,7 +2,7 @@
 
 [![Total alerts](https://img.shields.io/lgtm/alerts/g/jh3nd3rs0n/argmatey.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/jh3nd3rs0n/argmatey/alerts/) [![Language grade: Java](https://img.shields.io/lgtm/grade/java/g/jh3nd3rs0n/argmatey.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/jh3nd3rs0n/argmatey/context:java) [![Codacy Badge](https://app.codacy.com/project/badge/Grade/246e8008635747eb94e11641504d553d)](https://www.codacy.com/gh/jh3nd3rs0n/argmatey/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=jh3nd3rs0n/argmatey&amp;utm_campaign=Badge_Grade)
 
-ArgMatey is an extensible Java command line interface that has the following features:
+ArgMatey is an extensible Java command line interface. It has the following features:
 
 **Command line option types whose syntax and behavior are based on the [POSIX Utility Conventions](http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap12.html), GNU's function [getopt_long](http://www.gnu.org/software/libc/manual/html_node/Getopt-Long-Options.html#Getopt-Long-Options), and GNU's [Argp](http://www.gnu.org/software/libc/manual/html_node/Argp.html#Argp) interface:**
 
@@ -34,7 +34,11 @@ This style of command line argument parsing and handling has the following advan
 -   Custom interpretation of command line options and arguments based on the ordering provided
 -   Custom adaptability of the program based on the command line option or argument encountered
 
+An example of using ArgMatey's command line argument parsing and handling can be found [here](#example-of-using-argmatey).
+
 **Complete customization of the program usage and help.** Every level of the program usage and help can be customized. The usage of one, a few, or all command line options of a particular type can be customized in a different format. The help text of one, a few, or all command line option groups can be customized in a different format. The entire program usage and help can be customized in a completely different format.
+
+An example of customizing one aspect of the program help can be found [here](#example-of-customizing-the-help-text-of-command-line-option-groups).
  
 **Single source code file.** As an alternative to importing ArgMatey as a Maven dependency or a JAR file, ArgMatey can be imported to a project as a source code file.
 
@@ -51,6 +55,8 @@ This style of command line argument parsing and handling has the following advan
 -   [Contact](#contact)
 
 ## Examples
+
+### Example of Using ArgMatey
 
 The following is an example of using ArgMatey:
 
@@ -265,7 +271,7 @@ The following is an example of using ArgMatey:
         }
         
         /*
-         * Output when using the option "--help" :
+         * Output when using the command line option "--help" :
          *
          * Usage: base64 [OPTION]... [FILE]
          * Base64 encode or decode FILE, or standard input, to standard output.
@@ -287,7 +293,7 @@ The following is an example of using ArgMatey:
          */
          
         /*
-         * Output when using the option "--version" :
+         * Output when using the command line option "--version" :
          *
          * base64 1.0
          *
@@ -295,6 +301,8 @@ The following is an example of using ArgMatey:
     }
     
 ```
+
+### Example of Customizing the Help Text of Command Line Option Groups
 
 The following is the earlier example using a customized `OptionGroupHelpTextProvider`:
 
@@ -399,6 +407,8 @@ The following is the earlier example using a customized `OptionGroupHelpTextProv
     }
     
 ```
+
+### Other Examples
 
 The following are some examples of projects using ArgMatey:
 
