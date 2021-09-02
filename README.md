@@ -2,7 +2,25 @@
 
 [![Total alerts](https://img.shields.io/lgtm/alerts/g/jh3nd3rs0n/argmatey.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/jh3nd3rs0n/argmatey/alerts/) [![Language grade: Java](https://img.shields.io/lgtm/grade/java/g/jh3nd3rs0n/argmatey.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/jh3nd3rs0n/argmatey/context:java) [![Codacy Badge](https://app.codacy.com/project/badge/Grade/246e8008635747eb94e11641504d553d)](https://www.codacy.com/gh/jh3nd3rs0n/argmatey/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=jh3nd3rs0n/argmatey&amp;utm_campaign=Badge_Grade)
 
-ArgMatey is an extensible Java command line interface. It has the following features:
+
+ArgMatey is an extensible Java command line interface.
+
+**DISCLAIMER**: ArgMatey is not production-ready but it aims to be. It is also subject to breaking changes.
+
+## Contents
+
+-   [About](#about)
+-   [Examples](#examples)
+-   [Requirements](#requirements)
+-   [Generating Javadocs](#generating-javadocs)
+-   [Automated Testing](#automated-testing)
+-   [Installing](#installing)
+-   [Building](#building)
+-   [Contact](#contact)
+
+## About
+
+ArgMatey is an extensible Java command line interface that has the following features:
 
 **Command line option types whose syntax and behavior are based on the [POSIX Utility Conventions](http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap12.html), GNU's function [getopt_long](http://www.gnu.org/software/libc/manual/html_node/Getopt-Long-Options.html#Getopt-Long-Options), and GNU's [Argp](http://www.gnu.org/software/libc/manual/html_node/Argp.html#Argp) interface:**
 
@@ -41,18 +59,6 @@ An example of using ArgMatey's command line argument parsing and handling can be
 An example of customizing one aspect of the program help can be found [here](#example-of-customizing-the-help-text-of-command-line-option-groups).
  
 **Single source code file.** As an alternative to importing ArgMatey as a Maven dependency or a JAR file, ArgMatey can be imported to a project as a source code file.
-
-**DISCLAIMER**: ArgMatey is not production-ready but it aims to be. It is also subject to breaking changes.
-
-## Contents
-
--   [Examples](#examples)
--   [Requirements](#requirements)
--   [Generating Javadocs](#generating-javadocs)
--   [Automated Testing](#automated-testing)
--   [Installing](#installing)
--   [Building](#building)
--   [Contact](#contact)
 
 ## Examples
 
