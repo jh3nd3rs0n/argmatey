@@ -313,11 +313,11 @@ The following is an example of using ArgMatey:
 The following is the earlier example using a customized `OptionGroupHelpTextProvider`:
 
 ```java
-    
+
     // ...
+    import com.github.jh3nd3rs0n.argmatey.ArgMatey.Annotations.OptionGroupHelpTextProvider;
     import com.github.jh3nd3rs0n.argmatey.ArgMatey.OptionGroupHelpTextParams;
-    import com.github.jh3nd3rs0n.argmatey.ArgMatey.OptionGroupHelpTextProvider;
-    
+        
     public class Base64CLI extends CLI {
         
         /*
