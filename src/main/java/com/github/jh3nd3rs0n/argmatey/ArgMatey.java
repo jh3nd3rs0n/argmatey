@@ -183,8 +183,20 @@ public final class ArgMatey {
 			this.properties = new HashMap<String, Object>();
 		}
 		
+		public String getArg() {
+			return this.args[this.argIndex];
+		}
+		
+		public String getArg(final int index) {
+			return this.args[index];
+		}
+		
 		public int getArgCharIndex() {
 			return this.argCharIndex;
+		}
+		
+		public int getArgCount() {
+			return this.args.length;
 		}
 		
 		public int getArgIndex() {
@@ -194,7 +206,7 @@ public final class ArgMatey {
 		public String[] getArgs() {
 			return Arrays.copyOf(this.args, this.args.length);
 		}
-		
+				
 		public Map<String, Object> getProperties() {
 			return Collections.unmodifiableMap(this.properties);
 		}
@@ -403,8 +415,20 @@ public final class ArgMatey {
 			this.parseResultHolder = null;
 		}
 
+		public String getArg() {
+			return this.argHandlerContext.getArg();
+		}
+		
+		public String getArg(final int index) {
+			return this.argHandlerContext.getArg(index);
+		}
+		
 		public int getArgCharIndex() {
 			return this.argHandlerContext.getArgCharIndex();
+		}
+		
+		public int getArgCount() {
+			return this.argHandlerContext.getArgCount();
 		}
 		
 		public int getArgIndex() {
@@ -424,35 +448,34 @@ public final class ArgMatey {
 		}
 		
 		public boolean hasNext() {
-			String[] args = this.getArgs();
-			int argIndex = this.getArgIndex();
-			int argCharIndex = this.getArgCharIndex();
+			int argIndex = this.argHandlerContext.getArgIndex();
+			int argCharIndex = this.argHandlerContext.getArgCharIndex();
 			return (argIndex > -1 && argCharIndex > -1 
-					&& argCharIndex < args[argIndex].length() - 1) 
-					|| argIndex < args.length - 1;
+					&& argCharIndex < this.argHandlerContext.getArg().length() - 1) 
+					|| argIndex < this.argHandlerContext.getArgCount() - 1;
 		}
 		
 		public String next() {
 			String next = null;
-			int argIndex = this.getArgIndex();
-			int argCharIndex = this.getArgCharIndex();
-			String[] args = this.getArgs();
-			ArgHandlerContext recentArgHandlerContext = 
-					new ArgHandlerContext(this.argHandlerContext);
+			int argIndex = this.argHandlerContext.getArgIndex();
+			int argCharIndex = this.argHandlerContext.getArgCharIndex();
+			ArgHandlerContext recentArgHandlerContext =	new ArgHandlerContext(
+					this.argHandlerContext);
 			if (argIndex > -1 && argCharIndex > -1) {
 				/* 
 				 * The argument character index was incremented by this method 
 				 * or another ArgHandler
 				 */
-				if (argCharIndex < args[argIndex].length() - 1) {
+				if (argCharIndex < this.argHandlerContext.getArg().length() - 1) {
 					/* 
 					 * if the argument character index is not the last index, 
 					 * increment it 
 					 */
 					argCharIndex = 
 							this.argHandlerContext.incrementArgCharIndex();
-					next = Character.toString(args[argIndex].charAt(
-							argCharIndex)); 
+					next = Character.toString(
+							this.argHandlerContext.getArg().charAt(
+									argCharIndex)); 
 				} else {
 					/* 
 					 * if the argument character index is the last index, 
@@ -466,13 +489,13 @@ public final class ArgMatey {
 				 * The argument character index was not incremented or was 
 				 * reset by this method or another ArgHandler
 				 */
-				if (argIndex < args.length - 1) {
+				if (argIndex < this.argHandlerContext.getArgCount() - 1) {
 					/* 
 					 * if the argument index is not the last index, 
 					 * increment it
 					 */
-					argIndex = this.argHandlerContext.incrementArgIndex();
-					next = args[argIndex];
+					this.argHandlerContext.incrementArgIndex();
+					next = this.argHandlerContext.getArg();
 				} else {
 					/* 
 					 * failure atomicity (return back to most recent working 
@@ -491,7 +514,8 @@ public final class ArgMatey {
 					new ArgHandlerContext(this.argHandlerContext);
 			this.next();
 			try {
-				this.argHandler.handle(this.getArgs()[this.getArgIndex()], 
+				this.argHandler.handle(
+						this.argHandlerContext.getArg(), 
 						this.argHandlerContext);
 			} catch (RuntimeException e) {
 				/* 
@@ -520,6 +544,8 @@ public final class ArgMatey {
 			sb.append(this.getClass().getSimpleName())
 				.append(" [optionGroups=")
 				.append(this.optionGroups)
+				.append(", getArg()=")
+				.append(this.getArg())
 				.append(", getArgCharIndex()=")
 				.append(this.getArgCharIndex())
 				.append(", getArgIndex()=")
@@ -618,9 +644,21 @@ public final class ArgMatey {
 			System.out.println(this.getProgramVersion());
 			throw new TerminationRequestedException(0);
 		}
+
+		protected final String getArg() {
+			return this.argsParser.getArg();
+		}
+		
+		protected final String getArg(final int index) {
+			return this.argsParser.getArg(index);
+		}
 		
 		protected final int getArgCharIndex() {
 			return this.argsParser.getArgCharIndex();
+		}
+		
+		protected final int getArgCount() {
+			return this.argsParser.getArgCount();
 		}
 		
 		protected final int getArgIndex() {
@@ -1439,11 +1477,9 @@ public final class ArgMatey {
 			OptionArgSpec optionArgSpec = opt.getOptionArgSpec();
 			if (optionArg == null && optionArgSpec != null 
 					&& optionArgSpec.isRequired()) {
-				String[] args = context.getArgs();
-				int argIndex = context.getArgIndex();
-				if (argIndex < args.length - 1) {
-					argIndex = context.incrementArgIndex();
-					optionArg = args[argIndex];
+				if (context.getArgIndex() < context.getArgCount() - 1) {
+					context.incrementArgIndex();
+					optionArg = context.getArg();
 				}
 			}
 			properties.setParseResultHolder(new ParseResultHolder(
@@ -1800,16 +1836,13 @@ public final class ArgMatey {
 			String optionArg = null;
 			OptionArgSpec optionArgSpec = opt.getOptionArgSpec();
 			if (optionArgSpec != null && optionArgSpec.isRequired()) {
-				String[] args = context.getArgs();
-				int argIndex = context.getArgIndex();
-				if (argIndex < args.length - 1) {
-					argIndex = context.incrementArgIndex();
-					optionArg = args[argIndex];
+				if (context.getArgIndex() < context.getArgCount() - 1) {
+					context.incrementArgIndex();
+					optionArg = context.getArg();
 				}
 			}
 			properties.setParseResultHolder(new ParseResultHolder(
-					new OptionOccurrence(
-							opt, opt.newOptionArg(optionArg))));
+					new OptionOccurrence(opt, opt.newOptionArg(optionArg))));
 		}
 		
 	}
@@ -3909,13 +3942,11 @@ public final class ArgMatey {
 					}
 				} else {
 					if (optionArgSpec.isRequired()) {
-						String[] args = context.getArgs();
-						int argIndex = context.getArgIndex();
-						if (argIndex < args.length - 1) {
-							argCharIndex = context.resetArgCharIndex();
-							argIndex = context.incrementArgIndex();
-							optionArg = args[argIndex];
-						}
+						if (context.getArgIndex() < context.getArgCount() - 1) {
+							context.resetArgCharIndex();
+							context.incrementArgIndex();
+							optionArg = context.getArg();
+						}						
 					}
 				}
 			}
