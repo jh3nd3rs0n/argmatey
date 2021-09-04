@@ -108,7 +108,12 @@ The following is an example of using ArgMatey:
         @Override
         protected void afterHandleArgs() 
             throws TerminationRequestedException {
-            // post parsing stuff can happen here...
+            // post parsing can happen here
+            System.out.printf("columnLimit: %s%n", this.columnLimit);
+            System.out.printf("decodingMode: %s%n", this.decodingMode);
+            System.out.printf("file: %s%n", this.file);
+            System.out.printf("garbageIgnored: %s%n", this.garbageIgnored);
+            throw new TerminationRequestedException(0);
         }
         
         /*
@@ -172,11 +177,8 @@ The following is an example of using ArgMatey:
         @Override
         protected void handleThrowable(Throwable t) 
             throws TerminationRequestedException {
-            /*
-             * Custom error message can be displayed here instead
-             * of using the statement below.
-             */
-            super.handleThrowable(t);
+            System.err.printf("%s: %s%n", this.getProgramName(), throwable);
+            throw new TerminationRequestedException(-1);
         }
                 
         /*
@@ -301,6 +303,79 @@ The following is an example of using ArgMatey:
          * Output when using the command line option "--version" :
          *
          * base64 1.0
+         *
+         */
+         
+        /*
+         * Output when using the following command line arguments:
+         *
+         * -w 100 input.txt
+         *
+         * columnLimit: 100
+         * decodingMode: false
+         * file: input.txt
+         * garbageIgnored: false
+         *
+         */
+         
+        /*
+         * Output when using the following command line arguments:
+         *
+         * -di text.txt
+         *
+         * columnLimit: 76
+         * decodingMode: true
+         * file: text.txt
+         * garbageIgnored: true
+         *
+         */
+         
+        /*
+         * Output when using the following command line arguments:
+         *
+         * --wrap=10 -
+         *
+         * columnLimit: 10
+         * decodingMode: false
+         * file: -
+         * garbageIgnored: false
+         *
+         */
+         
+        /*
+         * Output when using the following command line arguments:
+         *
+         * --decode --ignore-garbage text.txt
+         *
+         * columnLimit: 76
+         * decodingMode: true
+         * file: text.txt
+         * garbageIgnored: true
+         *
+         */
+         
+        /*
+         * Output when using the bogus command line option "--bogus":
+         *
+         * base64: com.github.jh3nd3rs0n.argmatey.ArgMatey$UnknownOptionException: unknown option `--bogus'
+         *
+         */
+         
+        /*
+         * Output when using the following command line arguments:
+         *
+         * --wrap=-42 input.txt
+         *
+         * base64: com.github.jh3nd3rs0n.argmatey.ArgMatey$IllegalOptionArgException: illegal option argument `-42' for option `--wrap': java.lang.IllegalArgumentException: must be a non-negative integer
+         *
+         */
+         
+        /*
+         * Output when using the following command line arguments:
+         *
+         * text.txt anothertext.txt
+         *
+         * base64: com.github.jh3nd3rs0n.argmatey.ArgMatey$IllegalArgException: illegal argument `anothertext.txt': java.lang.IllegalArgumentException: extra operand: `anothertext.txt'
          *
          */
     }

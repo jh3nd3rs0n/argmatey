@@ -67,6 +67,13 @@ public class Base64CLITest {
 			}
 			this.file = nonparsedArg;
 		}
+		
+		@Override
+		protected void handleThrowable(final Throwable throwable) 
+				throws TerminationRequestedException {
+			System.err.printf("%s: %s%n", this.getProgramName(), throwable);
+			throw new TerminationRequestedException(-1);
+		}
 
 		@Option(
 				doc = "Wrap encoded lines after COLS character (default is 76)", 
@@ -150,48 +157,51 @@ public class Base64CLITest {
 
 	}
 
-	private static final String CUSTOM_PROGRAM_HELP;
+	private static final String BOGUS_OPTION_ERROR_MESSAGE = String.format(
+			"base64: com.github.jh3nd3rs0n.argmatey.ArgMatey$UnknownOptionException: unknown option `--bogus'%n");
 
-	private static final String PROGRAM_HELP;
+	private static final String CUSTOM_PROGRAM_HELP = new StringBuilder()
+			.append(String.format("Usage: base64 [OPTION]... [FILE]%n"))
+			.append(String.format("Base64 encode or decode FILE, or standard input, to standard output.%n"))
+			.append(String.format("%n"))
+			.append(String.format("With no FILE, or when FILE is -, read standard input.%n"))
+			.append(String.format("%n"))
+			.append(String.format("OPTIONS:%n"))
+			.append(String.format("  -d, --decode          Decode data%n"))
+			.append(String.format("  --help                Display this help and exit%n"))
+			.append(String.format("  -i, --ignore-garbage  When decoding, ignore non-alphabet characters%n"))
+			.append(String.format("  --version             Display version information and exit%n"))
+			.append(String.format("  -w COLS, --wrap=COLS  Wrap encoded lines after COLS character (default is 76)%n"))
+			.append(String.format("%n"))
+			.toString();
+	
+	private static final String EXTRA_OPERAND_ERROR_MESSAGE = String.format(
+			"base64: com.github.jh3nd3rs0n.argmatey.ArgMatey$IllegalArgException: illegal argument `anothertext.txt': java.lang.IllegalArgumentException: extra operand: `anothertext.txt'%n");
 
-	private static final String PROGRAM_VERSION;
+	private static final String ILLEGAL_WRAP_OPTION_ARG_ERROR_MESSAGE = String.format(
+			"base64: com.github.jh3nd3rs0n.argmatey.ArgMatey$IllegalOptionArgException: illegal option argument `-42' for option `--wrap': java.lang.IllegalArgumentException: must be a non-negative integer%n"); 
+	
+	private static final String PROGRAM_HELP = new StringBuilder()
+			.append(String.format("Usage: base64 [OPTION]... [FILE]%n"))
+			.append(String.format("Base64 encode or decode FILE, or standard input, to standard output.%n"))
+			.append(String.format("%n"))
+			.append(String.format("With no FILE, or when FILE is -, read standard input.%n"))
+			.append(String.format("%n"))
+			.append(String.format("OPTIONS:%n"))
+			.append(String.format("  -d, --decode%n"))
+			.append(String.format("      Decode data%n"))
+			.append(String.format("  --help%n"))
+			.append(String.format("      Display this help and exit%n"))
+			.append(String.format("  -i, --ignore-garbage%n"))
+			.append(String.format("      When decoding, ignore non-alphabet characters%n"))
+			.append(String.format("  --version%n"))
+			.append(String.format("      Display version information and exit%n"))
+			.append(String.format("  -w COLS, --wrap=COLS%n"))
+			.append(String.format("      Wrap encoded lines after COLS character (default is 76)%n"))
+			.append(String.format("%n"))
+			.toString();
 
-	static {
-		StringBuilder sb1 = new StringBuilder();
-		sb1.append(String.format("Usage: base64 [OPTION]... [FILE]%n"));
-		sb1.append(String.format("Base64 encode or decode FILE, or standard input, to standard output.%n"));
-		sb1.append(String.format("%n"));
-		sb1.append(String.format("With no FILE, or when FILE is -, read standard input.%n"));
-		sb1.append(String.format("%n"));
-		sb1.append(String.format("OPTIONS:%n"));
-		sb1.append(String.format("  -d, --decode          Decode data%n"));
-		sb1.append(String.format("  --help                Display this help and exit%n"));
-		sb1.append(String.format("  -i, --ignore-garbage  When decoding, ignore non-alphabet characters%n"));
-		sb1.append(String.format("  --version             Display version information and exit%n"));
-		sb1.append(String.format("  -w COLS, --wrap=COLS  Wrap encoded lines after COLS character (default is 76)%n"));
-		sb1.append(String.format("%n"));
-		CUSTOM_PROGRAM_HELP = sb1.toString();
-		StringBuilder sb2 = new StringBuilder();
-		sb2.append(String.format("Usage: base64 [OPTION]... [FILE]%n"));
-		sb2.append(String.format("Base64 encode or decode FILE, or standard input, to standard output.%n"));
-		sb2.append(String.format("%n"));
-		sb2.append(String.format("With no FILE, or when FILE is -, read standard input.%n"));
-		sb2.append(String.format("%n"));
-		sb2.append(String.format("OPTIONS:%n"));
-		sb2.append(String.format("  -d, --decode%n"));
-		sb2.append(String.format("      Decode data%n"));
-		sb2.append(String.format("  --help%n"));
-		sb2.append(String.format("      Display this help and exit%n"));
-		sb2.append(String.format("  -i, --ignore-garbage%n"));
-		sb2.append(String.format("      When decoding, ignore non-alphabet characters%n"));
-		sb2.append(String.format("  --version%n"));
-		sb2.append(String.format("      Display version information and exit%n"));
-		sb2.append(String.format("  -w COLS, --wrap=COLS%n"));
-		sb2.append(String.format("      Wrap encoded lines after COLS character (default is 76)%n"));
-		sb2.append(String.format("%n"));
-		PROGRAM_HELP = sb2.toString();
-		PROGRAM_VERSION = String.format("base64 1.0%n");
-	}
+	private static final String PROGRAM_VERSION = String.format("base64 1.0%n");
 
 	private static int handle(
 			final String[] args, 
@@ -379,7 +389,17 @@ public class Base64CLITest {
 		int status = handle(new String[] { "--bogus" }, err, in, out);
 		assertTrue(status != 0);		
 	}
-
+	
+	@Test
+	public void testBogusOptionErrorMessage() throws IOException {
+		String expectedString = BOGUS_OPTION_ERROR_MESSAGE;
+		ByteArrayOutputStream bytesOut = new ByteArrayOutputStream();
+		PrintStream err = new PrintStream(bytesOut);
+		handle(new String[] { "--bogus" }, err, null, null);
+		String actualString = new String(bytesOut.toByteArray());
+		assertEquals(expectedString, actualString);		
+	}
+	
 	@Test
 	public void testCustomProgramHelp() throws IOException {
 		OptionGroupHelpTextProvider provider1 = OptionGroupHelpTextProvider.getDefault();
@@ -395,6 +415,26 @@ public class Base64CLITest {
 		} finally {
 			OptionGroupHelpTextProvider.setDefault(provider1);
 		}
+	}
+	
+	@Test
+	public void testExtraOperandErrorMessage() throws IOException {
+		String expectedString = EXTRA_OPERAND_ERROR_MESSAGE;
+		ByteArrayOutputStream bytesOut = new ByteArrayOutputStream();
+		PrintStream err = new PrintStream(bytesOut);
+		handle(new String[] { "text.txt", "anothertext.txt" }, err, null, null);
+		String actualString = new String(bytesOut.toByteArray());
+		assertEquals(expectedString, actualString);		
+	}
+
+	@Test
+	public void testIllegalWrapOptionArgErrorMessage() throws IOException {
+		String expectedString = ILLEGAL_WRAP_OPTION_ARG_ERROR_MESSAGE;
+		ByteArrayOutputStream bytesOut = new ByteArrayOutputStream();
+		PrintStream err = new PrintStream(bytesOut);
+		handle(new String[] { "--wrap=-42", "input.txt" }, err, null, null);
+		String actualString = new String(bytesOut.toByteArray());
+		assertEquals(expectedString, actualString);		
 	}
 
 	@Test
