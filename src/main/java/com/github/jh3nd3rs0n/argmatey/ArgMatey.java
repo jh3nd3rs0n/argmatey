@@ -1476,11 +1476,10 @@ public final class ArgMatey {
 			}
 			OptionArgSpec optionArgSpec = opt.getOptionArgSpec();
 			if (optionArg == null && optionArgSpec != null 
-					&& optionArgSpec.isRequired()) {
-				if (context.getArgIndex() < context.getArgCount() - 1) {
-					context.incrementArgIndex();
-					optionArg = context.getArg();
-				}
+					&& optionArgSpec.isRequired()
+					&& context.getArgIndex() < context.getArgCount() - 1) {
+				context.incrementArgIndex();
+				optionArg = context.getArg();
 			}
 			properties.setParseResultHolder(new ParseResultHolder(
 					new OptionOccurrence(opt, opt.newOptionArg(optionArg))));
@@ -1835,11 +1834,10 @@ public final class ArgMatey {
 			}
 			String optionArg = null;
 			OptionArgSpec optionArgSpec = opt.getOptionArgSpec();
-			if (optionArgSpec != null && optionArgSpec.isRequired()) {
-				if (context.getArgIndex() < context.getArgCount() - 1) {
-					context.incrementArgIndex();
-					optionArg = context.getArg();
-				}
+			if (optionArgSpec != null && optionArgSpec.isRequired()
+					&& context.getArgIndex() < context.getArgCount() - 1) {
+				context.incrementArgIndex();
+				optionArg = context.getArg();
 			}
 			properties.setParseResultHolder(new ParseResultHolder(
 					new OptionOccurrence(opt, opt.newOptionArg(optionArg))));
@@ -3941,12 +3939,11 @@ public final class ArgMatey {
 						argCharIndex = context.incrementArgCharIndex();
 					}
 				} else {
-					if (optionArgSpec.isRequired()) {
-						if (context.getArgIndex() < context.getArgCount() - 1) {
-							context.resetArgCharIndex();
-							context.incrementArgIndex();
-							optionArg = context.getArg();
-						}						
+					if (optionArgSpec.isRequired() 
+							&& context.getArgIndex() < context.getArgCount() - 1) {
+						context.resetArgCharIndex();
+						context.incrementArgIndex();
+						optionArg = context.getArg();						
 					}
 				}
 			}
