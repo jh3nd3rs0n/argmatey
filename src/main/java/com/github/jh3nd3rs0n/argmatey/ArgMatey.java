@@ -165,13 +165,6 @@ public final class ArgMatey {
 		private final String[] args;
 		private final Map<String, Object> properties;
 		
-		public ArgHandlerContext(final ArgHandlerContext other) {
-			this.argCharIndex = other.argCharIndex;
-			this.argIndex = other.argIndex;
-			this.args = Arrays.copyOf(other.args, other.args.length);
-			this.properties = new HashMap<String, Object>(other.properties);
-		}
-		
 		public ArgHandlerContext(final String[] arguments) {
 			for (String argument : arguments) {
 				Objects.requireNonNull(
@@ -379,7 +372,7 @@ public final class ArgMatey {
 		}
 		
 		private final ArgHandler argHandler;
-		private ArgHandlerContext argHandlerContext;
+		private final ArgHandlerContext argHandlerContext;
 		private final OptionGroups optionGroups;
 		private ParseResultHolder parseResultHolder;
 			
@@ -459,8 +452,6 @@ public final class ArgMatey {
 			String next = null;
 			int argIndex = this.argHandlerContext.getArgIndex();
 			int argCharIndex = this.argHandlerContext.getArgCharIndex();
-			ArgHandlerContext recentArgHandlerContext =	new ArgHandlerContext(
-					this.argHandlerContext);
 			if (argIndex > -1 && argCharIndex > -1) {
 				/* 
 				 * The argument character index was incremented by this method 
@@ -498,10 +489,9 @@ public final class ArgMatey {
 					next = this.argHandlerContext.getArg();
 				} else {
 					/* 
-					 * failure atomicity (return back to most recent working 
-					 * state) 
+					 * the argument index is the last index; can not increment 
+					 * any further
 					 */
-					this.argHandlerContext = recentArgHandlerContext;
 					throw new NoSuchElementException();
 				}
 			}
@@ -510,26 +500,10 @@ public final class ArgMatey {
 		}
 		
 		public ParseResultHolder parseNext() {
-			ArgHandlerContext recentArgHandlerContext = 
-					new ArgHandlerContext(this.argHandlerContext);
 			this.next();
-			try {
-				this.argHandler.handle(
-						this.argHandlerContext.getArg(), 
-						this.argHandlerContext);
-			} catch (RuntimeException e) {
-				/* 
-				 * failure atomicity (return back to most recent working state) 
-				 */
-				this.argHandlerContext = recentArgHandlerContext;
-				throw e;
-			} catch (Error e) {
-				/* 
-				 * failure atomicity (return back to most recent working state) 
-				 */
-				this.argHandlerContext = recentArgHandlerContext;
-				throw e;
-			}
+			this.argHandler.handle(
+					this.argHandlerContext.getArg(), 
+					this.argHandlerContext);
 			ArgHandlerContextProperties properties = 
 					new ArgHandlerContextProperties(this.argHandlerContext);
 			ParseResultHolder resultHolder = properties.getParseResultHolder();
