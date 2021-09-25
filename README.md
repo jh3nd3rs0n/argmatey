@@ -57,7 +57,7 @@ Query methods:
 Iterator methods:
 
 -   `CLI.hasNext()`: returns a boolean value to indicate if this `CLI` has a next part of the command line argument or a next command line argument
--   `CLI.next()`: returns the next part of the command line or the next command line argument
+-   `CLI.next()`: returns the next part of the command line argument or the next command line argument
 
 Descriptive methods:
 
