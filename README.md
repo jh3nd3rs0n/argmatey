@@ -37,8 +37,8 @@ Triggerable event methods that can be overridden:
 
 -   `CLI.beforeHandleArgs()`: invoked before parsing and handling the command line arguments
 -   `CLI.afterHandleArgs()`: invoked after parsing and handling the command line arguments
--   `CLI.beforeHandleNext()`: invoked before parsing and handling the next part of the command line argument or the next command line argument
--   `CLI.afterHandleNext()`: invoked after parsing and handling the next part of the command line argument or the next command line argument
+-   `CLI.beforeHandleNext()`: invoked before parsing and handling the next part of the current command line argument or the next command line argument
+-   `CLI.afterHandleNext()`: invoked after parsing and handling the next part of the current command line argument or the next command line argument
 -   `CLI.displayProgramHelp()`: invoked when one of the command line options for the program help (`--help`) is encountered and displays the program help
 -   `CLI.displayProgramVersion()`: invoked when one of the command line options for the program version (`--version`) is encountered and displays the program version
 -   `CLI.handleNonparsedArg(String)`: invoked when a non-parsed command line argument is encountered
@@ -47,17 +47,17 @@ Triggerable event methods that can be overridden:
 Query methods:
 
 -   `CLI.getArg()`: returns the current command line argument
--   `CLI.getArg(int)`: returns the command line argument based on the provided index
+-   `CLI.getArg(int)`: returns the command line argument of the provided index
 -   `CLI.getArgCharIndex()`: returns the current character index of the current command line argument
--   `CLI.getArgCount()`: returns the count of all of the command line arguments
+-   `CLI.getArgCount()`: returns the count of the command line arguments
 -   `CLI.getArgIndex()`: return the index of the current command line argument
--   `CLI.getArgs()`: returns an array of all of the command line arguments
+-   `CLI.getArgs()`: returns an array of the command line arguments
 -   `CLI.getParseResultHolder()`: returns the current `ParseResultHolder`
 
 Iterator methods:
 
--   `CLI.hasNext()`: returns a boolean value to indicate if this `CLI` has a next part of the command line argument or a next command line argument
--   `CLI.next()`: returns the next part of the command line argument or the next command line argument
+-   `CLI.hasNext()`: returns a boolean value to indicate if this `CLI` has the next part of the current command line argument or the next command line argument
+-   `CLI.next()`: returns the next part of the current command line argument or the next command line argument
 
 Descriptive methods:
 
@@ -141,7 +141,8 @@ The following is an example of using ArgMatey:
         
         /*
          * Invoked after parsing and handling the next part of the 
-         * command line argument or the next command line argument.
+         * current command line argument or the next command line 
+         * argument.
          */
         @Override
         protected void afterHandleNext() 
@@ -164,7 +165,8 @@ The following is an example of using ArgMatey:
         
         /*
          * Invoked before parsing and handling the next part of the 
-         * command line argument or the next command line argument.
+         * current command line argument or the next command line 
+         * argument.
          */
         @Override
         protected void beforeHandleNext() 
