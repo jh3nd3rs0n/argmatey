@@ -27,7 +27,7 @@ ArgMatey is an extensible Java command line interface that has the following fea
 -   Long options (examples: `-help` `-version` `-output-file file.txt`)
 -   POSIX options (examples: `-h` `-v` `-o file.txt`)
 
-**Command line argument parsing and handling with triggerable event methods.** The extensible command line interface has the following triggerable event methods:
+**Command line argument parsing and handling with triggerable event methods, query methods, iterator methods, and descriptive methods.** To parse and handle command line arguments, a class must extend `CLI` and have its constructor invoke the superclass's constructor `CLI(String[] args, boolean posixCorrect)` and the instance of that  extending class must have its inherited public method `CLI.handleArgs()` invoked. The extending class can have, override, or use the following methods:
 
 Triggerable event methods that can be added:
 
@@ -35,14 +35,37 @@ Triggerable event methods that can be added:
 
 Triggerable event methods that can be overridden:
 
--   `beforeHandleArgs()`: invoked before parsing and handling the command line arguments
--   `afterHandleArgs()`: invoked after parsing and handling the command line arguments
--   `beforeHandleNext()`: invoked before parsing and handling the next part of the command line argument or the next command line argument
--   `afterHandleNext()`: invoked after parsing and handling the next part of the command line argument or the next command line argument
--   `displayProgramHelp()`: invoked when the command line option(s) for the program help (`--help`) is encountered
--   `displayProgramVersion()`: invoked when the command line option(s) for the program version (`--version`) is encountered
--   `handleNonparsedArg(String)`: invoked when a non-parsed command line argument is encountered
--   `handleThrowable(Throwable)`: invoked when a `Throwable` is thrown when parsing and handling the next part of the command line argument or the next command line argument
+-   `CLI.beforeHandleArgs()`: invoked before parsing and handling the command line arguments
+-   `CLI.afterHandleArgs()`: invoked after parsing and handling the command line arguments
+-   `CLI.beforeHandleNext()`: invoked before parsing and handling the next part of the command line argument or the next command line argument
+-   `CLI.afterHandleNext()`: invoked after parsing and handling the next part of the command line argument or the next command line argument
+-   `CLI.displayProgramHelp()`: invoked when one of the command line options for the program help (`--help`) is encountered and displays the program help
+-   `CLI.displayProgramVersion()`: invoked when one of the command line options for the program version (`--version`) is encountered and displays the program version
+-   `CLI.handleNonparsedArg(String)`: invoked when a non-parsed command line argument is encountered
+-   `CLI.handleThrowable(Throwable)`: invoked when a `Throwable` is thrown when parsing and handling the next part of the command line argument or the next command line argument
+
+Query methods:
+
+-   `CLI.getArg()`: returns the current command line argument
+-   `CLI.getArg(int)`: returns the command line argument based on the provided index
+-   `CLI.getArgCharIndex()`: returns the current character index of the current command line argument
+-   `CLI.getArgCount()`: returns the count of all of the command line arguments
+-   `CLI.getArgIndex()`: return the index of the current command line argument
+-   `CLI.getArgs()`: returns an array of all of the command line arguments
+-   `CLI.getParseResultHolder()`: returns the current `ParseResultHolder`
+
+Iterator methods:
+
+-   `CLI.hasNext()`: returns a boolean value to indicate if this `CLI` has a next part of the command line argument or a next command line argument
+-   `CLI.next()`: returns the next part of the command line or the next command line argument
+
+Descriptive methods:
+
+-   `CLI.getOptionGroups()`: returns an instance of `OptionGroups` defined by the `@Option` annotated methods
+-   `CLI.getProgramDoc()`/`CLI.setProgramDoc(String)`: returns/sets the documentation (description) of the program
+-   `CLI.getProgramName()`/`CLI.setProgramName(String)`: returns/sets the name of the program
+-   `CLI.getProgramOperandsUsage()`/`CLI.setProgramOperandsUsage(String)`: returns/sets the usage of the operands of the program
+-   `CLI.getProgramVersion()`/`CLI.setProgramVersion(String)`: returns/sets the version of the program
 
 This style of command line argument parsing and handling has the following advantages:
 
