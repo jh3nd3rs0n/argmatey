@@ -517,7 +517,7 @@ The following is the earlier example using a customized `OptionGroupHelpTextProv
 
 The following are some examples of projects using ArgMatey:
 
--   [Jargyle](https://github.com/jh3nd3rs0n/jargyle) (specific examples: [SocksServerCLI.java](https://github.com/jh3nd3rs0n/jargyle/blob/master/src/main/java/com/github/jh3nd3rs0n/jargyle/net/socks/server/SocksServerCLI.java), [UsersCLI.java](https://github.com/jh3nd3rs0n/jargyle/blob/master/src/main/java/com/github/jh3nd3rs0n/jargyle/net/socks/server/v5/userpassauth/UsersCLI.java))
+-   [Jargyle](https://github.com/jh3nd3rs0n/jargyle) (specific examples: [JargyleCLI.java](https://github.com/jh3nd3rs0n/jargyle/blob/master/src/main/java/com/github/jh3nd3rs0n/jargyle/main/JargyleCLI.java), [UsersCLI.java](https://github.com/jh3nd3rs0n/jargyle/blob/master/src/main/java/com/github/jh3nd3rs0n/jargyle/main/socks5/userpassauth/UsersCLI.java))
 -   [JBase64Transformer](https://github.com/jh3nd3rs0n/jbase64transformer) (specific example: [Base64TransformerCLI.java](https://github.com/jh3nd3rs0n/jbase64transformer/blob/master/src/main/java/com/github/jh3nd3rs0n/jbase64transformer/Base64TransformerCLI.java))
 
 ## Requirements
