@@ -10,6 +10,7 @@ ArgMatey is an extensible Java command line interface.
 
 -   [About](#about)
 -   [Examples](#examples)
+-   [License](#license)
 -   [Requirements](#requirements)
 -   [Generating Javadocs](#generating-javadocs)
 -   [Automated Testing](#automated-testing)
@@ -519,6 +520,10 @@ The following are some examples of projects using ArgMatey:
 
 -   [Jargyle](https://github.com/jh3nd3rs0n/jargyle) (specific examples: [ServerConfigurationCLI.java](https://github.com/jh3nd3rs0n/jargyle/blob/master/src/main/java/com/github/jh3nd3rs0n/jargyle/cli/ServerConfigurationCLI.java), [ServerConfigurationFileCreatorCLI.java](https://github.com/jh3nd3rs0n/jargyle/blob/master/src/main/java/com/github/jh3nd3rs0n/jargyle/cli/ServerConfigurationFileCreatorCLI.java), [ServerStarterCLI.java](https://github.com/jh3nd3rs0n/jargyle/blob/master/src/main/java/com/github/jh3nd3rs0n/jargyle/cli/ServerStarterCLI.java), [Socks5UserManagerCLI.java](https://github.com/jh3nd3rs0n/jargyle/blob/master/src/main/java/com/github/jh3nd3rs0n/jargyle/cli/Socks5UserManagerCLI.java))
 -   [JBase64Transformer](https://github.com/jh3nd3rs0n/jbase64transformer) (specific example: [Base64TransformerCLI.java](https://github.com/jh3nd3rs0n/jbase64transformer/blob/master/src/main/java/com/github/jh3nd3rs0n/jbase64transformer/Base64TransformerCLI.java))
+
+## License
+
+ArgMatey is licensed under the [MIT license](https://github.com/jh3nd3rs0n/argmatey/blob/master/LICENSE)
 
 ## Requirements
 
