@@ -78,8 +78,6 @@ An example of customizing one aspect of the program help can be found [here](#ex
  
 **Single source code file.** As an alternative to importing ArgMatey as a Maven dependency or a JAR file, ArgMatey can be imported to a project as a source code file.
 
-**DISCLAIMER**: ArgMatey is not production-ready but it aims to be. It is also subject to breaking changes.
-
 ## Examples
 
 ### Example of Using ArgMatey
