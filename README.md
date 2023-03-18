@@ -2,10 +2,6 @@
 
 [![CodeQL](https://github.com/jh3nd3rs0n/argmatey/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/jh3nd3rs0n/argmatey/actions/workflows/codeql-analysis.yml) [![Codacy Badge](https://app.codacy.com/project/badge/Grade/246e8008635747eb94e11641504d553d)](https://www.codacy.com/gh/jh3nd3rs0n/argmatey/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=jh3nd3rs0n/argmatey&amp;utm_campaign=Badge_Grade)
 
-ArgMatey is an extensible Java command line interface.
-
-**DISCLAIMER**: ArgMatey is not production-ready but it aims to be. It is also subject to breaking changes.
-
 ## Contents
 
 -   [About](#about)
@@ -82,6 +78,8 @@ An example of using ArgMatey's command line argument parsing and handling can be
 An example of customizing one aspect of the program help can be found [here](#example-of-customizing-the-help-text-of-command-line-option-groups).
  
 **Single source code file.** As an alternative to importing ArgMatey as a Maven dependency or a JAR file, ArgMatey can be imported to a project as a source code file.
+
+**DISCLAIMER**: ArgMatey is not production-ready but it aims to be. It is also subject to breaking changes.
 
 ## Examples
 
