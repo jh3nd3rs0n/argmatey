@@ -525,7 +525,7 @@ ArgMatey is licensed under the [MIT license](https://github.com/jh3nd3rs0n/argma
 ## Requirements
 
 -   Apache Maven&#8482; 3.3.9 or higher (for generating javadocs, automated testing, installing, and building) 
--   Java&#8482; SDK 1.8 or higher
+-   Java&#8482; SDK 8 or higher
 
 ## Generating Javadocs
 
