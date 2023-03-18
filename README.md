@@ -12,7 +12,6 @@
 -   [Automated Testing](#automated-testing)
 -   [Installing](#installing)
 -   [Building](#building)
--   [Contact](#contact)
 
 ## About
 
@@ -598,7 +597,3 @@ After running the aforementioned command, the JAR file can be found in the follo
 ```
 
 `${VERSION}` is replaced by the actual version shown within the name of the JAR file.
-  
-## Contact
-
-If you have any questions or comments, you can e-mail me at `j0n4th4n.h3nd3rs0n@gmail.com`
