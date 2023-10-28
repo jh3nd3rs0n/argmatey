@@ -583,7 +583,7 @@ To generate javadocs, run the following commands:
 
 ```bash
 cd argmatey
-mvn javadoc:javadoc
+mvn clean javadoc:javadoc
 ```
 
 After running the aforementioned commands, the javadocs can be found in the 
@@ -598,7 +598,7 @@ target/site/apidocs
 To run automated testing, run the following command:
 
 ```bash
-mvn test
+mvn clean test
 ```
 
 ## Installing
@@ -606,7 +606,7 @@ mvn test
 To install, run the following command:
 
 ```bash
-mvn install
+mvn clean install
 ```
 
 To add a dependency on ArgMatey using Maven, use the following:
@@ -624,7 +624,7 @@ To add a dependency on ArgMatey using Maven, use the following:
 To build and package ArgMatey as a JAR file, run the following command:
 
 ```bash
-mvn package
+mvn clean package
 ```
 
 After running the aforementioned command, the JAR file can be found in the 
@@ -634,4 +634,4 @@ following path:
 target/argmatey-VERSION.jar
 ```
 
-`VERSION` is the actual version shown within the name of the JAR file.
+Where `VERSION` is the actual version shown within the name of the JAR file.
