@@ -555,6 +555,9 @@ public class Base64CLI extends CLI {
 
 The following are some examples of projects using ArgMatey:
 
+-   [CafeBase64](https://github.com/jh3nd3rs0n/cafebase64) 
+(specific example: 
+[CafeBase64CLI.java](https://github.com/jh3nd3rs0n/cafebase64/blob/master/src/main/java/com/github/jh3nd3rs0n/cafebase64/CafeBase64CLI.java))
 -   [Jargyle](https://github.com/jh3nd3rs0n/jargyle) 
 (specific examples: 
 [JargyleCLI.java](https://github.com/jh3nd3rs0n/jargyle/blob/master/jargyle-cli/src/main/java/com/github/jh3nd3rs0n/jargyle/cli/JargyleCLI.java), 
@@ -562,9 +565,6 @@ The following are some examples of projects using ArgMatey:
 [ServerConfigurationFileCreatorCLI.java](https://github.com/jh3nd3rs0n/jargyle/blob/master/jargyle-cli/src/main/java/com/github/jh3nd3rs0n/jargyle/cli/ServerConfigurationFileCreatorCLI.java), 
 [ServerStarterCLI.java](https://github.com/jh3nd3rs0n/jargyle/blob/master/jargyle-cli/src/main/java/com/github/jh3nd3rs0n/jargyle/cli/ServerStarterCLI.java), 
 [Socks5UserManagerCLI.java](https://github.com/jh3nd3rs0n/jargyle/blob/master/jargyle-cli/src/main/java/com/github/jh3nd3rs0n/jargyle/cli/Socks5UserManagerCLI.java))
--   [JBase64Transformer](https://github.com/jh3nd3rs0n/jbase64transformer) 
-(specific example: 
-[Base64TransformerCLI.java](https://github.com/jh3nd3rs0n/jbase64transformer/blob/master/src/main/java/com/github/jh3nd3rs0n/jbase64transformer/Base64TransformerCLI.java))
 
 ## License
 
