@@ -15,7 +15,7 @@
 
 ## Introduction
 
-ArgMatey is an extensible Java command line interface that has the following 
+ArgMatey is a Java command line interface that has the following 
 features:
 
 **Command line option types whose syntax and behavior are based on the [POSIX Utility Conventions](http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap12.html), GNU's function [getopt_long](http://www.gnu.org/software/libc/manual/html_node/Getopt-Long-Options.html#Getopt-Long-Options), and GNU's [Argp](http://www.gnu.org/software/libc/manual/html_node/Argp.html#Argp) interface:**
